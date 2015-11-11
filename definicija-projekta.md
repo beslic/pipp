@@ -34,7 +34,7 @@
     
 **2. Definiranje ankete**
     
-Registrirani korisnik ima opciju izrade novih anketa. Anketa može biti privatna ili javna i može sadržati proizvoljni broj pitanja (najmanje 1). Pitanja nude predodređene odgovore od kojih mora biti odabran točno jedan da pitanje bude odgovoreno. Svako pitanje može sadržavati proizvoljan broj odgovora (najmanje 1).
+Registrirani korisnik ima opciju izrade novih anketa. Anketa može biti privatna ili javna i može sadržati proizvoljni broj pitanja (najmanje 1). Pitanja nude predodređene odgovore od kojih mora biti odabran točno jedan da pitanje bude odgovoreno. Svako pitanje može sadržavati proizvoljan broj odgovora (najmanje 1). Za popunjavanje ankete nije nužno da sva pitanja budu odgovorena. Za neodgovorena pitanja predviđen je default odgovor neodgovoren koji se automatski izrađuje.
 
 **3. Upravljaje podacima o registriranim anketarima** 
 
@@ -51,10 +51,13 @@ Podaci koji se traže od korisnika su pri registraciji anketara su:
  
  
 
-**4. Preuzimanje nove ankete na mobilni uređaj**
+**4. Preuzimanje nove ankete na mobilni uređaj / slanje rezultata**
+
+Nakon prve prijave na uređaj automatski se preuzimaju sve ankete koje su dostupne anketaru. Budući da je mobilna aplikacija predviđena i za korištenje bez pristupa internetu, anketar mora ručno pokrenuti sinkronizaciju podataka s bazom. Sinkronizacija uključuje slanje svih prikupljenih ispunjavanja, provjera dostupnosi anketa te na osnovi toga preuzimanje odnosno brisanje postojećih.
+
+**5. Provođenje ankete**
+
+Kada anketar žapočima provođenje ankete, automatski se bilježi vrijeme i (ako postoji pristup internetu) geolokacija. Anketar daje pitanja i bilježi odgovore u mobilnu aplikaciju. Sva pitanja imaju ponuđene odgovore od kojih samo jedan mora biti odabran da bi pitanje bilo odgovoreno. Sva pitanja ne moraju biti odgovorena da bi se anketa smatrala ispunjenom (minimalno jedno treba biti odgovoreno). Za neodgovorena pitanja predviđen je default odgovor neodgovoren. 
 
 
 
-    
-    
-## ER model
