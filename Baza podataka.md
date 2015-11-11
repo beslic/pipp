@@ -4,26 +4,26 @@ Baza podataka **projektBaza** tematski pokriva podatke o svim korisnicima web ap
 
 Popis tablica i njihovo značenje:
 
-**korisnik**
-Osobni podatci o korisniku.
+**korisnik**:
+Osobni podatci o korisniku koji ukjučuju: ime, prezime, ime kompanije(ako postoji), E-mail, username i password.
 
-**anketar**
-Osnovni podatci o anketaru. Uključuju _login_ i _password_
+**anketar**: 
+Osnovni podatci o anketaru. Uključuju username i password te id korisnika kojem je predodređen.
 
-**pristupAnketama**
-Sadži podatke o dopuštenjima pristupa svih anketara za sve ankete.
+**pristupAnketama**:
+Sadži popis dopuštenja pristupa anketama svakog anketara.
 
-**anketa**
-Sadrži osnovne podatke o anketi.
+**anketa**:
+Sadrži osnovne podatke o anketi. To su: ime ankete, id korisnika koji provodi anketu i podatke o privatnosti.
 
-**pitanja**
-Popis svih pitanja za određenu anketu.
+**pitanja**:
+Popis svih pitanja za određenu anketu. Svako pitanje sadrži tekst pitanja i id ankete kojoj pripada.**Sadrži broj koliko puta je pitanje odgovoreno.**
 
-**odgovori**
-Popis svih odgovora za određenu anketu.
+**odgovori**:
+Popis svih odgovora za određenu anketu. Svako odgovor sadrži tekst odgovora i id pitanja kojem pripada.**Sadrži broj koliko puta je odgovor odabran.**
 
-**ispunjavanjeAnkete**
-Osnovni podatci o svakom ispunjavanjuankete.
+**ispunjavanjeAnkete**:
+Osnovni podatci o svakom ispunjavanjuankete. Svakom ispunavanu ankete dodjeljuje se vrijeme ispunjavanja, geolokacija te id ankete koja se ispunjava.
 
-**odabraniOdgovori**
-Podatci o svakom odabranom odgovoru.
+**odabraniOdgovori**:
+Podatci o svakom odabranom odgovoru. Svaki red tablice samo zahtjeva id ispunjavanja ankete i id odgovora koji je odabran.
