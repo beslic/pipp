@@ -1,13 +1,13 @@
 # **projektBaza** baza podataka
 
-Baza podataka **projektBaza** tematski pokriva podatke o svim korisnicima web aplikacije za anketno istraživanje, te podake dobivene anketnim istraživanjima. Prate se osobni podatci o svakom naručitelju, te podatci o njemu pridruženim anketarima. Za svakog anketara prati se kojem korisniku pripada te koje ankete su mu dostupne. Za svaku anketu prate se pitanja postavljena u anketi, ponuđeni odgovori te detaljni podatci o svakom ispunjavanju ankete. 
+Baza podataka **projektBaza** tematski pokriva podatke o svim korisnicima web aplikacije za anketno istraživanje, te podake dobivene anketnim istraživanjima. Prate se osobni podatci o svakom naručitelju, te podatci o njemu pridruženim anketarima. Za svakog anketara prati se kojem korisniku pripada te koje ankete su mu dostupne. Za svaku anketu prate se pitanja postavljena u anketi, ponuđeni odgovori te detaljni podatci o svakom ispunjavanju ankete.
 
 Popis tablica i njihovo značenje:
 
 **korisnik**:
 Osobni podatci o korisniku koji ukjučuju: ime, prezime, ime kompanije(ako postoji), E-mail, username i password.
 
-**anketar**: 
+**anketar**:
 Osnovni podatci o anketaru. Uključuju username i password te id korisnika kojem je predodređen.
 
 **pristupAnketama**:
@@ -27,3 +27,8 @@ Osnovni podatci o svakom ispunjavanjuankete. Svakom ispunavanu ankete dodjeljuje
 
 **odabraniOdgovori**:
 Podatci o svakom odabranom odgovoru. Svaki red tablice samo zahtjeva id ispunjavanja ankete i id odgovora koji je odabran.
+
+
+# ER model
+
+![ER model s vezama i kardinalnostima](images/er-model.png)
