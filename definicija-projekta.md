@@ -57,7 +57,14 @@ Nakon prve prijave na uređaj automatski se preuzimaju sve ankete koje su dostup
 
 **5. Provođenje ankete**
 
-Kada anketar žapočima provođenje ankete, automatski se bilježi vrijeme i (ako postoji pristup internetu) geolokacija. Anketar daje pitanja i bilježi odgovore u mobilnu aplikaciju. Sva pitanja imaju ponuđene odgovore od kojih samo jedan mora biti odabran da bi pitanje bilo odgovoreno. Sva pitanja ne moraju biti odgovorena da bi se anketa smatrala ispunjenom (minimalno jedno treba biti odgovoreno). Za neodgovorena pitanja predviđen je default odgovor neodgovoren. 
+Kada anketar žapočima provođenje ankete, automatski se bilježi vrijeme i (ako postoji pristup internetu) geolokacija. Anketar daje pitanja i bilježi odgovore u mobilnu aplikaciju. Sva pitanja imaju ponuđene odgovore od kojih samo jedan mora biti odabran da bi pitanje bilo odgovoreno. Sva pitanja moraju biti odgovorena da bi se anketa smatrala ispunjenom.
 
+**6. Analiza i prikaz rezultata ankete**
 
+Rezultati ankete biti će dostupni na web aplikaciji. Ako je anketa označena kao javna biti će dostupna svima, ako je označena kao privatna dostupna je samo korisniku koji je vlasnik ankete. Za pregled ankete biti će dostupni jednostavni i složeni upiti.
 
+Jednostavni upit prikazuje broj i postotak odabira svih odgovora za određeno pitanje.
+Složeni upit daje mogučnost udruživanja 2 ili više pitanja te promatranja udruženih rezultata.
+Oba upita nude grafičko prikazivanje rezultata.
+
+ 
