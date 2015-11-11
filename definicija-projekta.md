@@ -8,13 +8,13 @@
 
 #### Korisnici sustava:  
 
-  * Adminitrator - jedan ili više korisnika koji održavaju sustav. Postoji samo jedan administratorski račun i samo jedan može biti prijavljen na sustav, ali njime se može koristiti više osoba (unutar firme, udruge i sličnih korisnika ovog sustava). Administrator može praviti anketu, učinit određenu anketu privatnom ili javnom, pregledati rezultate svih napravljenih anketa i slično.  
+  * Administrator - jedan ili više korisnika koji održavaju sustav. Administratorski računi izrađuju se ručno u bazi podataka. Svaki administrator ima vlastiti username i password.  Administrator može praviti anketu, učiniti određenu anketu privatnom ili javnom, pregledati rezultate svih napravljenih anketa i uređivati račune korisnika i anketara.  
 
-  * Naručitelj ankete (registrirani korisnik) - svi posjetitelji sustava se mogu registrirati na sustav za anketiranje. Nakon registracije bit će im omogućeno pravljenje ankete. Korisnik može odabrati hoće li njegova anketa biti javno dostupna (putem web aplikacije) ili samo privatna. U slučaju privatne ankete, jedini mogući način ispunjavanja ankete je koristeći našu mobilnu aplikaciju.  
+  * Korisnik (registrirani korisnik) - svi posjetitelji sustava se mogu registrirati na sustav za anketiranje. Nakon registracije bit će im omogućeno pravljenje ankete. Korisnik može odabrati hoće li njegova anketa biti javno dostupna (putem web aplikacije) ili samo privatna. U slučaju privatne ankete, jedini mogući način ispunjavanja ankete je koristeći našu mobilnu aplikaciju. Korisnik može izraditi anketarske račune i pridružiti im mogućnost ispunjavanja anketa. Korisnik ne može izbrisati anketu, anketa može biti samo deaktivirana.
 
-  * Anketar - osoba čija je zdaća provoditi anketu. Anketa se provodi putem mobilne aplikacije. Nakon instalacije mobilne aplikacije na Android uređaj, anketar unosi _ID_ ankete čime će se (ukoliko je anketa pronađena u bazi, odnosno _ID_ je valjan) anketa će se skinuti na mobilni uređaj i moći će se započeti s ispunjavanjem ankete.  
+  * Anketar - osoba čija je zdaća provoditi anketu. Anketa se provodi putem mobilne aplikacije. Nakon instalacije mobilne aplikacije na Android uređaj, anketar unos podatke za prijavu. Podake za prijavu dobiva od korisnika za kojeg porovodi ankete. Ankete, za čije provođenje anketar ima odobrenje od korisnika, će se skinuti na mobilni uređaj i moći će se započeti s ispunjavanjem ankete.  
 
-  * Anonimni posjetitelji - mogu pristupiti javnom dijelu web aplikacije. Ukoliko postoje javno dostupne ankete, anonimni posjetitelji mogu ispunjavati ankete, vidjeti rezultate ankete i slično.
+  * Anonimni posjetitelji - mogu pristupiti javnom dijelu web aplikacije. Ukoliko postoje javno dostupne aktivne ankete, anonimni posjetitelji mogu ispunjavati ankete, vidjeti rezultate ankete i slično.
 
 #### Sustav anketiranja omogućava obavljanje sljedećih procesa:
   1. Upravljaje podacima o registriranim korisnicima  
