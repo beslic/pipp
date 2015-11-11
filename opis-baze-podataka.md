@@ -17,10 +17,10 @@ Sadži popis dopuštenja pristupa anketama svakog anketara.
 Sadrži osnovne podatke o anketi. To su: ime ankete, id korisnika koji provodi anketu i podatke o privatnosti.
 
 **pitanja**:
-Popis svih pitanja za određenu anketu. Svako pitanje sadrži tekst pitanja i id ankete kojoj pripada.**Sadrži broj koliko puta je pitanje odgovoreno.**
+Popis svih pitanja za određenu anketu. Svako pitanje sadrži tekst pitanja i id ankete kojoj pripada. Sadrži broj koliko puta je pitanje odgovoreno.
 
 **odgovori**:
-Popis svih odgovora za određenu anketu. Svako odgovor sadrži tekst odgovora i id pitanja kojem pripada.**Sadrži broj koliko puta je odgovor odabran.**
+Popis svih odgovora za određenu anketu. Svako odgovor sadrži tekst odgovora i id pitanja kojem pripada. Sadrži broj koliko puta je odgovor odabran.
 
 **ispunjavanjeAnkete**:
 Osnovni podatci o svakom ispunjavanjuankete. Svakom ispunavanu ankete dodjeljuje se vrijeme ispunjavanja, geolokacija te id ankete koja se ispunjava.
