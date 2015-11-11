@@ -8,7 +8,7 @@ Popis tablica i njihovo značenje:
 Osobni podatci o korisniku.
 
 **anketar**
-Osnovni podatci o anketaru. **Uključuju _login_ i _password_**
+Osnovni podatci o anketaru. Uključuju _login_ i _password_
 
 **pristupAnketama**
 Sadži podatke o dopuštenjima pristupa svih anketara za sve ankete.
