@@ -25,6 +25,7 @@
   U bilo kojem trenutku korisnik može izmijeniti vlastite podatke na svojoj profilnoj straici. Nakon izmjene podataka vrši se provjera. Ako su novi podatci ispravni korisnik ima opciju spremanja izmjena. Administrator ima mogućnost upravljanja podatcima o korisniku i mogućnost isključenja korisničkog računa.
 
  Podaci koji se traže od korisnika su pri registraciji su:
+ 
     * ime (nužan podatak)
     * prezime (nije nužan podatak)
     * e-mail adresa (nužan podatak, ne smije već postojati u bazi)
