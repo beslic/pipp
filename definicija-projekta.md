@@ -17,16 +17,44 @@
   * Anonimni posjetitelji - mogu pristupiti javnom dijelu web aplikacije. Ukoliko postoje javno dostupne aktivne ankete, anonimni posjetitelji mogu ispunjavati ankete, vidjeti rezultate ankete i slično.
 
 #### Sustav anketiranja omogućava obavljanje sljedećih procesa:
-  1. Upravljaje podacima o registriranim korisnicima  
 
-    Podaci koji se traže od korisnika su pri registraciji su:
+  **1. Upravljaje podacima o registriranim korisnicima** 
+
+  Registracija korinika se vrši putem web apikacije (sam položaj _tipke_ odnosno _poveznice_ za registraciju, kao i sama registracija, mora biti jasno intuitivna). Na stranici za registraciju korisnik upisuje svoje podatke. Nakon klika na _tipku_ za registraciju korisnika se obavještava da je njegova registracija u tijeku. Nakon što su podaci poslani, provjereni (ukoliko neki od podataka nije u redu, korisnika se o tome obavještava), i ako su svi u redu, podaci će biti poslani. Nakon primanja, zahtjev za registracijom treba biti odobren od administratora.
+  
+  U bilo kojem trenutku korisnik može izmijeniti vlastite podatke na svojoj profilnoj straici. Nakon izmjene podataka vrši se provjera. Ako su novi podatci ispravni korisnik ima opciju spremanja izmjena. Administrator ima mogućnost upravljanja podatcima o korisniku i mogućnost isključenja korisničkog računa.
+
+ Podaci koji se traže od korisnika su pri registraciji su:
     * ime (nužan podatak)
     * prezime (nije nužan podatak)
     * e-mail adresa (nužan podatak, ne smije već postojati u bazi)
     * adresa (nije nužan podatak, predstavlja adresu stanovanja, firme, ...)
     * korisničko ime (nužan podatak, ne smije već postojati u bazi)
     * šifra (nužan podatak)  
+    
+**2. Definiranje ankete**
+    
+Registrirani korisnik ima opciju izrade novih anketa. Anketa može biti privatna ili javna i može sadržati proizvoljni broj pitanja (najmanje 1). Pitanja nude predodređene odgovore od kojih mora biti odabran točno jedan da pitanje bude odgovoreno. Svako pitanje može sadržavati proizvoljan broj odgovora (najmanje 1).
 
-  Registracija korinika se vrši putem web apikacije (sam položaj _tipke_ odnosno _poveznice_ za registraciju, kao i sama registracija, mora biti jasno intuitivna). Na stranici za registraciju korisnik upisuje svoje podatke. Nakon klika na _tipku_ za registraciju korisnika se obavještava da je njegova registracija u tijeku. Nakon što su podaci poslani, provjereni (ukoliko neki od podataka nije u redu, korisnika se o tome obavještava), i ako su svi u redu, podaci će biti poslani
+**3. Upravljaje podacima o registriranim anketarima** 
 
+Registraciju anketara vrši korisnik putem web aplikacije (sam položaj _tipke_ odnosno _poveznice_ za registraciju, kao i sama registracija, mora biti jasno intuitivna). Na stranici za izradu anketarskog računa korisnik upisuje svoje podatke. Nakon klika na _tipku_ za izradu/spremanje podataka korisnika se obavještava da je izrada računa u tijeku. Nakon što su podaci poslani, provjereni (ukoliko neki od podataka nije u redu, korisnika se o tome obavještava), i ako su svi u redu, podaci će biti poslani.Svaki korisnik ima određen broj anketarskih računa koje može kreirati. 
+
+
+U bilo kojem trenutku korisnik može izmijeniti podatke o postojećim anketarima ili uključiti/isključiti račune anketara na stranici s popisom anketara. Nakon izmjene podataka vrši se provjera. Ako su novi podatci ispravni korisnik ima opciju spremanja izmjena. Administrator ima mogućnost upravljanja podatcima o anketarima, mogućnost izrade novih i isključenja postojećih anketara.  
+
+Podaci koji se traže od korisnika su pri registraciji anketara su:
+
+ * ime (nužan podatak)
+ * korisničko ime (nužan podatak, ne smije već postojati u bazi)
+ * šifra (nužan podatak)  
+ 
+ 
+
+**4. Preuzimanje nove ankete na mobilni uređaj**
+
+
+
+    
+    
 ## ER model
