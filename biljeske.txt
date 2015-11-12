@@ -1,0 +1,41 @@
+karlo pavlović
+12.11.2015.
+
+fali:
+
+
+
+
+primjedbe na dokumentaciju:
+
+	paziti na pogreške pri pisanju
+	dodati rješenje u opis problema
+	cilj projekta promašen, treba skratiti
+	podesiti arhitekturu sustava (doati sličicu)
+
+	korisnik može biti anketar
+	jedna tablica za osobu (korisniki anketar)
+	promjeniti ime "registrirani korisnik" u "naručitelj/vlasnik ankete"
+	er model, opisati enititete, veze, imenovati ih, upisati ključeve
+
+	izabrati kako će mo razraditi uloge
+	povezati ispunjavanje ankete s korisnkom/anketarom koji ju provodi
+	napravirti prirodne ključeve
+	odvojiti anonimnu i javnu anketu
+1. rj	prirodni ključ za ispunjavanje ankete: sesionId timestamp ...  -umjetni ključ
+2. rj  dva odgovora na ankete, web i mobilne
+
+	vrijeme promjeniti na timestamp
+	dogovoriti kada je anketa aktivna
+	podesiti podatke za geolokaciju 
+
+	izbaciti broj postavljanja pitanja i odgovora
+
+	slični projekti- dodati primjere
+	promjeniti razlog za ručnu sinkronizaciju
+
+poslati er model sutra do 2
+slika i 2 stranice teksta
+
+
+	
