@@ -5,4 +5,4 @@
  * @author Petar Bešlić
  *
  */
-package hr.fer.pipp.sza.webappcontroleri;
+package hr.fer.pipp.sza.webapp.controleri;
