@@ -3,14 +3,14 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>hr.fer.opp.projekt.junaci</groupId>
-    <artifactId>vbl-webapp</artifactId>
+    <groupId>hr.fer.pipp.sza.webapp</groupId>
+    <artifactId>sza-webapp</artifactId>
     <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>vbl-webapp</name>
+    <name>sza-webapp</name>
 
     <build>
-        <finalName>vbl-webapp</finalName>
+        <finalName>sza-webapp</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
