@@ -88,7 +88,7 @@
 
         web-resources/  - nebitno
 
-        (napomena: Git neće spremiti prazan direktorij; kada preuzmete projekt s GitHuba u njemu nećete imati ove direktorije, ali ako trebate spremiti neku od ovih datoteka, spremate ih u direktorije koji se ovako zovu i ovdje se nalaze)
+        (napomena: Git neće spremiti prazan direktorij; kada preuzmete projekt s GitHuba u njemu nećete imati baš sve ove direktorije, ali ako trebate spremiti neku od ovih datoteka, spremate ih u direktorije koji se ovako zovu i ovdje se nalaze)
       ```
       - src  
       sve nabrojano se nalazi u ovom folderu, sve u ovom folderu je u izvornom kodu i kao tavko se sprema na GitHub (ovo je početni direktorij svega što se nalazi u projektu)
