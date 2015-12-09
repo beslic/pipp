@@ -1,8 +1,7 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Date;
+import java.util.List;
 
 public class Anketa {
 
@@ -20,10 +19,10 @@ public class Anketa {
 	private List<Pitanje> pitanje;
 	private List<Ispunjavanje> ispunjavanje;
 
-	
 	public Anketa() {
-		// TODO Auto-generated constructor stub
+		// defualt
 	}
+
 	public Anketa(Korisnik vlasnikAnketa, Date vrijemeIzrada, String nazivAnketa, String opisAnketa, boolean jePrivatna,
 			Date aktivnaOd, Date aktivnaDo) {
 		super();
