@@ -11,13 +11,13 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/")
-public class IndexKontroler {
+@Path("/registracija")
+public class RegistracijaKontroler {
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziIndex() throws ServletException, IOException {
-		return Response.ok(new Viewable("/index")).build();
+	public Response prikaziRegistracija() throws ServletException, IOException {
+		return Response.ok(new Viewable("/registracija")).build();
 	}
 
 }

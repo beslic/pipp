@@ -7,9 +7,10 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Ankete</title>
+    <title>Prijava</title>
 </head>
+
 <body>
-    <h2>Pocetna stranica</h2>
+    <h2>Stranica za prijavu</h2>
 </body>
 </html>
