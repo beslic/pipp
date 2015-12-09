@@ -22,6 +22,10 @@ public class Util {
 			String lozinka, String lozinkaPotvrda, String email) {
 
 		Map<String, String> greska = new HashMap<>();
+
+		// TODO
+		// PROVJERITI MAIL I USERNAME U BAZI
+
 		if (ime == null || ime.length() == 0) {
 			greska.put("ime", "Ime je prazno");
 		}
@@ -31,7 +35,7 @@ public class Util {
 		if (email == null || !validirajEmail(email)) {
 			greska.put("email", "Email nije valjan");
 		}
-		if (lozinka.length() < 8) {
+		if (lozinka == null || lozinka.length() < 8) {
 			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
 		} else if (!lozinka.equals(lozinkaPotvrda)) {
 			greska.put("lozinkapotvrda", "Lozinke se ne podudaraju");
