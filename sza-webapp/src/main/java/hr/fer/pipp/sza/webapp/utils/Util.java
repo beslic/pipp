@@ -43,5 +43,19 @@ public class Util {
 
 		return greska;
 	}
+	
+	public static Map<String, String> provjeriFormuPrijavljivanja(String korisnickoIme, String lozinka) {
+
+		Map<String, String> greska = new HashMap<>();
+
+		// TODO
+		// PROVJERITI MAIL I USERNAME U BAZI
+
+		if (lozinka == null || lozinka.length() < 8) {
+			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
+		}
+
+		return greska;
+	}
 
 }
