@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TextView
+        android:layout_weight="4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/anketaIme"
+        android:text="anketaIme"
+        android:textSize="30sp" />
+    <TextView
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/anketaId"
+        android:text="Id"
+        android:textSize="30sp"
+        android:textAlignment="textEnd"
+        android:layout_gravity="end"/>
+</LinearLayout>

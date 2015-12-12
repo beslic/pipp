@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/dodajImeAnkete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ime ankete"/>
+            <EditText
+                android:id="@+id/dodajIdAnkete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="id...."/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="dodaj"
+                android:onClick="dodaj1"/>
+
+
+            <EditText
+                android:id="@+id/dodajPitanje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Pitanje"/>
+            <EditText
+                android:id="@+id/dodajIdPitanja"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="id....."/>
+            <EditText
+                android:id="@+id/dodajIdPitanjeAnketa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="anketa id....."/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="dodaj"
+                android:onClick="dodaj2"/>
+
+
+            <EditText
+                android:id="@+id/dodajIdOdgovorPitanje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="id pitanja...."/>
+            <EditText
+                android:id="@+id/dodajOdgovor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="odgovor..."/>
+            <EditText
+                android:id="@+id/dodajBrojOdgovora"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="broj...."/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="dodaj"
+                android:onClick="dodaj3"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="random"
+                android:onClick="random"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="gotovo"
+                android:onClick="gotovo"/>
+        </LinearLayout>

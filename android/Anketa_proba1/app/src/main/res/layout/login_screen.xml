@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/Logintext1"
+        android:text="@string/loginText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp" />
+    <EditText
+        android:id="@+id/loginEdit1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/loginIme"
+        android:layout_above="@+id/loginEdit2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <EditText
+        android:id="@+id/loginEdit2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/loginSifra"
+        android:inputType="textPassword"
+        android:layout_above="@+id/loginButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/loginButton"
+        android:textAlignment="center"
+        android:onClick="login1"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
