@@ -1,5 +1,8 @@
 package com.example.mateo.anketa_proba1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Mateo on 28.10.2015..
  */
@@ -7,13 +10,17 @@ public class Pitanje {
     private int anketa_id;
     private String pitanje;
     private int pitanje_id;
+    private ArrayList<Odgovor> odgovor;
+
+    dataHandler dH;
 
     public Pitanje(){}
 
-    public Pitanje(int id, String pit, int pitanje_id){
+    public Pitanje(int id, String pit, int pitanje_id, ArrayList<Odgovor> odg){
         this.anketa_id = id;
         this.pitanje = pit;
         this.pitanje_id=pitanje_id;
+        this.odgovor = odg;
     }
     public int getPitanje_id(){
         return pitanje_id;
@@ -32,5 +39,13 @@ public class Pitanje {
     }
     public void setAnketa_id(int id){
         this.anketa_id = id;
+    }
+
+    public ArrayList<Odgovor> getOdgovor() {
+        return odgovor;
+    }
+
+    public void setOdgovor(ArrayList<Odgovor> odgovor) {
+        this.odgovor = odgovor;
     }
 }

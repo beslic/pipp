@@ -247,9 +247,9 @@ public class dataHandler extends SQLiteOpenHelper {
         return listaAnketa;
     }
 
-    public List<Pitanje> findPitanje(int anketaId){
+    public ArrayList<Pitanje> findPitanje(int anketaId){
         Log.d("*****findPitanje  ", "iz " + anketaId);
-        List<Pitanje> listaPitanja;
+        ArrayList<Pitanje> listaPitanja;
         listaPitanja = new ArrayList<Pitanje>();
         String query = "SELECT * FROM " + TABLE_PITANJA + " JOIN "+ TABLE_ANKETA +
                 " ON " + COLUMN_ANKETA_ID + " = " + COLUMN_PITANJE_A +
@@ -265,6 +265,7 @@ public class dataHandler extends SQLiteOpenHelper {
             pitanje.setAnketa_id(Integer.parseInt(cursor.getString(2)));
             pitanje.setPitanje_id(Integer.parseInt(cursor.getString(1)));
             pitanje.setPitanje(cursor.getString(0));
+            pitanje.setOdgovor(this.findOdgovor(Integer.parseInt(cursor.getString(1))));
             listaPitanja.add(pitanje);
             Log.d("*****findPitanje ", "dodano na listu: " + cursor.getString(0)+ " " +cursor.getString(1));
             while(cursor.moveToNext()){
@@ -272,6 +273,7 @@ public class dataHandler extends SQLiteOpenHelper {
                 pitanje.setAnketa_id(Integer.parseInt(cursor.getString(2)));
                 pitanje.setPitanje_id(Integer.parseInt(cursor.getString(1)));
                 pitanje.setPitanje(cursor.getString(0));
+                pitanje.setOdgovor(this.findOdgovor(Integer.parseInt(cursor.getString(1))));
                 listaPitanja.add(pitanje);
                 Log.d("*****findPitanje ", "dodano na listu: " + cursor.getString(0)+ " " +cursor.getString(1));
                 i++;
@@ -286,9 +288,9 @@ public class dataHandler extends SQLiteOpenHelper {
         return listaPitanja;
     }
 
-    public ArrayList<String> findOdgovor(int pitanjeId){
-        ArrayList<String> list;
-        list = new ArrayList<String>();
+    public ArrayList<Odgovor> findOdgovor(int pitanjeId){
+        ArrayList<Odgovor> list;
+        list = new ArrayList<Odgovor>();
         String query = "SELECT * FROM " + TABLE_PITANJA + " JOIN "+ TABLE_ODGOVORI +
                 " ON " + COLUMN_PITANJE_ID + " = " + COLUMN_ODGOVOR_PIT_ID +
                 " WHERE " + COLUMN_PITANJE_ID + " = " + pitanjeId;
@@ -296,25 +298,26 @@ public class dataHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor;
         cursor = db.rawQuery(query, null);
-        //Odgovor odgovor = new Odgovor();
+        Odgovor odgovor = new Odgovor();
         if(cursor.moveToFirst()){
             //Log.d("*****findOdgovor ", "moved to first");
             cursor.moveToFirst();
-            //odgovor.setPitanje_id(Integer.parseInt(cursor.getString(0)));
-            //odgovor.setOdgovor(cursor.getString(1));
-            list.add(cursor.getString(4));
+            odgovor.setPitanje_id(Integer.parseInt(cursor.getString(1)));
+            odgovor.setOdgovor(cursor.getString(4));
+            list.add(odgovor);
             //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
             while(cursor.moveToNext()){
-                //odgovor.setPitanje_id(Integer.parseInt(cursor.getString(0)));
-                //odgovor.setOdgovor(cursor.getString(1));
-                list.add(cursor.getString(4));
+                odgovor = new Odgovor();
+                odgovor.setPitanje_id(Integer.parseInt(cursor.getString(1)));
+                odgovor.setOdgovor(cursor.getString(4));
+                list.add(odgovor);
                 //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
                 i++;
             }
             cursor.close();
         }
         else{
-            list.add(0, "nema odgovora");
+            //list.add(0, "nema odgovora");
         }
         db.close();
         return list;

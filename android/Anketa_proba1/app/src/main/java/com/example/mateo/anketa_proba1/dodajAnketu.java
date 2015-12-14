@@ -79,7 +79,7 @@ public class dodajAnketu extends AppCompatActivity{
 
     public void dodaj2(View view){
         dataHandler dbHandler = new dataHandler(this, null, null, 1);
-        Pitanje pitanje = new Pitanje(Integer.parseInt(editIdPA.getText().toString()), editP.getText().toString(), Integer.parseInt(editIdP.getText().toString()));
+        Pitanje pitanje = new Pitanje(Integer.parseInt(editIdPA.getText().toString()), editP.getText().toString(), Integer.parseInt(editIdP.getText().toString()), null);
         dbHandler.addPitanje(pitanje, this);
         editP.setText("");
         editIdP.setText("");
@@ -119,10 +119,10 @@ public class dodajAnketu extends AppCompatActivity{
             anketa = new Anketa("Anketa " + i, i, "admin");
             dbHandler.addAnketa(anketa, this);
             for(int j = 1;j<maxP;j++){
-                pitanje = new Pitanje(i, "Pitanje "+j, j+10*i);
+                pitanje = new Pitanje(i, "Pitanje "+j, j+10*i, null);
                 dbHandler.addPitanje(pitanje, this);
                 for(int k=1;k<maxO;k++){
-                    odgovor = new Odgovor(j+10*i, "odgovor "+k, 0);
+                    odgovor = new Odgovor(j+10*i, "odgovor "+k+ " na pitanje "+ j, 0);
                     dbHandler.addOdgovor(odgovor, this);
                 }
             }

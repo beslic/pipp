@@ -1,10 +1,6 @@
 package com.example.mateo.anketa_proba1;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -46,7 +42,7 @@ public class listaPitanja2 extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     /** The {@link ViewPager} that will host the section contents.*/
     private ViewPager mViewPager;
-    List<Pitanje> lista1;
+    ArrayList<Pitanje> lista1;
     dataHandler dH = new dataHandler(this, null, null, 1);
     int anketaId;
     int brojIspunjavanja;
@@ -55,14 +51,17 @@ public class listaPitanja2 extends AppCompatActivity {
     double latitude = 0;
     boolean poznataLokacija = false;
 
+    NOVO_ispunjavanjeAnkete ispunjavanje;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_pitanja2);
         Bundle extras = getIntent().getExtras();
-        Random r = new Random();
+        //Random r = new Random();
         anketaId =0;
         int i;
+
         if (extras != null) {
             anketaId = extras.getInt("anketa1");
             longitude = extras.getDouble("lon");
@@ -72,17 +71,21 @@ public class listaPitanja2 extends AppCompatActivity {
             extras.clear();
         }
         lista1 = dH.findPitanje(anketaId);
+
         if(lista1==null){
             Toast.makeText(this, "nema pitanja", Toast.LENGTH_LONG).show();
             finish();
         } else {
             Log.d("*****listaPitanja2", "POCETAK");
+            ispunjavanje = new NOVO_ispunjavanjeAnkete(anketaId, latitude, longitude, getApplicationContext(), getDateTime(), poznataLokacija);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-
+            /*
             do{
                 brojIspunjavanja = r.nextInt();
             }while(dH.addIspunajvanjeAnkete(anketaId, "admin", brojIspunjavanja, getDateTime(), longitude, latitude, poznataLokacija));
+            */
+
             //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             // Create the adapter that will return a fragment for each of the three
             // primary sections of the activity.
@@ -108,6 +111,7 @@ public class listaPitanja2 extends AppCompatActivity {
         return dateFormat.format(date);
     }
     public void kraj(View view){
+        ispunjavanje.dodajUBazu();
         dH.ispisOdgovora(brojIspunjavanja);
         finish();
     }
@@ -138,6 +142,11 @@ public class listaPitanja2 extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
+
+
     /** A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the sections/tabs/pages.*/
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -154,8 +163,8 @@ public class listaPitanja2 extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            ArrayList<String> odgovori = dH.findOdgovor(lista1.get(position).getPitanje_id());
-            fragment = PlaceholderFragment.newInstance(position + 1, lista1.get(position), odgovori, context, mSectionsPagerAdapter, mViewPager, max_count, brojIspunjavanja);
+            //ArrayList<String> odgovori = dH.findOdgovor(lista1.get(position).getPitanje_id());
+            fragment = PlaceholderFragment.newInstance(position + 1, lista1, /*odgovori,*/ context, mSectionsPagerAdapter, mViewPager, max_count, ispunjavanje);
             return fragment;
         }
         public void setCount(int count){
@@ -177,6 +186,7 @@ public class listaPitanja2 extends AppCompatActivity {
 
 
 
+
     /** A placeholder fragment containing a simple view.*/
     public static class PlaceholderFragment extends Fragment implements AdapterView.OnItemClickListener{
         public static Context context;
@@ -187,26 +197,36 @@ public class listaPitanja2 extends AppCompatActivity {
         /**The fragment argument representing the section number for this fragment.*/
         private static final String ARG_SECTION_NUMBER = "section_number";
         /** Returns a new instance of this fragment for the given sectio number.*/
-        private static Pitanje pitanje;
-        private static SectionsPagerAdapter Ad;
+        private static ArrayList<Pitanje> pitanja;
+        private static SectionsPagerAdapter Adapter;
         private boolean odgovoreno = false;
         private static ViewPager VP;
         private static int maxPages;
-        private static int brIspunjavanja;
+        //private static int brIspunjavanja;
+        private static NOVO_ispunjavanjeAnkete ispunjavanje;
 
-        public static PlaceholderFragment newInstance(int sectionNumber, Pitanje pit, ArrayList<String> odgovori1, Context c, SectionsPagerAdapter A, ViewPager V, int max, int brIsp) {
+        public static PlaceholderFragment newInstance(int sectionNumber, ArrayList<Pitanje> pit,/* ArrayList<String> odgovori1,*/ Context c, SectionsPagerAdapter A, ViewPager V, int max,/* int brIsp,*/ NOVO_ispunjavanjeAnkete ispun) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             context=c;
-            Ad=A;
+            Adapter =A;
             VP = V;
-            pitanje = pit;
+            pitanja = pit;
             maxPages=max;
-            brIspunjavanja=brIsp;
+            //brIspunjavanja=brIsp;
             Bundle args = new Bundle();
+            ispunjavanje = ispun;
+
+            ArrayList<String> odgovori1 = new ArrayList<>();
+            if(Adapter.getCount() < maxPages) {
+                for (int i = 0; i < pitanja.get(sectionNumber-1).getOdgovor().size(); i++) {
+                    odgovori1.add(pitanja.get(sectionNumber-1).getOdgovor().get(i).getOdgovor());
+                }
+            }
+
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            args.putString(PITANJE, pit.getPitanje());
+            /*args.putString(PITANJE, pit.getPitanje());
             args.putInt(PITANJE_ID, pit.getPitanje_id());
-            args.putInt(PITANJE_ANKETA, pit.getAnketa_id());
+            args.putInt(PITANJE_ANKETA, pit.getAnketa_id());*/
             args.putStringArrayList(LIST, odgovori1);
             fragment.setArguments(args);
             Log.d("*****PlFragment", " newInstance "+sectionNumber);
@@ -217,17 +237,21 @@ public class listaPitanja2 extends AppCompatActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            Log.d("*****onCreateView", " "+(getArguments().getStringArrayList(LIST)).get(0));
-            int i = getArguments().getInt(ARG_SECTION_NUMBER);
+            //Log.d("*****onCreateView", " "+(getArguments().getStringArrayList(LIST)).get(0));
+            int stranica = getArguments().getInt(ARG_SECTION_NUMBER);
             View rootView;
-            if(i<maxPages) {
-                String s = getArguments().getString(PITANJE);
+            if(stranica<maxPages) {
+
+                /*String s = getArguments().getString(PITANJE);
                 int pitanjeId = getArguments().getInt(PITANJE_ID);
                 int anketaId = getArguments().getInt(PITANJE_ANKETA);
-                Log.d("*****onCreateView", pitanjeId + " " + anketaId);
-                pitanje.setAnketa_id(anketaId);
-                pitanje.setPitanje_id(pitanjeId);
+                Log.d("*****onCreateView", pitanjeId + " " + anketaId);*/
+                //pitanje.setAnketa_id(anketaId);
+                //pitanje.setPitanje_id(pitanjeId);
+
                 ArrayList<String> odgovori = getArguments().getStringArrayList(LIST);
+
+
                 rootView = inflater.inflate(R.layout.fragment_lista_pitanja2, container, false);
                 TextView textView = (TextView) rootView.findViewById(R.id.section_label);
                 ListView listView = (ListView) rootView.findViewById(R.id.listaOdgovora);
@@ -236,10 +260,8 @@ public class listaPitanja2 extends AppCompatActivity {
                 myAdapter = new ArrayAdapter(context, android.R.layout.simple_list_item_activated_1, odgovori);
                 //myAdapter = new ArrayAdapter(context, R.layout.odgovori, R.id.odgovor, odgovori);
                 listView.setAdapter(myAdapter);
-                textView.setText(s);
-                //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-                //textView.setText((getArguments().getStringArrayList(LIST)).get((getArguments().getInt(ARG_SECTION_NUMBER)) -1));
-                Log.d("*****onCreateView", " done " + i);
+                textView.setText(pitanja.get(stranica-1).getPitanje());
+                Log.d("*****onCreateView", " done " + stranica);
             }
             else{
                 rootView = inflater.inflate(R.layout.kraj_ispunjavanja_ankete, container, false);
@@ -248,21 +270,32 @@ public class listaPitanja2 extends AppCompatActivity {
         }
 
         @Override
-        //public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String s = ((TextView)view).getText().toString();
+            NOVO_odabraniOdgovori odabrano = new NOVO_odabraniOdgovori();
             view.getFocusables(position);
             view.setSelected(true);
-            Log.d("*****OdabirOdgovora  ", "odgovor: " + s + " " + pitanje.getPitanje_id() + " " + pitanje.getAnketa_id());
-            dataHandler d = new dataHandler(context, null, null, 1);
+            Log.d("*****OdabirOdgovora  ", "odgovor: " + s + " " + pitanja.get(VP.getCurrentItem()).getPitanje_id() + " " + pitanja.get(VP.getCurrentItem()).getAnketa_id());
+
+            /*dataHandler d = new dataHandler(context, null, null, 1);
             if(odgovoreno == false) {
                 //d.povecajOdg(s, pitanje.getPitanje_id(), pitanje.getAnketa_id());
                 d.addOdabraniOdgovori(brIspunjavanja, pitanje.getPitanje_id(), s);
+            }*/
+
+            odabrano.setPitanjeId(pitanja.get(VP.getCurrentItem()).getPitanje_id());
+            odabrano.setOdgovor(s);
+            for(int i = 0; i<ispunjavanje.getOdabraniOdgovori().size();i++){
+                    if(ispunjavanje.getOdabraniOdgovori().get(i).getPitanjeId() == pitanja.get(VP.getCurrentItem()).getPitanje_id()){
+                        ispunjavanje.getOdabraniOdgovori().remove(i);
+                        break;
+                    }
             }
-            int i = Ad.getCount();
-            if(i<=Ad.getMax_count() && odgovoreno == false) {
-                Ad.setCount(i + 1);
-                Ad.notifyDataSetChanged();
+            ispunjavanje.getOdabraniOdgovori().add(odabrano);
+            int i = Adapter.getCount();
+            if(i<= Adapter.getMax_count() && odgovoreno == false) {
+                Adapter.setCount(i + 1);
+                Adapter.notifyDataSetChanged();
                 VP.setCurrentItem(i);
             }
             odgovoreno = true;

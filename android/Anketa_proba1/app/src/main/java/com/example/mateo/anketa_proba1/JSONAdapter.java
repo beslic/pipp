@@ -18,6 +18,9 @@ import java.util.Objects;
 /**
  * Created by Mateo on 28.10.2015..
  */
+
+
+// NEMA JOŠ NIKAKVU FUNKCIJU!!!!!
 public class JSONAdapter extends BaseAdapter{
 
     Context mContext;
