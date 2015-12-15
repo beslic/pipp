@@ -1,9 +1,7 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
-import java.util.Date;
-
 public class OdabraniOdgovor {
-
+	
 	private int idOdabraniOdgovor;
 	private Odgovor odgovor;
 	private Ispunjavanje ispunjavanje;

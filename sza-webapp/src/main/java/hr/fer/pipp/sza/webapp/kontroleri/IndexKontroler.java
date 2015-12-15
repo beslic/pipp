@@ -50,7 +50,7 @@ public class IndexKontroler {
 	@GET
 	@Path("korisnici")
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziNarucitelje(@Context HttpServletRequest req) throws ServletException, IOException {
+	public Response prikaziKorisnike(@Context HttpServletRequest req) throws ServletException, IOException {
 		// TODO
 		// Dodati popis narucitelja iz baze
 		return Response.ok(new Viewable("/korisnici")).build();
