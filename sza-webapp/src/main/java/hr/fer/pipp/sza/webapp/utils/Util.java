@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+
 public class Util {
 
 	private static boolean validirajEmail(String email) {
@@ -24,19 +26,22 @@ public class Util {
 		Map<String, String> greska = new HashMap<>();
 
 		// TODO
-		// PROVJERITI MAIL I USERNAME U BAZI
-
+		// PROVJERITI MAIL U BAZI
+		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
+			greska.put("korisnickoime", "Korisničko ime je prazno");
+		} else if (DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme) != null) {
+			greska.put("korisnickoime", "Korisnicko ime je zauzeto");
+		}
 		if (ime == null || ime.length() == 0) {
 			greska.put("ime", "Ime je prazno");
 		}
 		if (prezime == null || prezime.length() == 0) {
 			greska.put("prezime", "Prezime je prazno");
 		}
-		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
-			greska.put("korisnickoime", "Korisničko ime je prazno");
-		}
 		if (email == null || !validirajEmail(email)) {
 			greska.put("email", "Email nije valjan");
+		} else if (DAOKorisnik.getDAO().dohvatiKorisnikaPoMailu(email) != null) {
+			greska.put("email", "Email je već u upotrebi");
 		}
 		if (razinaPrava == null || razinaPrava.isEmpty()) {
 			greska.put("prava", "Nije odabrana uloga");
@@ -49,7 +54,7 @@ public class Util {
 
 		return greska;
 	}
-	
+
 	public static Map<String, String> provjeriFormuPrijavljivanja(String korisnickoIme, String lozinka) {
 
 		Map<String, String> greska = new HashMap<>();
@@ -59,7 +64,7 @@ public class Util {
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
 			greska.put("korisnickoime", "Korisnicko ime je prazno");
 		}
-		
+
 		if (lozinka == null || lozinka.length() < 8) {
 			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
 		}

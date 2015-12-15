@@ -1,32 +1,47 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
 import java.util.Date;
-import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ankete")
 public class Anketa {
 
+	@Id
+	@GeneratedValue
 	private int idAnketa;
-	private Korisnik vlasnikAnketa;
+
+	@ManyToOne
+	private Korisnik vlasnik;
+
+	@Column(name = "vrijemeizrada")
 	private Date vrijemeIzrada;
 
+	@Column(name = "nazivanketa")
 	private String nazivAnketa;
+	@Column(name = "opisanketa")
 	private String opisAnketa;
+	@Column(name = "privatna")
 	private boolean jePrivatna;
+	@Column(name = "aktivnaod")
 	private Date aktivnaOd;
+	@Column(name = "aktivnado")
 	private Date aktivnaDo;
-
-	private List<Korisnik> anketari;
-	private List<Pitanje> pitanje;
-	private List<Ispunjavanje> ispunjavanje;
 
 	public Anketa() {
 		// defualt
 	}
 
-	public Anketa(Korisnik vlasnikAnketa, Date vrijemeIzrada, String nazivAnketa, String opisAnketa, boolean jePrivatna,
+	public Anketa(Korisnik vlasnik, Date vrijemeIzrada, String nazivAnketa, String opisAnketa, boolean jePrivatna,
 			Date aktivnaOd, Date aktivnaDo) {
 		super();
-		this.vlasnikAnketa = vlasnikAnketa;
+		this.vlasnik = vlasnik;
 		this.vrijemeIzrada = vrijemeIzrada;
 		this.nazivAnketa = nazivAnketa;
 		this.opisAnketa = opisAnketa;
@@ -43,12 +58,12 @@ public class Anketa {
 		this.idAnketa = idAnketa;
 	}
 
-	public Korisnik getVlasnikAnketa() {
-		return vlasnikAnketa;
+	public Korisnik getVlasnik() {
+		return vlasnik;
 	}
 
-	public void setVlasnikAnketa(Korisnik vlasnikAnketa) {
-		this.vlasnikAnketa = vlasnikAnketa;
+	public void setVlasnik(Korisnik vlasnik) {
+		this.vlasnik = vlasnik;
 	}
 
 	public Date getVrijemeIzrada() {
@@ -97,30 +112,6 @@ public class Anketa {
 
 	public void setAktivnaDo(Date aktivnaDo) {
 		this.aktivnaDo = aktivnaDo;
-	}
-
-	public List<Korisnik> getAnketari() {
-		return anketari;
-	}
-
-	public void setAnketari(List<Korisnik> anketari) {
-		this.anketari = anketari;
-	}
-
-	public List<Ispunjavanje> getIspunjavanje() {
-		return ispunjavanje;
-	}
-
-	public void setIspunjavanje(List<Ispunjavanje> ispunjavanje) {
-		this.ispunjavanje = ispunjavanje;
-	}
-
-	public List<Pitanje> getPitanje() {
-		return pitanje;
-	}
-
-	public void setPitanje(List<Pitanje> pitanje) {
-		this.pitanje = pitanje;
 	}
 
 	@Override

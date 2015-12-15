@@ -16,8 +16,15 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
+        <c:choose>
+        <c:when test="${sessionScope.korisnik != null}">
+        <li>Prijavljen ${sessionScope.korisnik.ime}</li>
+        </c:when>
+        <c:otherwise>
         <li><a href="/sza-webapp/prijava/">Prijava</a></li>
         <li><a href="/sza-webapp/registracija/">Registracija</a></li>
+        </c:otherwise>
+        </c:choose>
        </ul>
     </div>
   </div>

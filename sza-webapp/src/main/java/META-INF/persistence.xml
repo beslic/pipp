@@ -1,0 +1,73 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+    version="2.1">
+    <persistence-unit name="sza.database" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        
+        <class>hr.fer.pipp.sza.webapp.modeli.Korisnik</class>
+        <class>hr.fer.pipp.sza.webapp.modeli.Anketa</class>
+        
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>     <!-- NONE, ALL, ENABLE_SELECTIVE, DISABLE_SELECTIVE -->
+
+        <properties>
+
+            <!-- Generalne postavke Hibernate-a -->         
+            <!-- ============================== -->
+            <property name="hibernate.archive.autodetection" value="class" />
+            <property name="hibernate.hbm2ddl.auto" value="update" /> <!-- mogućnosti: create, create-drop, update, validate -->
+            <property name="hibernate.format_sql" value="false" />
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.use_sql_comments" value="false" />
+            <property name="hibernate.bytecode.use_reflection_optimizer" value="true" />
+            <property name="hibernate.bytecode.provider" value="javassist" />
+            <property name="hibernate.ejb.naming_strategy_delegator" value="org.hibernate.cfg.naming.ImprovedNamingStrategyDelegator" />
+            <property name="hibernate.id.new_generator_mappings" value="true" />
+            <property name="hibernate.jdbc.use_get_generated_keys" value="true" />
+            
+            <!-- Postavke za spajanje na bazu podataka -->          
+            <!-- ===================================== -->
+            <!-- Trenutni način spajanja na bazu podataka stvara stalnu Derby bazu 'vblDB' na disku (ako ne postoji).
+                 Nije potrebno nikakvo dodatno pokretanje baze podataka, smo pokretuti Tomcat Server. -->
+            <!-- Za potrebe testiranja, može se stvoriti privremena Derby baza podataka tako što se u url doda memory.
+                 Takav url onda izgleda ovako: jdbc:derby:memory:testDB (nije potrebna create opcija). -->
+            <!-- Za spajanje na već pokrenutu Derby bazu, koristiti driver: org.apache.derby.jdbc.ClientDriver
+                 i url za spajanje: jdbc:derby://localhost:1527/{nazivBaze};create=true. -->
+            <!-- Za spajanje na bilo koju drugu bazu podataka, potrebno je dodati odgovarajući JDBC driver u pom.xml
+                 (pogledati primjer za PostrgreSQL) i promijeniti vrijednost JDBC drivera, postaviti odgovarajući 
+                 url i promijeniti SQL dijalekt. Primjer za PostgreSQL: -->
+            <!-- driver: org.postgresql.Driver -->
+            <!-- url: jdbc:postgresql://localhost:5432/vblDB;create=true -->
+            <!-- dialect: org.hibernate.dialect.PostgreSQLDialect -->
+            <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver" />
+            <property name="hibernate.connection.url" value="jdbc:derby:szaDB" />
+            <property name="hibernate.connection.username" value="admin" />
+            <property name="hibernate.connection.password" value="admin" />
+            <property name="hibernate.connection.CharSet" value="utf8" />
+            <property name="hibernate.connection.characterEncoding" value="utf8" />
+            <property name="hibernate.connection.useUnicode" value="true" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect" />
+            
+            <!-- Postavke transakcijskog rada -->           
+            <!-- ============================ -->
+            <property name="hibernate.connection.isolation" value="2"/> <!-- isolation level; 2: read_commited, 4: repeatable_read -->
+
+            <!-- Konfiguracija pool-a za bazu podataka -->          
+            <!-- ===================================== -->
+            <property name="hibernate.c3p0.min_size" value="5" />
+            <property name="hibernate.c3p0.max_size" value="20" />
+            <property name="hibernate.c3p0.timeout" value="1800" />
+            <property name="hibernate.c3p0.max_statements" value="50" />
+            <property name="hibernate.c3p0.idle_test_period" value="3600" />
+            
+            <!-- Postavke za 2nd-level cache kojima hibernate-u kazemo sta da koristi kao implementaciju -->          
+            <!-- ======================================================================================= -->
+<!--             <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory "/> -->
+<!--             <property name="hibernate.cache.use_query_cache" value="true" /> -->
+<!--             <property name="hibernate.cache.use_second_level_cache" value="true" /> -->
+<!--             <property name="hibernate.generate_statistics" value="false" /> -->
+<!--             <property name="net.sf.ehcache.configurationResourceName" value="/ehcache.xml" /> -->
+            
+        </properties>
+    </persistence-unit>
+</persistence>

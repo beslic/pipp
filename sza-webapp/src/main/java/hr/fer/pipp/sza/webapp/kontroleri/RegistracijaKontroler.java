@@ -21,6 +21,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 import hr.fer.pipp.sza.webapp.utils.PasswordHash;
 import hr.fer.pipp.sza.webapp.utils.Util;
@@ -50,15 +51,17 @@ public class RegistracijaKontroler {
 			korisnik.setKorisnickoIme(korisnickoIme);
 			korisnik.setIme(ime);
 			korisnik.setPrezime(prezime);
+			korisnik.setEmail(email);
 			korisnik.setRazinaPrava((razinaPrava != null) ? 1 : 0);
 			korisnik.setAktivan(true);
 			try {
 				korisnik.setLozinka(PasswordHash.createHash(lozinka));
 			} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {
 			}
-			// TODO
-			// dodati korisnika u bazu
-			request.getSession().setAttribute("user", korisnik);
+			
+			DAOKorisnik.getDAO().spremiNovogKorisnika(korisnik);
+			
+			request.getSession().setAttribute("korisnik", korisnik);
 			return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
 		} else {
 			Map<String, String> forma = new HashMap<>();

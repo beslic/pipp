@@ -2,24 +2,51 @@ package hr.fer.pipp.sza.webapp.modeli;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+
+@Entity
+@Table(name = "korisnici")
 public class Korisnik {
 
-	private int idKorisnik;
+	@Id
+	@GeneratedValue
+	private int id;
 
-	private String korisnickoIme;
+	@Column(nullable = false)
 	private String ime;
+	
+	@Column(nullable = false)
 	private String prezime;
+	
+	@Column(unique = true, nullable = false)
+	private String korisnickoIme;
+
+	@Column(nullable = false)
 	private String lozinka;
+
+	@Column(unique = true, nullable = false)
 	private String email;
+	
+	@Column(nullable = false)
 	private int razinaPrava;
+	
+	@Column(nullable = false)
+	@Type(type="yes_no")
 	private boolean aktivan;
 
+	@OneToMany(mappedBy = "vlasnik")
 	private List<Anketa> anketa;
 
-	
 	public Korisnik() {
-		// TODO Auto-generated constructor stub
 	}
+
 	public Korisnik(String korisnickoIme, String ime, String prezime, String lozinka, String email, int razinaPrava,
 			boolean aktivan) {
 		super();
@@ -32,12 +59,12 @@ public class Korisnik {
 		this.aktivan = aktivan;
 	}
 
-	public int getIdKorisnik() {
-		return idKorisnik;
+	public long getId() {
+		return id;
 	}
 
-	public void setIdKorisnik(int idKorisnik) {
-		this.idKorisnik = idKorisnik;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getKorisnickoIme() {
@@ -109,7 +136,7 @@ public class Korisnik {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + idKorisnik;
+		result = prime * result + id;
 		result = prime * result + ((korisnickoIme == null) ? 0 : korisnickoIme.hashCode());
 		return result;
 	}
@@ -128,7 +155,7 @@ public class Korisnik {
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (idKorisnik != other.idKorisnik)
+		if (id != other.id)
 			return false;
 		if (korisnickoIme == null) {
 			if (other.korisnickoIme != null)

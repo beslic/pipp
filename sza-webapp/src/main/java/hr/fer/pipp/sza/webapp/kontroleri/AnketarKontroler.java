@@ -11,15 +11,16 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/ankete/{idnazivanketa}")
-public class AnketaKontroler {
-
+@Path("/anketari/{korisnickoime}")
+public class AnketarKontroler {
+	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("idnazivanketa") String nazivAnketa) {
+	public Response prikaziAnketara(@Context HttpServletRequest req,
+			@PathParam("korisnickoime") String korisnickoIme) {
+		req.setAttribute("korisnickoime", korisnickoIme);
 		// TODO
-		//izvaditi podatke o anketi iz baze
-		req.setAttribute("anketa", nazivAnketa);
-		return Response.ok(new Viewable("/anketa")).build();
+		// Dohvatiti korisnika iz baze te ga poslati jsp-u
+		return Response.ok(new Viewable("/korisnik")).build();
 	}
 }
