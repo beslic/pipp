@@ -10,23 +10,15 @@
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Korisnicko ime">
-          <input type="text" class="form-control" placeholder="Lozinka">
-          
-        </div>
-        <button type="submit" class="btn btn-default" onclick="location.href='/sza-webapp/registracija/'">Prijavite se</button>
-      </form>
+      
+      <ul class="nav navbar-nav navbar-left">
+          <li><a href="/sza-webapp/ankete/">Ankete</a></li>
+      </ul>
+      
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Ankete</a></li>
         <li><a href="/sza-webapp/prijava/">Prijava</a></li>
         <li><a href="/sza-webapp/registracija/">Registracija</a></li>
-           
-          </ul>
-        </li>
-      </ul>
+       </ul>
     </div>
   </div>
 </nav>

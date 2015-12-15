@@ -56,6 +56,9 @@ public class Util {
 
 		// TODO
 		// PROVJERITI MAIL I USERNAME U BAZI
+		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
+			greska.put("korisnickoime", "Korisnicko ime je prazno");
+		}
 		
 		if (lozinka == null || lozinka.length() < 8) {
 			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");

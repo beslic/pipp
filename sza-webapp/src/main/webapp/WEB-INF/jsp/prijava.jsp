@@ -58,11 +58,6 @@
  			  </div>
  			</div>
 		  </fieldset>
-		  <!-- Form Name -->
-  		  <div class="col-md-9">
-  		    <legend></legend>Ako niste registrirani korisnik, besplatna registracija je dostupna <a href="/sza-webapp/registracija/">ovdje</a>.
-  		    
-  		  </div>
 		</form>
 	  </div>
 </body>
