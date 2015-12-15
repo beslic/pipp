@@ -43,8 +43,9 @@ public class RegistracijaKontroler {
 			@FormParam("prava") String razinaPrava) {
 
 		Map<String, String> greska = Util.provjeriRegistracijskuFormu(korisnickoIme, ime, prezime, lozinka,
-				lozinkaPotvrda, email);
+				lozinkaPotvrda, email, razinaPrava);
 
+		//System.out.println("razina "+razinaPrava);
 		if (greska.isEmpty()) {
 			Korisnik korisnik = new Korisnik();
 			korisnik.setKorisnickoIme(korisnickoIme);
@@ -65,6 +66,7 @@ public class RegistracijaKontroler {
 			forma.put("korisnickoime", korisnickoIme);
 			forma.put("ime", ime);
 			forma.put("prezime", prezime);
+			forma.put("korisnickoime", korisnickoIme);
 			forma.put("email", email);
 			forma.put("prava", razinaPrava);
 			forma.put("lozinka", lozinka);

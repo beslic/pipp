@@ -60,12 +60,19 @@
           </div>
           
           <div class="form-group">
-            <label id="emaillabel" class="col-md-4 control-label" for="emailinput">Želim biti anketar</label>
-            <div class="col-md-4">
-				<div class="checkbox">
-			      		<input name="prava" class="input-md" type="checkbox" <c:if test="${forma.prava != null}">checked</c:if> > 
-	  			</div>            
-	  		</div>
+            <label id="pravalabel" class="col-md-4 control-label" for="pravainput">Želim</label>
+            <div class="col-md-4 <c:if test="${greska.prava != null}">has-error has-feedback</c:if>">
+		<div class="input-group">
+	      	    <!-- <input name="prava" class="input-md" type="checkbox" <c:if test="${forma.prava != null}">checked</c:if> >  -->
+	      	    <input name="prava" class="input-md" type="radio" value="1" <c:if test="${forma.prava eq '1'}">checked</c:if> >&nbsp;Sastavljati ankete
+	      	    <br>
+	      	    <input name="prava" class="input-md" type="radio" value="2" <c:if test="${forma.prava eq '2'}">checked</c:if> >&nbsp;Samo anketirati
+ 		</div>
+ 		<c:if test="${greska.prava != null}">
+                    <label class="control-label" for="pravainput">${greska.prava}</label>
+                    <span id="errorstatus" class="sr-only">(error)</span>
+              </c:if>            
+	    </div>
           </div>
           
           

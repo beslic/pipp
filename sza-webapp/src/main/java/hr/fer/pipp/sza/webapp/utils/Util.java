@@ -19,7 +19,7 @@ public class Util {
 	}
 
 	public static Map<String, String> provjeriRegistracijskuFormu(String korisnickoIme, String ime, String prezime,
-			String lozinka, String lozinkaPotvrda, String email) {
+			String lozinka, String lozinkaPotvrda, String email, String razinaPrava) {
 
 		Map<String, String> greska = new HashMap<>();
 
@@ -32,8 +32,14 @@ public class Util {
 		if (prezime == null || prezime.length() == 0) {
 			greska.put("prezime", "Prezime je prazno");
 		}
+		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
+			greska.put("korisnickoime", "Korisničko ime je prazno");
+		}
 		if (email == null || !validirajEmail(email)) {
 			greska.put("email", "Email nije valjan");
+		}
+		if (razinaPrava == null || razinaPrava.isEmpty()) {
+			greska.put("prava", "Nije odabrana uloga");
 		}
 		if (lozinka == null || lozinka.length() < 8) {
 			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
@@ -50,7 +56,7 @@ public class Util {
 
 		// TODO
 		// PROVJERITI MAIL I USERNAME U BAZI
-
+		
 		if (lozinka == null || lozinka.length() < 8) {
 			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
 		}
