@@ -1,6 +1,10 @@
 package com.example.mateo.sza_mobapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -108,6 +112,7 @@ public class listaPitanja2 extends AppCompatActivity {
         Date date = new Date();
         return dateFormat.format(date);
     }
+
     public void kraj(View view){
         ispunjavanje.dodajUBazu();
         dH.ispisOdgovora(brojIspunjavanja);
@@ -123,7 +128,24 @@ public class listaPitanja2 extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Nema nazad!", Toast.LENGTH_LONG).show();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("---");
+        alertDialog.setMessage("Želite li odustati?");
+        alertDialog.setPositiveButton("Da",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+        alertDialog.setNegativeButton("Ne",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        alertDialog.show();
+        //Toast.makeText(this, "Nema nazad!", Toast.LENGTH_LONG).show();
         return;
     }
 

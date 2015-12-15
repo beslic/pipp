@@ -75,12 +75,12 @@ public class dataHandler extends SQLiteOpenHelper {
                 /*+ COLUMN_BR_ODGOVORA + " INTEGER, "*/
                 + " FOREIGN KEY(" + COLUMN_ODGOVOR_PIT_ID + ") REFERENCES " + TABLE_PITANJA + "("+ COLUMN_PITANJE_ID+") )";
 
-        String CREATE_TABLE4 = "CREATE TABLE IF NOT EXISTS " + TABLE_KORISNIK + " ("
+        /*String CREATE_TABLE4 = "CREATE TABLE IF NOT EXISTS " + TABLE_KORISNIK + " ("
                 +COLUMN_KORISNICKO_IME+" TEXT PRIMARY KEY, "
                 +COLUMN_LOZINKA+ " TEXT, "
                 +COLUMN_IME+" TEXT, "
                 +COLUMN_PREZIME + " TEXT, "
-                +COLUMN_RAZINA_PRAVA+" INTEGER) ";
+                +COLUMN_RAZINA_PRAVA+" INTEGER) ";*/
 
         String CREATE_TABLE5 = "CREATE TABLE IF NOT EXISTS " + TABLE_ISPUNJAVANJE_ANKETE + " ("
                 +COLUMN_KORISNICKO_IME+" TEXT, "
@@ -96,18 +96,18 @@ public class dataHandler extends SQLiteOpenHelper {
                 +COLUMN_ODGOVOR + " TEXT, "
                 +"PRIMARY KEY ( "+COLUMN_ID_ISPUNJAVANJA+", "+COLUMN_PITANJE_ID+")) ";
 
-        String CREATE_TABLE7 = "CREATE TABLE IF NOT EXISTS " + TABLE_DOSTUPNE_ANKETE + " ("
+        /*String CREATE_TABLE7 = "CREATE TABLE IF NOT EXISTS " + TABLE_DOSTUPNE_ANKETE + " ("
                 +COLUMN_ANKETA_ID+ " INTEGER, "
                 +COLUMN_KORISNICKO_IME+" TEXT, "
-                +"PRIMARY KEY ("+COLUMN_ANKETA_ID+", "+COLUMN_KORISNICKO_IME+"))";
+                +"PRIMARY KEY ("+COLUMN_ANKETA_ID+", "+COLUMN_KORISNICKO_IME+"))";*/
 
         db.execSQL(CREATE_TABLE1);
         db.execSQL(CREATE_TABLE2);
         db.execSQL(CREATE_TABLE3);
-        db.execSQL(CREATE_TABLE4);
+        //db.execSQL(CREATE_TABLE4);
         db.execSQL(CREATE_TABLE5);
         db.execSQL(CREATE_TABLE6);
-        db.execSQL(CREATE_TABLE7);
+        //db.execSQL(CREATE_TABLE7);
         Log.d("********  Create table:", "    Success");
     }
 
@@ -116,14 +116,14 @@ public class dataHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODGOVORI);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PITANJA);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANKETA);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_KORISNIK);
+        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_KORISNIK);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODABRANI_ODGOVORI);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ISPUNJAVANJE_ANKETE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOSTUPNE_ANKETE);
         onCreate(db);
     }
 
-    public void inicijalizacija(){
+    /*public void inicijalizacija(){
         ContentValues values = new ContentValues();
         values.put(COLUMN_KORISNICKO_IME, "admin");
         values.put(COLUMN_PREZIME, "adminPrezime");
@@ -134,7 +134,7 @@ public class dataHandler extends SQLiteOpenHelper {
             Log.d("*****inicijalizacija  ", "obavljeno");
         }
         db.close();
-    }
+    }*/
 
     public void addAnketa(Anketa anketa, Context c){
         ContentValues values = new ContentValues();
@@ -348,7 +348,7 @@ public class dataHandler extends SQLiteOpenHelper {
         cursor.close();
     }*/
 
-    public boolean provjeriKorisnika(String korisnickoIme, String lozinka){
+    /*public boolean provjeriKorisnika(String korisnickoIme, String lozinka){
         boolean ima = false;
         String query="SELECT * FROM "+TABLE_KORISNIK+" WHERE "+
                 COLUMN_KORISNICKO_IME+" = \""+korisnickoIme+ "\" AND "+
@@ -360,7 +360,7 @@ public class dataHandler extends SQLiteOpenHelper {
             ima=true;
         }
         return ima;
-    }
+    }*/
 
     public void ispisBaze(){
         String query="SELECT * FROM "+TABLE_ANKETA+" LEFT JOIN "+TABLE_PITANJA+
@@ -413,7 +413,7 @@ public class dataHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void ispisKorisnika(){
+    /*public void ispisKorisnika(){
         String query="SELECT * FROM "+TABLE_KORISNIK;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor;
@@ -431,5 +431,5 @@ public class dataHandler extends SQLiteOpenHelper {
             Log.d("*****ISPIS", "prazna baza");
         }
         db.close();
-    }
+    }*/
 }

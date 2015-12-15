@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 /**
  * Created by Mateo on 28.10.2015..
  */
@@ -17,16 +19,19 @@ public class loginAct extends Activity{
     EditText passE;
     private SharedPreferences login;
     private SharedPreferences.Editor loginEdit;
-    dataHandler db;
+
+    Gson gson;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
         imeE=(EditText) findViewById(R.id.loginEdit1);
         passE=(EditText) findViewById(R.id.loginEdit2);
-        login = getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
+        login = getSharedPreferences("LOGIN", Context.MODE_PRIVATE); //Podaci o log in-u kao "SharedPreferences"
         loginEdit = login.edit();
-        db = new dataHandler(getApplicationContext(), null, null, 1);
+
+        gson = new Gson();
     }
 
     @Override
@@ -35,18 +40,21 @@ public class loginAct extends Activity{
         return;
     }
 
+
+    //Kad se stisne "Log in" gumb:
     public void login1(View view){
         Log.d("*****Login  ", "POCETAK");
-        String ime;
-        String pass;
-        ime = imeE.getText().toString();
-        pass = passE.getText().toString();
-        if(db.provjeriKorisnika(ime, pass)){
-            loginEdit.putString("USERNAME", ime);
-            loginEdit.putString("PASSWORD", pass);
+
+        Korisnik korisnik = new Korisnik(imeE.getText().toString(), passE.getText().toString());
+        String stringKorisnik = gson.toJson(korisnik);
+
+        if(SINKRONIZACIJA_ProvjeraKorisnika.provjeri(stringKorisnik)){   //<-Provjera korisnika i sinkronizacija
+            loginEdit.putString("USERNAME", korisnik.getIme());
+            //loginEdit.putString("PASSWORD", korisnik.getLozinka()); <-Spremanje lozinke
+            loginEdit.putBoolean("PRIJAVLJEN", true);
             loginEdit.commit();
             Log.d("*****Login", "SUCCESS");
-            Toast.makeText(this, "Dobrodošli "+ime+"!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Dobrodošli "+korisnik.getIme()+"!", Toast.LENGTH_LONG).show();
             finish();
         }
         else {
