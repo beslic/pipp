@@ -8,14 +8,10 @@
 <html>
 <head>
     <c:import url="/html/head.html" />
-    <title>${korisnickoime}</title>
+    <title>${anketa}</title>
 </head>
-
 <body>
     <jsp:include page="header.jsp" />
-    <h2>Ovdje idu podaci o korisniku ${korisnickoime}</h2>
-    <p>Ime:</p>
-    <p>Prezime: </p>
-    <p>itd</p>
+    <h2>Ovdje idu podaci o anketi ${anketa}</h2>
 </body>
 </html>

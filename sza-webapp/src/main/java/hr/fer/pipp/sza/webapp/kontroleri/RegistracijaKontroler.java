@@ -45,7 +45,6 @@ public class RegistracijaKontroler {
 		Map<String, String> greska = Util.provjeriRegistracijskuFormu(korisnickoIme, ime, prezime, lozinka,
 				lozinkaPotvrda, email, razinaPrava);
 
-		//System.out.println("razina "+razinaPrava);
 		if (greska.isEmpty()) {
 			Korisnik korisnik = new Korisnik();
 			korisnik.setKorisnickoIme(korisnickoIme);
