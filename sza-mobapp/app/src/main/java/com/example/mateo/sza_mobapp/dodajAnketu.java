@@ -124,6 +124,6 @@ public class dodajAnketu extends AppCompatActivity{
                 }
             }
         }
-        dbHandler.inicijalizacija();
+        //dbHandler.inicijalizacija();
     }
 }

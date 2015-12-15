@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     TextView view1;
     TextView view2;
     ListView Ankete;
-    JSONAdapter mJSONAdapter;
+
+
     AnketeAdapter myArrayAdapter;
     ArrayList ankete = new ArrayList();
     private SharedPreferences loginInfo;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         view2 = (TextView)findViewById(R.id.text2);
         loginInfo = getSharedPreferences("LOGIN",Context.MODE_PRIVATE);
         loginInfoEditor = loginInfo.edit();
-        mJSONAdapter = new JSONAdapter(this, getLayoutInflater());
+
         Ankete = (ListView)findViewById(R.id.lista);
         Ankete.setOnItemClickListener(this);
         ///Ankete.setAdapter(mJSONAdapter);
@@ -53,17 +54,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Intent i = new Intent(this, loginAct.class);
         //startActivity(i);
         //refresh();
-        dbH.inicijalizacija();
-        dbH.ispisKorisnika();
+        //dbH.inicijalizacija();
+        //dbH.ispisKorisnika();
         login();
     }
 
+
+
+    //LOGIN: podaci o loginu se spremaju kao "SharedPreferences"******************
     public void login(){
         String ime = loginInfo.getString("USERNAME", " ");
-        String pass = loginInfo.getString("PASSWORD", " ");
+        //String lozinka = loginInfo.getString("PASSWORD", " "); <- Spremanje lozinke********************
+        Boolean prijavljen = loginInfo.getBoolean("PRIJAVLJEN", false);
+
         Log.d("*****Login", "ime: " + ime);
-        Log.d("*****Login", "pass: " + pass);
-        if(!dbH.provjeriKorisnika(ime, pass)) {
+
+        if(!prijavljen) {
             Intent i = new Intent(this, loginAct.class);
             startActivity(i);
         }
@@ -75,10 +81,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void logout(View view){
         loginInfoEditor.putString("USERNAME","");
-        loginInfoEditor.putString("PASSWORD","");
+        loginInfoEditor.putBoolean("PRIJAVLJEN", false);
+        //loginInfoEditor.putString("PASSWORD","");
         loginInfoEditor.commit();
         login();
     }
+
+
+
 
     public void Dodaj(View view){
         //String[] imeA;
