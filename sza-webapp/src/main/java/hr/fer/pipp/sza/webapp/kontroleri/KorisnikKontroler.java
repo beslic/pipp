@@ -11,6 +11,9 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+
 @Path("/korisnici/{korisnickoime}")
 public class KorisnikKontroler {
 
@@ -18,9 +21,8 @@ public class KorisnikKontroler {
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziKorisnika(@Context HttpServletRequest req,
 			@PathParam("korisnickoime") String korisnickoIme) {
-		req.setAttribute("korisnickoime", korisnickoIme);
-		// TODO
-		// Dohvatiti korisnika iz baze te ga poslati jsp-u
+		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
+		req.setAttribute("korisnik", korisnik);
 		return Response.ok(new Viewable("/korisnik")).build();
 
 	}
