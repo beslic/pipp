@@ -15,6 +15,8 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
+import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
+
 @Path("/")
 public class IndexKontroler {
 
@@ -35,6 +37,7 @@ public class IndexKontroler {
 	public Response prikaziAnkete(@Context HttpServletRequest req) throws ServletException, IOException {
 		// TODO
 		// Dodati popis anketa iz baze
+		DAOAnketa.getDAO().dohvatiAnkete(true);
 		return Response.ok(new Viewable("/ankete")).build();
 	}
 
