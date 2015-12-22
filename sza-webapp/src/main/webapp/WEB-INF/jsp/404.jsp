@@ -8,11 +8,11 @@
 <html>
 <head>
     <c:import url="/html/head.html" />
-    <title>403</title>
+    <title>404</title>
 </head>
 <body>
     <jsp:include page="header.jsp" />
-    <h2>HTTP status 403</h2>
-    <h3>Zabranjen pristup!</h3>
+    <h2>HTTP status 404</h2>
+    <h3>Stranica nije pronađena!</h3>
 </body>
 </html>
