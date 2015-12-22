@@ -53,7 +53,7 @@ public class PrijavaKontroler {
 			}
 			// TODO
 			// dodati korisnika u bazu
-			request.getSession().setAttribute("user", korisnik);
+			request.getSession().setAttribute("korisnik", korisnik);
 			return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
 		} else {
 			Map<String, String> forma = new HashMap<>();

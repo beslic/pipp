@@ -22,7 +22,7 @@ public class KorisnikKontroler {
 	public Response prikaziKorisnika(@Context HttpServletRequest req,
 			@PathParam("korisnickoime") String korisnickoIme) {
 		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
-		req.setAttribute("korisnik", korisnik);
+		req.setAttribute("trazenikorisnik", korisnik);
 		return Response.ok(new Viewable("/korisnik")).build();
 
 	}

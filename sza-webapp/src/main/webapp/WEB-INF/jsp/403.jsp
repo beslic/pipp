@@ -8,14 +8,11 @@
 <html>
 <head>
     <c:import url="/html/head.html" />
-    <title>${korisnik.korisnickoIme}</title>
+    <title>403</title>
 </head>
-
 <body>
-    <jsp:include page="header.jsp" />
-    <h2>Ovdje idu podaci o korisniku ${trazenikorisnik.korisnickoIme}</h2>
-    <p>Ime: ${trazenikorisnik.ime}</p>
-    <p>Prezime: ${trazenikorisnik.prezime}</p>
-    <p>itd</p>
+    <h2>HTTP status 403</h2>
+    <h3>Zabranjen pristup! Prijavite se za veće ovlasti.</h3>
+    <p>Preglednik će vas automatski preusmjeriti za nekoliko sekundi.</p>
 </body>
 </html>
