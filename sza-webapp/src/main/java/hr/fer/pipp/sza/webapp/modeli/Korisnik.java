@@ -38,7 +38,7 @@ public class Korisnik {
 	private int razinaPrava;
 	
 	@Column(nullable = false)
-	@Type(type="yes_no")
+	@Type(type = "yes_no")
 	private boolean aktivan;
 
 	@OneToMany(mappedBy = "vlasnik")

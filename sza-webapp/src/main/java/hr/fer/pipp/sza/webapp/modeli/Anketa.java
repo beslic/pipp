@@ -1,13 +1,17 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "ankete")
@@ -20,22 +24,29 @@ public class Anketa {
 	@ManyToOne
 	private Korisnik vlasnik;
 
-	@Column(name = "vrijemeizrada")
+	@Column(nullable = false)
 	private Date vrijemeIzrada;
 
-	@Column(name = "nazivanketa")
+	@Column(nullable = false)
 	private String nazivAnketa;
-	@Column(name = "opisanketa")
+
+	@Column
 	private String opisAnketa;
-	@Column(name = "privatna")
+
+	@Column(nullable = false)
+	@Type(type = "yes_no")
 	private boolean jePrivatna;
-	@Column(name = "aktivnaod")
+
+	@Column(nullable = false)
 	private Date aktivnaOd;
-	@Column(name = "aktivnado")
+
+	@Column(nullable = false)
 	private Date aktivnaDo;
+	
+	@OneToMany(mappedBy = "anketa")
+	private List<Pitanje> pitanja;
 
 	public Anketa() {
-		// defualt
 	}
 
 	public Anketa(Korisnik vlasnik, Date vrijemeIzrada, String nazivAnketa, String opisAnketa, boolean jePrivatna,
@@ -112,6 +123,14 @@ public class Anketa {
 
 	public void setAktivnaDo(Date aktivnaDo) {
 		this.aktivnaDo = aktivnaDo;
+	}
+	
+	public List<Pitanje> getPitanja() {
+		return pitanja;
+	}
+
+	public void setPitanja(List<Pitanje> pitanja) {
+		this.pitanja = pitanja;
 	}
 
 	@Override

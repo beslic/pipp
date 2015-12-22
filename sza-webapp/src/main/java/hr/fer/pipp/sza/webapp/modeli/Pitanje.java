@@ -1,21 +1,34 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
-import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 public class Pitanje {
 
+	@Id
+	@GeneratedValue
 	private int idPitanje;
+	
+	@ManyToOne
 	private Anketa anketa;
+	
+	@Column(nullable = false)
 	private int rbrPitanje;
+	
+	@Column(nullable = false)
 	private String textPitanje;
+	
+	@OneToMany(mappedBy = "pitanje")
 	private List<Odgovor> odgovor;
 
-	
-	
 	public Pitanje() {
-		// TODO Auto-generated constructor stub
 	}
+
 	public Pitanje(int rbrPitanje, String textPitanje, Anketa anketa) {
 
 		this.anketa = anketa;

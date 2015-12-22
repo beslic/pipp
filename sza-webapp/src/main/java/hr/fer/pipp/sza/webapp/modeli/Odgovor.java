@@ -1,19 +1,28 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 public class Odgovor {
 
+	@Id
+	@GeneratedValue
 	private int idOdgovor;
+	
+	@ManyToOne
 	private Pitanje pitanje;
+	
+	@Column(nullable = false)
 	private int rbrOdgovor;
 
+	@Column(nullable = false)
 	private String textOdgovor;
 
-	
 	public Odgovor() {
-		// TODO Auto-generated constructor stub
 	}
+
 	public Odgovor(int rbrOdgovor, String textOdgovor, Pitanje pitanje) {
 		this.pitanje = pitanje;
 		this.textOdgovor = textOdgovor;
