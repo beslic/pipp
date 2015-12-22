@@ -33,7 +33,7 @@ public class Anketa {
 	@Column
 	private String opisAnketa;
 
-	@Column(nullable = false)
+	@Column
 	@Type(type = "yes_no")
 	private boolean jePrivatna;
 

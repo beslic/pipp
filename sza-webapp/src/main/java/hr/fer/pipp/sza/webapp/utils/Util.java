@@ -1,11 +1,14 @@
 package hr.fer.pipp.sza.webapp.utils;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 
 public class Util {
 
@@ -25,8 +28,6 @@ public class Util {
 
 		Map<String, String> greska = new HashMap<>();
 
-		// TODO
-		// PROVJERITI MAIL U BAZI
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
 			greska.put("korisnickoime", "Korisničko ime je prazno");
 		} else if (DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme) != null) {
@@ -58,16 +59,24 @@ public class Util {
 	public static Map<String, String> provjeriFormuPrijavljivanja(String korisnickoIme, String lozinka) {
 
 		Map<String, String> greska = new HashMap<>();
+		
+		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
 
-		// TODO
-		// PROVJERITI MAIL I USERNAME U BAZI
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
-			greska.put("korisnickoime", "Korisnicko ime je prazno");
+			greska.put("korisnickoime", "Korisničko ime je prazno");
+		} else if(korisnik == null) {
+			greska.put("korisnickoime", "Korisničko ime nije pronađeno u bazi");
 		}
 
 		if (lozinka == null || lozinka.length() < 8) {
 			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
-		}
+		} else
+			try {
+				if(!PasswordHash.validatePassword(lozinka, korisnik.getLozinka())) {
+					greska.put("lozinka", "Lozinka je netočna");
+				}
+			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			}
 
 		return greska;
 	}

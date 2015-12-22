@@ -7,6 +7,8 @@
         
         <class>hr.fer.pipp.sza.webapp.modeli.Korisnik</class>
         <class>hr.fer.pipp.sza.webapp.modeli.Anketa</class>
+        <class>hr.fer.pipp.sza.webapp.modeli.Pitanje</class>
+        <class>hr.fer.pipp.sza.webapp.modeli.Odgovor</class>
         
         <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>     <!-- NONE, ALL, ENABLE_SELECTIVE, DISABLE_SELECTIVE -->
 

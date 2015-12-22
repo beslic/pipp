@@ -37,7 +37,7 @@ public class Korisnik {
 	@Column(nullable = false)
 	private int razinaPrava;
 	
-	@Column(nullable = false)
+	@Column
 	@Type(type = "yes_no")
 	private boolean aktivan;
 
