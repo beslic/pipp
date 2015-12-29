@@ -13,7 +13,7 @@ public class JPADAOAnketa implements IDAOAnketa {
 	public List<Anketa> dohvatiAnkete(boolean jePrivatna) {
 		String query = "FROM Anketa";
 		if (jePrivatna) {
-			query += " A WHERE A.jePrivatna = :jePrivatna";
+			query += " A WHERE A.jePrivatna = 'Y'";
 		}
 		return JPAEMProvider.getEntityManager().createQuery(query, Anketa.class).getResultList();
 	}
