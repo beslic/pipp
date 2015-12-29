@@ -44,6 +44,8 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
 			} else if (url.startsWith("/ankete")) {
 				// TODO filtrirati samo javne ankete
+			} else if (url.equals("/prijava/") || url.equals("/registracija/")) {
+				return;
 			} else {
 				requestContext.abortWith(Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build());
 			}
