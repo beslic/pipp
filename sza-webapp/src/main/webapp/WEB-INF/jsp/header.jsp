@@ -19,6 +19,11 @@
         <c:choose>
         <c:when test="${sessionScope.korisnik != null}">
         <li>Prijavljen ${sessionScope.korisnik.ime}</li>
+        <li>
+          <form method="get">
+          <button id="register" type="button" name="register" onclick="location.href='/sza-webapp/odjava/'" class="btn">Odjava</button>
+          </form>
+        </li>
         </c:when>
         <c:otherwise>
         <li><a href="/sza-webapp/prijava/">Prijava</a></li>

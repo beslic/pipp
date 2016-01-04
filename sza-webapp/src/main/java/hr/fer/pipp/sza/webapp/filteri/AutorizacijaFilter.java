@@ -42,6 +42,8 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
 			} else if (url.startsWith("/narucitelji")) {
 				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
+			} else if (url.equals("/odjava/")) {
+				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
 			} else if (url.startsWith("/ankete")) {
 				// TODO filtrirati samo javne ankete
 			} else if (url.equals("/prijava/") || url.equals("/registracija/")) {
@@ -58,6 +60,9 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
 			} else if (korisnik.getRazinaPrava() != 3 && url.startsWith("/admin")) { //ako nije admin
 				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
+			} else if (url.startsWith("/korisnici") || url.startsWith("/anketari") || url.startsWith("/ankete")
+					|| url.equals("/odjava/")) {
+				return;
 			} else {
 				requestContext.abortWith(Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build());
 			}
