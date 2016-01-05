@@ -12,7 +12,7 @@ import org.glassfish.jersey.server.mvc.Viewable;
 
 @Path("/odjava")
 public class OdjavaKontroler {
-	
+
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public Response odjaviKorisnika(@Context HttpServletRequest req) {

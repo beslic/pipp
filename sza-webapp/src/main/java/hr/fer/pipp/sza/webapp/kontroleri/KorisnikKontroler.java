@@ -27,4 +27,14 @@ public class KorisnikKontroler {
 
 	}
 
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	@Path("/postavke")
+	public Response prikaziPostavkeKorisnika(@Context HttpServletRequest req,
+			@PathParam("korisnickoime") String korisnickoIme) {
+		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
+		req.setAttribute("postavke", korisnik);
+		return Response.ok(new Viewable("/postavke")).build();
+	}
+
 }
