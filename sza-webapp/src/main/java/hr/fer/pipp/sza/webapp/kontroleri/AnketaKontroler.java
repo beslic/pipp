@@ -11,15 +11,21 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/ankete/{idnazivanketa}")
+import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
+import hr.fer.pipp.sza.webapp.modeli.Anketa;
+
+@Path("/ankete/{idanketa}")
 public class AnketaKontroler {
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("idnazivanketa") String nazivAnketa) {
-		// TODO
-		//izvaditi podatke o anketi iz baze
-		req.setAttribute("anketa", nazivAnketa);
+	public Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("idanketa") String idAnketa) {
+		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idAnketa));
+		if (anketa != null && req.getSession().getAttribute("korisnik") != null) { // ako je korisnik logiran, nije bitno je li anketa privatna
+			req.setAttribute("anketa", anketa);
+		} else if (anketa != null && !anketa.isJePrivatna()) { // ako korisnik nije logiran, onda anketa mora biti javna da bi ju vidio
+			req.setAttribute("anketa", anketa);
+		}
 		return Response.ok(new Viewable("/anketa")).build();
 	}
 }

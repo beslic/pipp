@@ -1,7 +1,6 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -24,11 +23,6 @@ public class IndexKontroler {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziIndex(@Context HttpServletRequest req) throws ServletException, IOException {
-		List<String> Lista = new ArrayList<>();
-		Lista.add("marko");
-		Lista.add("adwdad");
-		req.setAttribute("mojaLista", Lista);
-		req.setAttribute("ime", "stringMoj");
 		return Response.ok(new Viewable("/index")).build();
 	}
 

@@ -2,6 +2,8 @@ package hr.fer.pipp.sza.webapp.dao.jpa;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.dao.IDAOAnketa;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
@@ -22,6 +24,17 @@ public class JPADAOAnketa implements IDAOAnketa {
 	public List<Anketa> dohvatiOdKorisnika(String korisnickoIme) {
 		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
 		return korisnik.getAnketa();
+	}
+
+	@Override
+	public Anketa dohvatiAnketu(int id) {
+		Anketa anketa = null;
+		try {
+			anketa = JPAEMProvider.getEntityManager().createQuery("FROM Anketa A WHERE A.id = :id", Anketa.class)
+					.setParameter("id", id).getSingleResult();
+		} catch (NoResultException ingorable) {
+		}
+		return anketa;
 	}
 
 }
