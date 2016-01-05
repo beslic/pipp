@@ -10,10 +10,10 @@ import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 public class JPADAOAnketa implements IDAOAnketa {
 
 	@Override
-	public List<Anketa> dohvatiAnkete(boolean jePrivatna) {
+	public List<Anketa> dohvatiAnkete(boolean logiran) {
 		String query = "FROM Anketa";
-		if (jePrivatna) {
-			query += " A WHERE A.jePrivatna = 'Y'";
+		if (!logiran) {
+			query += " A WHERE A.jePrivatna = 'N'";
 		}
 		return JPAEMProvider.getEntityManager().createQuery(query, Anketa.class).getResultList();
 	}

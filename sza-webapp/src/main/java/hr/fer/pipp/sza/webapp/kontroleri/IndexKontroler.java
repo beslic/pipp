@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.mvc.Viewable;
 
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
+import hr.fer.pipp.sza.webapp.modeli.Anketa;
 
 @Path("/")
 public class IndexKontroler {
@@ -35,9 +36,13 @@ public class IndexKontroler {
 	@Path("ankete")
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziAnkete(@Context HttpServletRequest req) throws ServletException, IOException {
-		// TODO
-		// Dodati popis anketa iz baze
-		DAOAnketa.getDAO().dohvatiAnkete(true);
+		List<Anketa> ankete;
+		if (req.getSession().getAttribute("korisnik") == null) {
+			ankete = DAOAnketa.getDAO().dohvatiAnkete(false); // nije logiran
+		} else {
+			ankete = DAOAnketa.getDAO().dohvatiAnkete(true); // logiran
+		}
+		req.setAttribute("ankete", ankete);
 		return Response.ok(new Viewable("/ankete")).build();
 	}
 
