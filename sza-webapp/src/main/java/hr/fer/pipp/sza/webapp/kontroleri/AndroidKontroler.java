@@ -1,5 +1,7 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -8,6 +10,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.utils.Util;
 
 @Path("/android")
 public class AndroidKontroler {
@@ -15,27 +24,36 @@ public class AndroidKontroler {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public String provjeriKorisnika(@Context HttpServletRequest req) {
-		Gson gson = new Gson();
-		
-//		Korisnik korisnik = gson.fromJson((String) req.getAttribute("json"), Korisnik.class);
-//		Map<String, String> greska = Util.provjeriFormuPrijavljivanja(korisnik.getKorisnickoIme(),
-//				korisnik.getLozinka());
-//		Map<String, Object> podaci = new HashMap<>();
-//
-//		if (greska.isEmpty()) {
-//			podaci.put("success", "OK");
-//			podaci.put("korisnik", korisnik);
-//		} else {
-//			podaci.put("success", "failed");
-//			if (greska.containsKey("korisnickoime")) {
-//				podaci.put("errormessage", greska.get("korisnickoime"));
-//			} else if (greska.containsKey("lozinka")) {
-//				podaci.put("errormessage", greska.get("lozinka"));
-//			}
-//		}
-//		req.setAttribute("json", gson.toJson(podaci));
-		return gson.toString();
 
+		Gson gson = new Gson();
+
+		String json = (String) req.getAttribute("json");
+		JsonElement je = new JsonParser().parse(json);
+		JsonObject jo = je.getAsJsonObject();
+
+		Map<String, String> greska = Util.provjeriFormuPrijavljivanjaAnketara(jo.get("korisnickoime").getAsString(),
+				jo.get("lozinka").getAsString());
+
+		JsonObject jsonObj = new JsonObject();
+
+		if (greska.isEmpty()) {
+			jsonObj.addProperty("status", "success");
+			// dohvati korisnika iz baze
+			Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(jo.get("korisnickoime").getAsString());
+			// pretvori ga u JSON objekt
+			JsonObject innerJson = new JsonParser().parse(gson.toJson(korisnik)).getAsJsonObject();
+			// spremi ga kako property vanjskog JSON-a
+			jsonObj.add("korisnik", innerJson);
+		} else {
+			jsonObj.addProperty("status", "failed");
+			if (greska.containsKey("korisnickoime")) {
+				jsonObj.addProperty("errormessage", greska.get("korisnickoime"));
+			} else if (greska.containsKey("lozinka")) {
+				jsonObj.addProperty("errormessage", greska.get("lozinka"));
+			}
+		}
+
+		return jsonObj.toString();
 	}
 
 }

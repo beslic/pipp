@@ -59,7 +59,7 @@ public class Util {
 	public static Map<String, String> provjeriFormuPrijavljivanja(String korisnickoIme, String lozinka) {
 
 		Map<String, String> greska = new HashMap<>();
-
+		
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
 			greska.put("korisnickoime", "Korisničko ime je prazno");
 			return greska;
@@ -83,6 +83,33 @@ public class Util {
 			}
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {
 
+		}
+
+		return greska;
+	}
+	
+	public static Map<String, String> provjeriFormuPrijavljivanjaAnketara(String korisnickoIme, String lozinka) {
+
+		Map<String, String> greska = new HashMap<>();
+		
+		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
+			greska.put("korisnickoime", "Korisničko ime je prazno");
+			return greska;
+		}
+
+		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
+
+		if (korisnik == null) {
+			greska.put("korisnickoime", "Korisničko ime nije pronađeno u bazi");
+			return greska;
+		}
+
+		if (lozinka == null || lozinka.length() < 8) {
+			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
+			return greska;
+		} else if (!lozinka.equals(korisnik.getLozinka())) {
+			greska.put("lozinka", "Lozinka je netočna");
+			return greska;
 		}
 
 		return greska;
