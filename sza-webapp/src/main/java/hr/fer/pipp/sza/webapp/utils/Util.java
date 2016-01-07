@@ -59,24 +59,31 @@ public class Util {
 	public static Map<String, String> provjeriFormuPrijavljivanja(String korisnickoIme, String lozinka) {
 
 		Map<String, String> greska = new HashMap<>();
-		
-		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
 
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
 			greska.put("korisnickoime", "Korisničko ime je prazno");
-		} else if(korisnik == null) {
+			return greska;
+		}
+
+		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
+
+		if (korisnik == null) {
 			greska.put("korisnickoime", "Korisničko ime nije pronađeno u bazi");
+			return greska;
 		}
 
 		if (lozinka == null || lozinka.length() < 8) {
 			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
-		} else
-			try {
-				if(!PasswordHash.validatePassword(lozinka, korisnik.getLozinka())) {
-					greska.put("lozinka", "Lozinka je netočna");
-				}
-			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			return greska;
+		}
+		try {
+			if (!PasswordHash.validatePassword(lozinka, korisnik.getLozinka())) {
+				greska.put("lozinka", "Lozinka je netočna");
+				return greska;
 			}
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {
+
+		}
 
 		return greska;
 	}

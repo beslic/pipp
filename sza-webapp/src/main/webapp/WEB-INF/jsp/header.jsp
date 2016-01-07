@@ -18,10 +18,11 @@
       <ul class="nav navbar-nav navbar-right">
         <c:choose>
         <c:when test="${sessionScope.korisnik != null}">
-        <li>Prijavljen ${sessionScope.korisnik.ime}</li>
+        <li><p class="navbar-text">Prijavljen ${sessionScope.korisnik.ime}</p></li>
+        <li><a href="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/">Moj profil</a></li>
         <li>
-          <form method="get">
-          <button id="register" type="button" name="register" onclick="location.href='/sza-webapp/odjava/'" class="btn">Odjava</button>
+          <form method="post" action="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/">
+            <button name="button" value="signout" class="btn btn-default navbar-btn">Odjava</button>
           </form>
         </li>
         </c:when>

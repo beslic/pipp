@@ -13,9 +13,9 @@
 
 <body>
     <jsp:include page="header.jsp" />
-    <h2>Ovdje idu podaci o korisniku ${trazenikorisnik.korisnickoIme}</h2>
-    <p>Ime: ${trazenikorisnik.ime}</p>
-    <p>Prezime: ${trazenikorisnik.prezime}</p>
+    <h2>Ovdje idu podaci o korisniku ${sessionScope.korisnik.korisnickoIme}</h2>
+    <p>Ime: ${sessionScope.korisnik.ime}</p>
+    <p>Prezime: ${sessionScope.korisnik.prezime}</p>
     <p>itd</p>
 </body>
 </html>
