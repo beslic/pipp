@@ -1,20 +1,27 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table (name = "odabraniodgovori")
 public class OdabraniOdgovor {
-	
+
+	@Id
+	@GeneratedValue
 	private int idOdabraniOdgovor;
-	private Odgovor odgovor;
+	
+	@ManyToOne
 	private Ispunjavanje ispunjavanje;
 
-
-	
-	
 	public OdabraniOdgovor() {
-		// TODO Auto-generated constructor stub
 	}
+
 	public OdabraniOdgovor(Odgovor odgovor, Ispunjavanje ispunjavanje) {
 		super();
-		this.odgovor = odgovor;
 		this.ispunjavanje = ispunjavanje;
 	}
 
@@ -24,14 +31,6 @@ public class OdabraniOdgovor {
 
 	public void setIdOdabraniOdgovor(int idOdabraniOdgovor) {
 		this.idOdabraniOdgovor = idOdabraniOdgovor;
-	}
-
-	public Odgovor getOdgovor() {
-		return odgovor;
-	}
-
-	public void setOdgovor(Odgovor odgovor) {
-		this.odgovor = odgovor;
 	}
 
 	public Ispunjavanje getIspunjavanje() {
