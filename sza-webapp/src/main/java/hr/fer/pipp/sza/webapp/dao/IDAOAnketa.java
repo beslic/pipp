@@ -6,10 +6,12 @@ import hr.fer.pipp.sza.webapp.modeli.Anketa;
 
 public interface IDAOAnketa {
 
-	List<Anketa> dohvatiAnkete(boolean logiran);
+	public List<Anketa> dohvatiAnkete(boolean logiran);
 	
-	List<Anketa> dohvatiOdKorisnika(String korisnickoIme);
+	public List<Anketa> dohvatiOdKorisnika(String korisnickoIme);
 	
-	Anketa dohvatiAnketu(int id);
+	public Anketa dohvatiAnketu(int id);
+	
+	public Anketa spremiAnketu(Anketa anketa);
 	
 }

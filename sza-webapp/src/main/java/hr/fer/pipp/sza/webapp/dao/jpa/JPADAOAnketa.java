@@ -2,6 +2,7 @@ package hr.fer.pipp.sza.webapp.dao.jpa;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
@@ -34,6 +35,23 @@ public class JPADAOAnketa implements IDAOAnketa {
 					.setParameter("id", id).getSingleResult();
 		} catch (NoResultException ingorable) {
 		}
+		return anketa;
+	}
+
+	@Override
+	public Anketa spremiAnketu(Anketa anketa) {
+		EntityManager em = JPAEMProvider.getEntityManager().getEntityManagerFactory().createEntityManager();
+		Anketa a = em.find(Anketa.class, anketa.getIdAnketa());
+		em.getTransaction().begin();
+		a.setNazivAnketa(anketa.getNazivAnketa());
+		a.setOpisAnketa(anketa.getOpisAnketa());
+		a.setBrojPitanja(anketa.getBrojPitanja());
+		a.setAktivnaDo(anketa.getAktivnaDo());
+		a.setAktivnaOd(anketa.getAktivnaOd());
+		a.setJePrivatna(anketa.isJePrivatna());
+		a.setVlasnik(anketa.getVlasnik());
+		em.getTransaction().commit();
+		em.close();
 		return anketa;
 	}
 

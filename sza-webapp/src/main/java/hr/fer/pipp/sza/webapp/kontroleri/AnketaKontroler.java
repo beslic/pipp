@@ -30,7 +30,7 @@ import hr.fer.pipp.sza.webapp.utils.Util;
 
 @Path("/ankete/")
 public class AnketaKontroler {
-	
+
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziAnkete(@Context HttpServletRequest req) throws ServletException, IOException {
@@ -45,45 +45,63 @@ public class AnketaKontroler {
 	}
 
 	@GET
-	@Path ("/{idnazivanketa}")
+	@Path("/{idnazivanketa}")
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("idnazivanketa") String idNazivAnketa) {
-		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0])); // dohvati po id-u
-		if (anketa != null && req.getSession().getAttribute("korisnik") != null) { // ako je korisnik logiran, nije bitno je li anketa privatna
+		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0])); // dohvati
+																											// po
+																											// id-u
+		if (anketa != null && req.getSession().getAttribute("korisnik") != null) { // ako
+																					// je
+																					// korisnik
+																					// logiran,
+																					// nije
+																					// bitno
+																					// je
+																					// li
+																					// anketa
+																					// privatna
 			req.setAttribute("anketa", anketa);
-		} else if (anketa != null && !anketa.isJePrivatna()) { // ako korisnik nije logiran, onda anketa mora biti javna da bi ju vidio
+		} else if (anketa != null && !anketa.isJePrivatna()) { // ako korisnik
+																// nije logiran,
+																// onda anketa
+																// mora biti
+																// javna da bi
+																// ju vidio
 			req.setAttribute("anketa", anketa);
 		}
 		return Response.ok(new Viewable("/anketa")).build();
 	}
-	
+
 	@POST
-	@Produces (MediaType.TEXT_HTML)
-	public Response dodajAnketu(@Context HttpServletRequest req, @FormParam("nazivAnketa") String nazivAnketa, @FormParam("opisAnketa") String opisAnketa,
-			@FormParam("aktivnaOd") String aktivnaOd, @FormParam("aktivnaDo") String aktivnaDo, @FormParam("brojPitanja") String brojPitanja) throws ParseException {
-		
-		Map<String, String> greska = Util.provjeriFormuAnkete(nazivAnketa, opisAnketa, aktivnaOd, aktivnaDo, brojPitanja);
-		
+	@Produces(MediaType.TEXT_HTML)
+	public Response dodajAnketu(@Context HttpServletRequest req, @FormParam("nazivAnketa") String nazivAnketa,
+			@FormParam("opisAnketa") String opisAnketa, @FormParam("aktivnaOd") String aktivnaOd,
+			@FormParam("aktivnaDo") String aktivnaDo, @FormParam("brojPitanja") String brojPitanja)
+					throws ParseException {
+
+		Map<String, String> greska = Util.provjeriFormuAnkete(nazivAnketa, opisAnketa, aktivnaOd, aktivnaDo,
+				brojPitanja);
+
 		if (greska.isEmpty()) {
-			
+
 			Anketa anketa = new Anketa();
 			anketa.setNazivAnketa(nazivAnketa);
 			anketa.setOpisAnketa(opisAnketa);
-			
+			anketa.setVrijemeIzrada(new Date());
+
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-			
+
 			Date datum = format.parse(aktivnaOd);
 			anketa.setAktivnaOd(datum);
-			
+
 			datum = format.parse(aktivnaDo);
 			anketa.setAktivnaDo(datum);
-			
+
 			anketa.setBrojPitanja(Integer.parseInt(brojPitanja));
-			
+
 			// TODO spremiti anketu u bazu
-			
-			
-			
+
 		} else {
 			Map<String, String> forma = new HashMap<>();
 			forma.put("nazivAnketa", nazivAnketa);
@@ -94,7 +112,7 @@ public class AnketaKontroler {
 			req.setAttribute("forma", forma);
 			req.setAttribute("greska", greska);
 		}
-		
+
 		return Response.ok(new Viewable("/ankete")).build();
 	}
 }
