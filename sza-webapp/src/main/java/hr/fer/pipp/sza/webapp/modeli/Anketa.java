@@ -42,7 +42,10 @@ public class Anketa {
 
 	@Column(nullable = false)
 	private Date aktivnaDo;
-	
+
+	@Column
+	private int brojPitanja;
+
 	@OneToMany(mappedBy = "anketa")
 	private List<Pitanje> pitanja;
 
@@ -124,7 +127,7 @@ public class Anketa {
 	public void setAktivnaDo(Date aktivnaDo) {
 		this.aktivnaDo = aktivnaDo;
 	}
-	
+
 	public List<Pitanje> getPitanja() {
 		return pitanja;
 	}
@@ -153,6 +156,14 @@ public class Anketa {
 		if (idAnketa != other.idAnketa)
 			return false;
 		return true;
+	}
+
+	public int getBrojPitanja() {
+		return brojPitanja;
+	}
+
+	public void setBrojPitanja(int brojPitanja) {
+		this.brojPitanja = brojPitanja;
 	}
 
 }

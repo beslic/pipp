@@ -1,7 +1,6 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +13,6 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
-import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
-import hr.fer.pipp.sza.webapp.modeli.Anketa;
-
 @Path("/")
 public class IndexKontroler {
 
@@ -24,20 +20,6 @@ public class IndexKontroler {
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziIndex(@Context HttpServletRequest req) throws ServletException, IOException {
 		return Response.ok(new Viewable("/index")).build();
-	}
-
-	@GET
-	@Path("ankete")
-	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziAnkete(@Context HttpServletRequest req) throws ServletException, IOException {
-		List<Anketa> ankete;
-		if (req.getSession().getAttribute("korisnik") == null) {
-			ankete = DAOAnketa.getDAO().dohvatiAnkete(false); // nije logiran
-		} else {
-			ankete = DAOAnketa.getDAO().dohvatiAnkete(true); // logiran
-		}
-		req.setAttribute("ankete", ankete);
-		return Response.ok(new Viewable("/ankete")).build();
 	}
 
 	@GET

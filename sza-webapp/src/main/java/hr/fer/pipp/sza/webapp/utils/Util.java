@@ -2,7 +2,10 @@ package hr.fer.pipp.sza.webapp.utils;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,7 +14,9 @@ import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 
 public class Util {
-
+	String string = "January 2, 2010";
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
+	LocalDate date = LocalDate.parse(string, formatter);
 	private static boolean validirajEmail(String email) {
 
 		final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -59,7 +64,7 @@ public class Util {
 	public static Map<String, String> provjeriFormuPrijavljivanja(String korisnickoIme, String lozinka) {
 
 		Map<String, String> greska = new HashMap<>();
-		
+
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
 			greska.put("korisnickoime", "Korisničko ime je prazno");
 			return greska;
@@ -87,11 +92,11 @@ public class Util {
 
 		return greska;
 	}
-	
+
 	public static Map<String, String> provjeriFormuPrijavljivanjaAnketara(String korisnickoIme, String lozinka) {
 
 		Map<String, String> greska = new HashMap<>();
-		
+
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
 			greska.put("korisnickoime", "Korisničko ime je prazno");
 			return greska;
@@ -113,6 +118,40 @@ public class Util {
 		}
 
 		return greska;
+	}
+
+	public static Map<String, String> provjeriFormuAnkete(String nazivAnketa, String opisAnketa, String aktivnaOd,
+			String aktivnaDo, String brojPitanja) {
+		
+		Map<String, String> greska = new HashMap<>();
+		
+		if (nazivAnketa == null || nazivAnketa.isEmpty()) {
+			greska.put("nazivAnketa", "Polje naziva ankete je prazno");
+		}
+		
+		if (aktivnaOd == null || aktivnaOd.isEmpty()) {
+			greska.put("aktivnaOd", "Polje ne smije biti prazno");
+		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
+			greska.put("aktivnaOd", "Format nije dobro zadan - dd/mm/gggg");
+		}
+		
+		if (aktivnaDo == null || aktivnaDo.isEmpty()) {
+			greska.put("aktivnaDo", "Polje ne smije biti prazno");
+		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
+			greska.put("aktivnaDo", "Format nije dobro zadan - dd/mm/gggg");
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
+		LocalDate datumOd = LocalDate.parse(aktivnaOd, formatter);
+		LocalDate datumDo = LocalDate.parse(aktivnaDo, formatter);
+		
+		if (!datumOd.isBefore(datumDo)) {
+			greska.put("aktivnaOd", "Datum nije kronološki dobro zadan");
+			greska.put("aktivnaDo", "Datum nije kronološki dobro zadan");
+		}
+		
+		return greska;
+
 	}
 
 }
