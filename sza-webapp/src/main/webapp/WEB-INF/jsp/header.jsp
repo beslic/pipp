@@ -25,6 +25,15 @@
             <button name="button" value="signout" class="btn btn-default navbar-btn">Odjava</button>
           </form>
         </li>
+        <c:when test="${sessionScope.korisnik != null}">        
+        <li class="navbar-left">Prijavljen ${sessionScope.korisnik.ime}</li> 
+         
+         <form class="navbar-form navbar-left" method="get">
+        	
+        	<button  type="button"  onclick="location.href='/sza-webapp/odjava/'" class="btn btn-default">Odjava</button>
+        	
+         </form>
+          
         </c:when>
         <c:otherwise>
         <li><a href="/sza-webapp/prijava/">Prijava</a></li>

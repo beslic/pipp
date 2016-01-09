@@ -42,7 +42,9 @@
             <!-- url: jdbc:postgresql://localhost:5432/vblDB;create=true -->
             <!-- dialect: org.hibernate.dialect.PostgreSQLDialect -->
             <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver" />
-            <property name="hibernate.connection.url" value="jdbc:derby:szaDB" />
+
+            
+            <property name="hibernate.connection.url" value="jdbc:derby://Users/Marin/szaDB" />
             <property name="hibernate.connection.username" value="admin" />
             <property name="hibernate.connection.password" value="admin" />
             <property name="hibernate.connection.CharSet" value="utf8" />
