@@ -34,8 +34,7 @@ public class Ispunjavanje {
 	@Column(nullable = false)
 	private float latitude;
 
-	@OneToMany (mappedBy = "ispunjavanje")
-	private List<Odgovor> odabraniOdgovor;
+
 
 	public Ispunjavanje() {
 	}

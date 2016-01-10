@@ -30,7 +30,7 @@ public class AnketaFormaKontroler {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziAnketaForma() throws ServletException, IOException {
-		return Response.ok(new Viewable("/anketaforma")).build();
+		return Response.ok(new Viewable("/anketforma")).build();
 	}
 	
 	@POST
