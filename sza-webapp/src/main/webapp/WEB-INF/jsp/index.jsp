@@ -13,7 +13,6 @@
 <body>
 <jsp:include page="header.jsp" />
 
-
 <header id="myCarousel" class="carousel slide">
         <!-- Indicators -->
         <ol class="carousel-indicators">
@@ -59,9 +58,22 @@
     </div>
 
     <script>
-    $('.carousel').carousel({
-        interval: 5000 //changes the speed
-    })
+	    $('.carousel').carousel({
+	        interval: 5000 //changes the speed
+	    })
+    
+      	var url = location.href;
+  		document.getElementById("urll").innerHTML = url;
+  		
+ 
+  		function hideshow(which){
+	  		if (!document.getElementById)
+	  		return
+	  		if (which.style.display=="block")
+	  		which.style.display="none"
+	  		else
+	  		which.style.display="block"
+  		}
     </script>
 
 </body>

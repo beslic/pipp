@@ -7,6 +7,16 @@ body{
     height: 100%;
 }
 
+#korisnikDetails{
+	margin-top: 50px;
+	width: 50%;
+	
+}
+
+#odjavaRight{
+	margin-right: 5px;
+}
+
 .carousel,
 .item,
 .active {
@@ -28,3 +38,4 @@ body{
     background-size: cover;
     -o-background-size: cover;
 }
+
