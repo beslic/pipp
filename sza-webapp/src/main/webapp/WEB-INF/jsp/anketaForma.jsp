@@ -1,12 +1,9 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+    pageEncoding="UTF-8" session="true" %>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="container">
 	    <form class="form-horizontal" method="post">
 	    
@@ -14,6 +11,8 @@
           <!-- Form Name -->
   		  <div class="col-md-9">
 		   <h2>Kreiranje ankete</h2>
+		   <hr>
+		   <br>
   		  </div>
                      
           <!-- Poll input-->
@@ -28,19 +27,72 @@
               </c:if>
             </div>
           </div>
+          
           <!-- Poll description-->
           <div class="form-group">
             <label id="passwordlabel" class="col-md-4 control-label" for="passwordinput">Opis ankete</label>
-            <div class="col-md-4 <c:if test="${greska.opisAnketa != null}">has-error has-feedback</c:if>">
-              <input id="passwordinput" name="opisAnketa" type="text" class="form-control input-md" placeholder="Unesite opis ankete" aria-describedby="errorstatus">
-              <c:if test="${greska.opisAnketa != nul">
+            <div class="col-md-4">
+              <!-- 
+              <input id="usernameinput" name="opisAnketa" type="text" class="form-control input-md" value="${forma.opisAnketa}" placeholder="Unesite opis ankete" aria-describedby="errorstatus">
+               -->
+               
+              <textarea id="comment" name="opisAnketa" class="form-control input-md" rows="5"  placeholder="Unesite opis ankete" aria-describedby="errorstatus"></textarea>
+              
+              <c:if test="${greska.opisAnketa != null}">
                 <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                <label class="control-label" for="passwordinput">${greska.opisAnketa}</label>
+                <label class="control-label" for="comment">${greska.opisAnketa}</label>
                 <span id="errorstatus" class="sr-only">(error)</span>
               </c:if>
+             
             </div>
           </div>
-        
+          	    
+       	 <div class="form-group">
+       	 	<label class="col-md-4 control-label">Broj pitanja</label>
+       	 
+			<div class="col-md-4">
+				<select class="form-control">
+				  <option>1</option>
+				  <option>2</option>
+				  <option>3</option>
+				  <option>4</option>
+				  <option>5</option>
+				</select>
+			</div>
+		</div>
+          	    
+       	   	<div class="form-group">
+		        <label class="col-md-4 control-label"></label>
+		        <div class="col-md-4">
+		            <div class="input-group input-append date" >
+		            <b>Datum provodenja ankete</b>
+		            </div>
+		            <hr>
+		        </div>
+		    </div>
+		    
+		    
+		     <div class="form-group">
+		        <label class="col-md-4 control-label">Od</label>
+		        <div class="col-md-4">
+		            <div class="input-group input-append date" id="dateRangePickerFrom">
+		                <input type="text" class="form-control" name="date" />
+		                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+		            </div>
+		        </div>
+		    </div>
+		    
+		    
+		    <div class="form-group">
+		        <label class="col-md-4 control-label">Do</label>
+		        <div class="col-md-4">
+		            <div class="input-group input-append date" id="dateRangePickerTo">
+		                <input type="text" class="form-control" name="date" />
+		                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+		            </div>
+		        </div>
+		    </div>
+    
           <!-- Buttons -->
  			<div class="form-group">
  			  <label class="col-md-4 control-label" for="signup"></label>
@@ -53,5 +105,3 @@
 		</form>
 	  </div>
 
-</body>
-</html>
