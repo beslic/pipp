@@ -7,7 +7,7 @@
 	<div class="container-fluid">
 	    
 		<div class="navbar-header">
-	   		<p class="navbar-brand"><b>Sustav za anktetiranje</b></p>
+	   		<a href="/sza-webapp/" class="navbar-brand"><strong>Sustav za anktetiranje</strong></a>
 		</div>
 	
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -28,10 +28,18 @@
 				        </li>
 			        </c:when>
 			        <c:otherwise>
-						<li><p class="navbar-text" id="urll">error</p></li>
-						
-				        <li><a href="/sza-webapp/prijava/">Prijava</a></li>
-				        <li><a href="/sza-webapp/registracija/">Registracija</a></li>
+			        	<c:choose>
+			        	    <c:when test="${url == 2}">			
+				        		<li><a href="/sza-webapp/prijava/">Prijava</a></li>
+				            </c:when>
+				            <c:when test="${url == 1}">			
+   			        			<li><a href="/sza-webapp/registracija/">Registracija</a></li>
+				            </c:when>
+          			        <c:otherwise>
+          			        	<li><a href="/sza-webapp/prijava/">Prijava</a></li>
+   			        			<li><a href="/sza-webapp/registracija/">Registracija</a></li>
+          			        </c:otherwise>
+				        </c:choose>
 			        </c:otherwise>
 		        </c:choose>
 			</ul>

@@ -7,6 +7,10 @@ body{
     height: 100%;
 }
 
+#odvojiOdHeadera{
+	margin-top: 50px;
+}
+
 #korisnikDetails{
 	margin-top: 50px;
 	width: 50%;

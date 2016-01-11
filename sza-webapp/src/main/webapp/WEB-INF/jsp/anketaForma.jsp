@@ -32,10 +32,7 @@
           <div class="form-group">
             <label id="passwordlabel" class="col-md-4 control-label" for="passwordinput">Opis ankete</label>
             <div class="col-md-4">
-              <!-- 
-              <input id="usernameinput" name="opisAnketa" type="text" class="form-control input-md" value="${forma.opisAnketa}" placeholder="Unesite opis ankete" aria-describedby="errorstatus">
-               -->
-               
+              
               <textarea id="comment" name="opisAnketa" class="form-control input-md" rows="5"  placeholder="Unesite opis ankete" aria-describedby="errorstatus"></textarea>
               
               <c:if test="${greska.opisAnketa != null}">
@@ -51,12 +48,10 @@
        	 	<label class="col-md-4 control-label">Broj pitanja</label>
        	 
 			<div class="col-md-4">
-				<select class="form-control">
-				  <option>1</option>
-				  <option>2</option>
-				  <option>3</option>
-				  <option>4</option>
-				  <option>5</option>
+				<select class="form-control"  name="brojPitanja" >
+				  <c:forEach var="i" begin="1" end="10">
+				  	<option value="${i}">${i}</option>
+				  </c:forEach>
 				</select>
 			</div>
 		</div>
@@ -76,7 +71,7 @@
 		        <label class="col-md-4 control-label">Od</label>
 		        <div class="col-md-4">
 		            <div class="input-group input-append date" id="dateRangePickerFrom">
-		                <input type="text" class="form-control" name="date" />
+		                <input type="text" class="form-control" name="aktivnaOd" value="${forma.aktivnaOd}" />
 		                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 		            </div>
 		        </div>
@@ -87,7 +82,7 @@
 		        <label class="col-md-4 control-label">Do</label>
 		        <div class="col-md-4">
 		            <div class="input-group input-append date" id="dateRangePickerTo">
-		                <input type="text" class="form-control" name="date" />
+		                <input type="text" class="form-control" name="aktivnaDo" value="${forma.aktivnaDo}" />
 		                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 		            </div>
 		        </div>

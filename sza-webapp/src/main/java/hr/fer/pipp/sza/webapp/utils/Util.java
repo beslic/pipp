@@ -141,7 +141,13 @@ public class Util {
 			greska.put("aktivnaDo", "Format nije dobro zadan - dd/mm/gggg");
 		}
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
+		System.out.println(aktivnaOd);
+		System.out.println(aktivnaDo);
+		System.out.println(nazivAnketa);
+		System.out.println(opisAnketa);
+		System.out.println(brojPitanja);
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.ENGLISH);
 		LocalDate datumOd = LocalDate.parse(aktivnaOd, formatter);
 		LocalDate datumDo = LocalDate.parse(aktivnaDo, formatter);
 		

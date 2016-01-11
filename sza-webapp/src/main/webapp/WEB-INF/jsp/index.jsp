@@ -14,6 +14,7 @@
 <jsp:include page="header.jsp" />
 
 <header id="myCarousel" class="carousel slide">
+
         <!-- Indicators -->
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -53,20 +54,14 @@
         </a>
 
     </header>
-
-
-    </div>
-
+    
     <script>
    		$('.datepicker').datepicker()
+   		
 	    $('.carousel').carousel({
 	        interval: 5000 //changes the speed
 	    })
     
-      	var url = location.href;
-  		document.getElementById("urll").innerHTML = url;
-  		
- 
   		function hideshow(which){
 	  		if (!document.getElementById)
 	  		return

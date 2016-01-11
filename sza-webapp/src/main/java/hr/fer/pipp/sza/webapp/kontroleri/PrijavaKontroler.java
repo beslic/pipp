@@ -28,7 +28,8 @@ public class PrijavaKontroler {
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziPrijava() throws ServletException, IOException {
+	public Response prikaziPrijava(@Context HttpServletRequest req) throws ServletException, IOException {
+		req.setAttribute("url", 1);
 		return Response.ok(new Viewable("/prijava")).build();
 	}
 	
