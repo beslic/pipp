@@ -11,8 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "ispunjavanja")
+
 public class Ispunjavanje {
 
 	@Id
@@ -47,7 +46,6 @@ public class Ispunjavanje {
 		this.vrijemeIspunjavanja = vrijemeIspunjavanja;
 		this.longitunde = longitunde;
 		this.latitude = latitude;
-		this.odabraniOdgovor = odabraniOdgovor;
 	}
 
 	public int getIdIspunjavanje() {
@@ -96,14 +94,6 @@ public class Ispunjavanje {
 
 	public void setLatitude(float latitude) {
 		this.latitude = latitude;
-	}
-
-	public List<Odgovor> getOdabraniOdgovor() {
-		return odabraniOdgovor;
-	}
-
-	public void setOdabraniOdgovor(List<Odgovor> odabraniOdgovor) {
-		this.odabraniOdgovor = odabraniOdgovor;
 	}
 
 	@Override

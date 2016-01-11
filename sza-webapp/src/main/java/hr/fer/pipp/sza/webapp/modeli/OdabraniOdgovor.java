@@ -6,15 +6,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table (name = "odabraniodgovori")
 public class OdabraniOdgovor {
 
 	@Id
 	@GeneratedValue
 	private int idOdabraniOdgovor;
 	
-	@ManyToOne
 	private Ispunjavanje ispunjavanje;
 
 	public OdabraniOdgovor() {

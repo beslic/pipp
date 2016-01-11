@@ -3,6 +3,7 @@ package hr.fer.pipp.sza.webapp.kontroleri;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -16,6 +17,7 @@ import com.google.gson.JsonParser;
 
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.utils.AndroidLogin;
 import hr.fer.pipp.sza.webapp.utils.Util;
 
 @Path("/android")
@@ -23,11 +25,19 @@ public class AndroidKontroler {
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public String provjeriKorisnika(@Context HttpServletRequest req) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String provjeriKorisnika(AndroidLogin login) {
 
 		Gson gson = new Gson();
 
-		String json = (String) req.getAttribute("json");
+		System.out.println("Android: " + login);
+		
+		if (login == null) {
+			return "{\"status\":\"failed\"}";
+		}
+		
+		String json = gson.toJson(login);
+		
 		JsonElement je = new JsonParser().parse(json);
 		JsonObject jo = je.getAsJsonObject();
 
