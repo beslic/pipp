@@ -17,31 +17,31 @@
     
 <div class="container" id="odvojiOdHeadera">
   <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#javneAnkete">Javne ankete</a></li>
+    <li <c:if test="${url == 0}"> class="active"</c:if>><a data-toggle="tab" href="#javne-ankete">Javne ankete</a></li>
     <c:if test="${sessionScope.korisnik != null}">
-	    <li><a data-toggle="tab" href="#privatneAnkete">Moje ankete</a></li>
+	    <li <c:if test="${url == 1}"> class="active"</c:if>><a data-toggle="tab" href="#moje-ankete">Moje ankete</a></li>
     </c:if>
     
       <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
-            <li><a data-toggle="tab" href="#kreiranjeAnkete">Kreiranje ankete</a></li>
+            <li <c:if test="${url == 2}"> class="active"</c:if>><a data-toggle="tab" href="#nova-anketa">Nova ankete</a></li>
    	 </c:if>
     	
   </ul>
 
   <div class="tab-content">
-    <div id="javneAnkete" class="tab-pane fade in active">
+    <div id="javneAnkete" class="tab-pane fade <c:if test="${url == 0}">in active</c:if>">
           <h2>Ovdje ide popis javnih anketa</h2>
     </div>
     <c:if test="${sessionScope.korisnik != null}">
     
-    <div id="privatneAnkete" class="tab-pane fade">
+    <div id="mojeAnkete" class="tab-pane fade <c:if test="${url == 1}">in active</c:if>">
           <h2>Ovdje ide popis privatnih anketa</h2>
     </div>
     </c:if>
     
     <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
     
-    <div id="kreiranjeAnkete" class="tab-pane fade">
+    <div id="novaAnketa" class="tab-pane fade <c:if test="${url == 2}">in active</c:if>">
           <jsp:include page="anketaForma.jsp" />
     </div>
     </c:if>
