@@ -132,14 +132,18 @@ public class Util {
 
 		if (aktivnaOd == null || aktivnaOd.isEmpty()) {
 			greska.put("aktivnaOd", "Polje ne smije biti prazno");
+			return greska;
 		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
 			greska.put("aktivnaOd", "Format nije dobro zadan - dd/mm/gggg");
+			return greska;
 		}
 
 		if (aktivnaDo == null || aktivnaDo.isEmpty()) {
 			greska.put("aktivnaDo", "Polje ne smije biti prazno");
+			return greska;
 		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
 			greska.put("aktivnaDo", "Format nije dobro zadan - dd/mm/gggg");
+			return greska;
 		}
 
 		System.out.println(aktivnaOd);
@@ -148,7 +152,7 @@ public class Util {
 		System.out.println(opisAnketa);
 		System.out.println(brojPitanja);
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.ENGLISH);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
 		LocalDate datumOd = LocalDate.parse(aktivnaOd, formatter);
 		LocalDate datumDo = LocalDate.parse(aktivnaDo, formatter);
 
