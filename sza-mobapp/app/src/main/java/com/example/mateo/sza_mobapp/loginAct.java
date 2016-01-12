@@ -50,8 +50,11 @@ public class loginAct extends Activity{
         Log.d("*****Login  ", "POCETAK");
         korisnik = new Korisnik(imeE.getText().toString(), passE.getText().toString());
         String stringKorisnik = gson.toJson(korisnik);
+        String jsonKorisnik = gson.toJson(korisnik);
+
         Log.d("*****KORISNIK", stringKorisnik);
         NetworkConnection PROVJERA = new NetworkConnection(getApplicationContext());
+
 
         if(PROVJERA.isConnected()==false){
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -96,7 +99,8 @@ public class loginAct extends Activity{
                             Toast.makeText(getApplicationContext(), "Pogrešno korisničko ime ili lozinka!", Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Log.d("FAIL", response.toString());
+                        Log.d("FAIL", /*response.toString()*/"asddf");
+                        Toast.makeText(getApplicationContext(), "greška u povezivanju", Toast.LENGTH_LONG).show();
                     }
                 }
             }, getApplicationContext());

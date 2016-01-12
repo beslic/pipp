@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="loginText1">Login</string>
     <string name="loginIme">korisnicko ime</string>
-    <string name="loginSifra">sifra</string>
+    <string name="loginSifra">lozinka</string>
     <string name="loginButton">LOGIN</string>
     <string name="title_activity_lista_pitanja2">listaPitanja2</string>
     <string name="section_format">Hello World from section: %1$d</string>
