@@ -42,7 +42,7 @@ public class AnketaKontroler {
 			ankete = DAOAnketa.getDAO().dohvatiAnkete(true); // logiran
 		}
 		req.setAttribute("ankete", ankete);
-		req.setAttribute("url", "0");
+		req.setAttribute("url", 0);
 		return Response.ok(new Viewable("/ankete")).build();
 	}
 
@@ -93,7 +93,7 @@ public class AnketaKontroler {
 			anketa.setOpisAnketa(opisAnketa);
 			anketa.setVrijemeIzrada(new Date());
 
-			DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
 			Date datum = format.parse(aktivnaOd);
 			anketa.setAktivnaOd(datum);
@@ -104,7 +104,7 @@ public class AnketaKontroler {
 			anketa.setBrojPitanja(Integer.parseInt(brojPitanja));
 			System.out.println(anketa.getBrojPitanja());
 			System.out.println(anketa.getNazivAnketa());
-			req.setAttribute("url", "1");
+			req.setAttribute("url", 1);
 
 			// TODO spremiti anketu u bazu
 
@@ -115,10 +115,10 @@ public class AnketaKontroler {
 			forma.put("aktivnaOd", aktivnaOd);
 			forma.put("aktivnaDo", aktivnaDo);
 			forma.put("brojPitanja", brojPitanja);
-			
+
 			req.setAttribute("forma", forma);
 			req.setAttribute("greska", greska);
-			req.setAttribute("url", "2");
+			req.setAttribute("url", 2);
 		}
 
 		return prikaziAnkete(req);

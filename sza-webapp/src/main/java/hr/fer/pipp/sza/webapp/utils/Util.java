@@ -125,44 +125,34 @@ public class Util {
 	public static Map<String, String> provjeriFormuAnkete(String nazivAnketa, String opisAnketa, String aktivnaOd,
 			String aktivnaDo, String brojPitanja) {
 
-		Map<String, String> greska = new HashMap<>();
+		Map<String, String> greske = new HashMap<>();
 
 		if (nazivAnketa == null || nazivAnketa.isEmpty()) {
-			greska.put("nazivAnketa", "Polje naziva ankete je prazno");
+			greske.put("nazivAnketa", "Nije zadan ispravan naziv ankete");
 		}
 
 		if (aktivnaOd == null || aktivnaOd.isEmpty()) {
-			greska.put("aktivnaOd", "Polje ne smije biti prazno");
-			return greska;
+			greske.put("aktivnaOd", "Nije zadan datum početka ankete");
 		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
-			greska.put("aktivnaOd", "Format nije dobro zadan - dd/mm/gggg");
-			return greska;
+			greske.put("aktivnaOd", "Format nije dobro zadan - dd/mm/gggg");
 		}
 
 		if (aktivnaDo == null || aktivnaDo.isEmpty()) {
-			greska.put("aktivnaDo", "Polje ne smije biti prazno");
-			return greska;
+			greske.put("aktivnaDo", "Nije zadan datum završetka ankete");
 		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
-			greska.put("aktivnaDo", "Format nije dobro zadan - dd/mm/gggg");
-			return greska;
+			greske.put("aktivnaDo", "Format nije dobro zadan - dd/mm/gggg");
 		}
-
-		System.out.println(aktivnaOd);
-		System.out.println(aktivnaDo);
-		System.out.println(nazivAnketa);
-		System.out.println(opisAnketa);
-		System.out.println(brojPitanja);
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
 		LocalDate datumOd = LocalDate.parse(aktivnaOd, formatter);
 		LocalDate datumDo = LocalDate.parse(aktivnaDo, formatter);
 
 		if (!datumOd.isBefore(datumDo)) {
-			greska.put("aktivnaOd", "Datum nije kronološki dobro zadan");
-			greska.put("aktivnaDo", "Datum nije kronološki dobro zadan");
+			greske.put("aktivnaOdKron", "Datum nije kronološki dobro zadan");
+			greske.put("aktivnaDoKron", "Datum nije kronološki dobro zadan");
 		}
 
-		return greska;
+		return greske;
 
 	}
 

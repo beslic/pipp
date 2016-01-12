@@ -17,13 +17,13 @@
     
 <div class="container" id="odvojiOdHeadera">
   <ul class="nav nav-tabs">
-    <li <c:if test="${url == 0}"> class="active"</c:if>><a data-toggle="tab" href="#javne-ankete">Javne ankete</a></li>
+    <li <c:if test="${url == 0}">id="null" class="active"</c:if>><a data-toggle="tab" href="#javne-ankete">Javne ankete</a></li>
     <c:if test="${sessionScope.korisnik != null}">
-	    <li <c:if test="${url == 1}"> class="active"</c:if>><a data-toggle="tab" href="#moje-ankete">Moje ankete</a></li>
+	    <li <c:if test="${url == 1}">id="null" class="active"</c:if>><a data-toggle="tab" href="#moje-ankete">Moje ankete</a></li>
     </c:if>
     
       <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
-            <li <c:if test="${url == 2}"> class="active"</c:if>><a data-toggle="tab" href="#nova-anketa">Nova anketa</a></li>
+            <li <c:if test="${url == 2}">id="null" class="active"</c:if>><a data-toggle="tab" href="#nova-anketa">Nova anketa</a></li>
    	 </c:if>
     	
   </ul>

@@ -61,22 +61,31 @@
 		    
 		     <div class="form-group">
 		        <label class="col-md-4 control-label">Od</label>
-		        <div class="col-md-4">
+		        <div class="col-md-4 <c:if test="${greska.aktivnaOd != null}">has-error has-feedback</c:if>">
 		            <div class="input-group input-append date" id="dateRangePickerFrom">
-		                <input type="text" class="form-control" name="aktivnaOd" value="${forma.aktivnaOd}" />
+		                <input id="from" type="text" class="form-control input-md-4" name="aktivnaOd" value="${forma.aktivnaOd}" />
 		                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 		            </div>
+	                <c:if test="${greska.aktivnaOd != null}">
+                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                           <label class="control-label" for="from">${greska.aktivnaOd}</label>
+                           <label class="control-label" for="from">${greska.aktivnaOdKron}</label>
+                   </c:if>
 		        </div>
 		    </div>
 		    
 		    
 		    <div class="form-group">
 		        <label class="col-md-4 control-label">Do</label>
-		        <div class="col-md-4">
+		        <div class="col-md-4 <c:if test="${greska.aktivnaDo != null}">has-error has-feedback</c:if>">
 		            <div class="input-group input-append date" id="dateRangePickerTo">
-		                <input type="text" class="form-control" name="aktivnaDo" value="${forma.aktivnaDo}" />
+		                <input id="to" type="text" class="form-control input-md" name="aktivnaDo" value="${forma.aktivnaDo}" />
 		                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 		            </div>
+		            <c:if test="${greska.aktivnaDo != null}">
+                            <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                            <label class="control-label" for="to">${greska.aktivnaDo}</label>
+                    </c:if>
 		        </div>
 		    </div>
     
