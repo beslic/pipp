@@ -15,7 +15,10 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
 import com.loopj.android.http.SyncHttpClient;
 
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
+import org.apache.http.entity.StringEntity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -34,12 +37,15 @@ import javax.security.auth.callback.Callback;
  * Created by Mateo on 15.12.2015..
  */
 public class NetworkConnection {
-    private  String urlString= "http://10.129.46.220:8080/sza-webapp/android/";//"http://localhost:8080/sza-webapp/android/";
+    private  String urlString= "http://192.168.1.102:8080/sza-webapp/android/";
+    private URL url;
+    //"http://localhost:8080/sza-webapp/android/";
     //String URL="http://gurujsonrpc.appspot.com/guru";
      boolean prihvaceno = false;
      Context context;
      OnJSONResponseCallback callback;
     JSONObject odg;
+    StringEntity entity;
 
     public interface OnJSONResponseCallback {
         public void onJSONResponse(boolean success, JSONObject response);
@@ -56,17 +62,22 @@ public class NetworkConnection {
         //context = context;
         RequestParams params = new RequestParams();
 
-        //try{
-            //JSONObject korisnik = new JSONObject(stringKorisnik);
+        /*Http entity = new ByteArrayEntity(korisnik.toString().getBytes("UTF-8"));
+        entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        try {
+            entity = new StringEntity(korisnik);
+            url= new URL(urlString);
+        }catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }catch (MalformedURLException m){
+            m.printStackTrace();
+        }
+        entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));*/
+        params.add("korisnickoime", korisnik.getIme());
+        params.add("lozinka", korisnik.getLozinka());
+        Log.d("added params", korisnik.getIme());
 
-
-            //Http entity = new ByteArrayEntity(korisnik.toString().getBytes("UTF-8"));
-            //entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-            params.add("korisnickoIme", korisnik.getIme());
-            params.add("lozinka", korisnik.getLozinka());
-
-
-        httpClient.post(context, urlString,  params,  new JsonHttpResponseHandler() {
+        httpClient.post(context, urlString,  params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(JSONObject jsonObject) {
