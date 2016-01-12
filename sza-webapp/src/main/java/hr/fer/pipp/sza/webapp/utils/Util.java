@@ -131,22 +131,20 @@ public class Util {
 		
 		if (aktivnaOd == null || aktivnaOd.isEmpty()) {
 			greska.put("aktivnaOd", "Polje ne smije biti prazno");
+			return greska;
 		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
-			greska.put("aktivnaOd", "Format nije dobro zadan - dd/mm/gggg");
+			greska.put("aktivnaOd", "Format nije dobro zadan - mm/dd/gggg");
+			return greska;
 		}
 		
 		if (aktivnaDo == null || aktivnaDo.isEmpty()) {
 			greska.put("aktivnaDo", "Polje ne smije biti prazno");
+			return greska;
 		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
-			greska.put("aktivnaDo", "Format nije dobro zadan - dd/mm/gggg");
+			greska.put("aktivnaDo", "Format nije dobro zadan - mm/dd/gggg");
+			return greska;
 		}
 		
-		System.out.println(aktivnaOd);
-		System.out.println(aktivnaDo);
-		System.out.println(nazivAnketa);
-		System.out.println(opisAnketa);
-		System.out.println(brojPitanja);
-
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.ENGLISH);
 		LocalDate datumOd = LocalDate.parse(aktivnaOd, formatter);
 		LocalDate datumDo = LocalDate.parse(aktivnaDo, formatter);

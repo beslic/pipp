@@ -42,6 +42,7 @@ public class AnketaKontroler {
 			ankete = DAOAnketa.getDAO().dohvatiAnkete(true); // logiran
 		}
 		req.setAttribute("ankete", ankete);
+		req.setAttribute("url", "0");
 		return Response.ok(new Viewable("/ankete")).build();
 	}
 
@@ -80,7 +81,7 @@ public class AnketaKontroler {
 	public Response dodajAnketu(@Context HttpServletRequest req, @FormParam("nazivAnketa") String nazivAnketa,
 			@FormParam("opisAnketa") String opisAnketa, @FormParam("aktivnaOd") String aktivnaOd,
 			@FormParam("aktivnaDo") String aktivnaDo, @FormParam("brojPitanja") String brojPitanja)
-					throws ParseException {
+					throws ParseException, ServletException, IOException {
 
 		Map<String, String> greska = Util.provjeriFormuAnkete(nazivAnketa, opisAnketa, aktivnaOd, aktivnaDo,
 				brojPitanja);
@@ -101,6 +102,9 @@ public class AnketaKontroler {
 			anketa.setAktivnaDo(datum);
 
 			anketa.setBrojPitanja(Integer.parseInt(brojPitanja));
+			System.out.println(anketa.getBrojPitanja());
+			System.out.println(anketa.getNazivAnketa());
+			req.setAttribute("url", "1");
 
 			// TODO spremiti anketu u bazu
 
@@ -111,10 +115,12 @@ public class AnketaKontroler {
 			forma.put("aktivnaOd", aktivnaOd);
 			forma.put("aktivnaDo", aktivnaDo);
 			forma.put("brojPitanja", brojPitanja);
+			
 			req.setAttribute("forma", forma);
 			req.setAttribute("greska", greska);
+			req.setAttribute("url", "2");
 		}
 
-		return Response.ok(new Viewable("/ankete")).build();
+		return prikaziAnkete(req);
 	}
 }
