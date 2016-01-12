@@ -2,12 +2,10 @@ package hr.fer.pipp.sza.webapp.kontroleri;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
@@ -31,13 +29,13 @@ public class AndroidKontroler {
 		Gson gson = new Gson();
 
 		System.out.println("Android: " + login);
-		
+
 		if (login == null) {
 			return "{\"status\":\"failed\"}";
 		}
-		
+
 		String json = gson.toJson(login);
-		
+
 		JsonElement je = new JsonParser().parse(json);
 		JsonObject jo = je.getAsJsonObject();
 
