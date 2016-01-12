@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -75,6 +76,7 @@ public class AnketaKontroler {
 
 	@POST
 	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response dodajAnketu(@Context HttpServletRequest req, @FormParam("nazivAnketa") String nazivAnketa,
 			@FormParam("opisAnketa") String opisAnketa, @FormParam("aktivnaOd") String aktivnaOd,
 			@FormParam("aktivnaDo") String aktivnaDo, @FormParam("brojPitanja") String brojPitanja)
@@ -90,7 +92,7 @@ public class AnketaKontroler {
 			anketa.setOpisAnketa(opisAnketa);
 			anketa.setVrijemeIzrada(new Date());
 
-			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+			DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
 
 			Date datum = format.parse(aktivnaOd);
 			anketa.setAktivnaOd(datum);

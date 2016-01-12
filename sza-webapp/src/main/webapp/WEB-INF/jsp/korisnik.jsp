@@ -43,11 +43,14 @@
         <td>Uloga</td>
         <td>
          	<c:choose>
+         		<c:when test="${sessionScope.korisnik.razinaPrava == 0}">
+			           	Administrator sustava 
+		        </c:when>
 		        <c:when test="${sessionScope.korisnik.razinaPrava == 1}">
-			           	Anketar 
+			           	Narucitelj ankete 
 		        </c:when>
 		        <c:otherwise>
-		            	Narucitelj ankete
+		            	Anketar
 		        </c:otherwise>
     		</c:choose>
         </td>

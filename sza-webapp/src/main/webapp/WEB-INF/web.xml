@@ -1,36 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This web.xml file is not required when using Servlet 3.0 container,
      see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html -->
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-
-    <filter>
-        <filter-name>Jersey Web Application</filter-name>
-        <filter-class>org.glassfish.jersey.servlet.ServletContainer</filter-class>
-        <init-param>
-            <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>hr.fer.pipp.sza.webapp</param-value>
-        </init-param>
-        <init-param>
-            <param-name>jersey.config.server.mvc.templateBasePath.jsp</param-name>
-            <param-value>/WEB-INF/jsp</param-value>
-        </init-param>
-        <init-param>
-            <param-name>jersey.config.server.provider.classnames</param-name>
-            <param-value>org.glassfish.jersey.server.mvc.jsp.JspMvcFeature</param-value>
-        </init-param>
-        <init-param>
-            <param-name>jersey.config.server.tracing</param-name>
-            <param-value>ALL</param-value>
-        </init-param>
-        <init-param>
-            <param-name>jersey.config.servlet.filter.staticContentRegex</param-name>
-            <param-value>/(((css|html|images|js|webjars)/.*)|(favicon\.ico)|(robots\.txt)|(.*\.jsp)|(.*\.html))</param-value>
-        </init-param>
-    </filter>
-    
-    <filter-mapping>
-        <filter-name>Jersey Web Application</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <filter>
+    <filter-name>Jersey Web Application</filter-name>
+    <filter-class>org.glassfish.jersey.servlet.ServletContainer</filter-class>
+    <init-param>
+      <param-name>jersey.config.server.provider.packages</param-name>
+      <param-value>hr.fer.pipp.sza.webapp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.server.mvc.templateBasePath.jsp</param-name>
+      <param-value>/WEB-INF/jsp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.server.provider.classnames</param-name>
+      <param-value>org.glassfish.jersey.server.mvc.jsp.JspMvcFeature</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.server.tracing</param-name>
+      <param-value>ALL</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.servlet.filter.staticContentRegex</param-name>
+      <param-value>/(((css|html|images|js|webjars)/.*)|(favicon\.ico)|(robots\.txt)|(.*\.jsp)|(.*\.html))</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>Jersey Web Application</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AnketaFormaKontroler</display-name>
+    <servlet-name>AnketaFormaKontroler</servlet-name>
+    <servlet-class>hr.fer.pipp.sza.webapp.kontroleri.AnketaFormaKontroler</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AnketaFormaKontroler</servlet-name>
+    <url-pattern>/AnketaFormaKontroler</url-pattern>
+  </servlet-mapping>
 </web-app>

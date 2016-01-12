@@ -31,7 +31,8 @@ public class RegistracijaKontroler {
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziRegistracija() throws ServletException, IOException {
+	public Response prikaziRegistracija(@Context HttpServletRequest req) throws ServletException, IOException {
+		req.setAttribute("url", 2);
 		return Response.ok(new Viewable("/registracija")).build();
 	}
 
@@ -52,7 +53,7 @@ public class RegistracijaKontroler {
 			korisnik.setIme(ime);
 			korisnik.setPrezime(prezime);
 			korisnik.setEmail(email);
-			korisnik.setRazinaPrava((razinaPrava != null) ? 1 : 0);
+			korisnik.setRazinaPrava(("1".equals(razinaPrava)) ? 1 : 2);
 			korisnik.setAktivan(true);
 			try {
 				korisnik.setLozinka(PasswordHash.createHash(lozinka));

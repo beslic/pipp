@@ -11,12 +11,10 @@
 </head>
 
 <body>
+<jsp:include page="header.jsp" />
+
 <div class="container">
 	    <form class="form-horizontal" method="post">
-	    <div class="btn-toolbar">
-          <button type="button" onclick="location.href='/sza-webapp/prijava/'" class="btn btn-default pull-right">Prijava</button>
-          <button type="button" onclick="location.href='/sza-webapp/'" class="btn btn-default pull-right">Početna</button>
-        </div>
         <fieldset>
           <!-- Form Name -->
   		  <div class="col-md-9">
