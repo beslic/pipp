@@ -1,14 +1,14 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,7 +17,7 @@ public class Ispunjavanje {
 
 	@Id
 	@GeneratedValue
-	private int idIspunjavanje;
+	private long id;
 
 	@ManyToOne
 	private Korisnik anketar;
@@ -26,36 +26,33 @@ public class Ispunjavanje {
 	private Anketa anketa;
 
 	@Column(nullable = false)
-	private Date vrijemeIspunjavanja;
+	private Date vrijeme;
 
-	@Column(nullable = false)
-	private float longitunde;
+	@ManyToOne
+	private GPSPozicija pozicija;
 
-	@Column(nullable = false)
-	private float latitude;
-
-
+	@ManyToMany
+	private Collection<Odgovor> odgovori;
 
 	public Ispunjavanje() {
+
 	}
 
-	public Ispunjavanje(Korisnik anketar, Anketa anketa, Date vrijemeIspunjavanja, float longitunde, float latitude,
-			List<Odgovor> odabraniOdgovor) {
+	public Ispunjavanje(Korisnik anketar, Anketa anketa, GPSPozicija pozicija, Collection<Odgovor> odgovori) {
 		super();
 		this.anketar = anketar;
 		this.anketa = anketa;
-		this.vrijemeIspunjavanja = vrijemeIspunjavanja;
-		this.longitunde = longitunde;
-		this.latitude = latitude;
-		this.odabraniOdgovor = odabraniOdgovor;
+		this.pozicija = pozicija;
+		this.odgovori = odgovori;
+		this.vrijeme = new Date();
 	}
 
-	public int getIdIspunjavanje() {
-		return idIspunjavanje;
+	public long getId() {
+		return id;
 	}
 
-	public void setIdIspunjavanje(int idIspunjavanje) {
-		this.idIspunjavanje = idIspunjavanje;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public Korisnik getAnketar() {
@@ -74,46 +71,35 @@ public class Ispunjavanje {
 		this.anketa = anketa;
 	}
 
-	public Date getVrijemeIspunjavanja() {
-		return vrijemeIspunjavanja;
+	public Date getVrijeme() {
+		return vrijeme;
 	}
 
-	public void setVrijemeIspunjavanja(Date vrijemeIspunjavanja) {
-		this.vrijemeIspunjavanja = vrijemeIspunjavanja;
+	public void setVrijeme(Date vrijeme) {
+		this.vrijeme = vrijeme;
 	}
 
-	public float getLongitunde() {
-		return longitunde;
+	public GPSPozicija getPozicija() {
+		return pozicija;
 	}
 
-	public void setLongitunde(float longitunde) {
-		this.longitunde = longitunde;
+	public void setPozicija(GPSPozicija pozicija) {
+		this.pozicija = pozicija;
 	}
 
-	public float getLatitude() {
-		return latitude;
+	public Collection<Odgovor> getOdgovori() {
+		return odgovori;
 	}
 
-	public void setLatitude(float latitude) {
-		this.latitude = latitude;
-	}
-
-	public List<Odgovor> getOdabraniOdgovor() {
-		return odabraniOdgovor;
-	}
-
-	public void setOdabraniOdgovor(List<Odgovor> odabraniOdgovor) {
-		this.odabraniOdgovor = odabraniOdgovor;
+	public void setOdgovori(Collection<Odgovor> odgovori) {
+		this.odgovori = odgovori;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((anketa == null) ? 0 : anketa.hashCode());
-		result = prime * result + ((anketar == null) ? 0 : anketar.hashCode());
-		result = prime * result + idIspunjavanje;
-		result = prime * result + ((vrijemeIspunjavanja == null) ? 0 : vrijemeIspunjavanja.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
 
@@ -126,28 +112,15 @@ public class Ispunjavanje {
 		if (getClass() != obj.getClass())
 			return false;
 		Ispunjavanje other = (Ispunjavanje) obj;
-		if (anketa == null) {
-			if (other.anketa != null)
-				return false;
-		} else if (!anketa.equals(other.anketa))
-			return false;
-		if (anketar == null) {
-			if (other.anketar != null)
-				return false;
-		} else if (!anketar.equals(other.anketar))
-			return false;
-		if (idIspunjavanje != other.idIspunjavanje)
-			return false;
-		if (vrijemeIspunjavanja == null) {
-			if (other.vrijemeIspunjavanja != null)
-				return false;
-		} else if (!vrijemeIspunjavanja.equals(other.vrijemeIspunjavanja))
+		if (id != other.id)
 			return false;
 		return true;
 	}
-	
-	
 
-	
-	
+	@Override
+	public String toString() {
+		return "Ispunjavanje [id=" + id + ", anketar=" + anketar.getKorisnickoIme() + ", anketa="
+				+ anketa.getNazivAnketa() + ", vrijeme=" + vrijeme + ", pozicija=" + pozicija + "]";
+	}
+
 }

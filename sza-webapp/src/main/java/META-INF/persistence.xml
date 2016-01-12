@@ -29,28 +29,14 @@
             
             <!-- Postavke za spajanje na bazu podataka -->          
             <!-- ===================================== -->
-            <!-- Trenutni način spajanja na bazu podataka stvara stalnu Derby bazu 'vblDB' na disku (ako ne postoji).
-                 Nije potrebno nikakvo dodatno pokretanje baze podataka, smo pokretuti Tomcat Server. -->
-            <!-- Za potrebe testiranja, može se stvoriti privremena Derby baza podataka tako što se u url doda memory.
-                 Takav url onda izgleda ovako: jdbc:derby:memory:testDB (nije potrebna create opcija). -->
-            <!-- Za spajanje na već pokrenutu Derby bazu, koristiti driver: org.apache.derby.jdbc.ClientDriver
-                 i url za spajanje: jdbc:derby://localhost:1527/{nazivBaze};create=true. -->
-            <!-- Za spajanje na bilo koju drugu bazu podataka, potrebno je dodati odgovarajući JDBC driver u pom.xml
-                 (pogledati primjer za PostrgreSQL) i promijeniti vrijednost JDBC drivera, postaviti odgovarajući 
-                 url i promijeniti SQL dijalekt. Primjer za PostgreSQL: -->
-            <!-- driver: org.postgresql.Driver -->
-            <!-- url: jdbc:postgresql://localhost:5432/vblDB;create=true -->
-            <!-- dialect: org.hibernate.dialect.PostgreSQLDialect -->
-            <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver" />
-
-            
-            <property name="hibernate.connection.url" value="jdbc:derby://Users/Marin/szaDB" />
-            <property name="hibernate.connection.username" value="admin" />
-            <property name="hibernate.connection.password" value="admin" />
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/szaDB" />
+            <property name="hibernate.connection.username" value="postgres" />
+            <property name="hibernate.connection.password" value="postgres" />
             <property name="hibernate.connection.CharSet" value="utf8" />
             <property name="hibernate.connection.characterEncoding" value="utf8" />
             <property name="hibernate.connection.useUnicode" value="true" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
             
             <!-- Postavke transakcijskog rada -->           
             <!-- ============================ -->

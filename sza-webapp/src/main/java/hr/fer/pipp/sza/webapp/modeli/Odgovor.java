@@ -1,9 +1,12 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -14,15 +17,18 @@ public class Odgovor {
 	@Id
 	@GeneratedValue
 	private int idOdgovor;
-	
+
 	@ManyToOne
 	private Pitanje pitanje;
-	
+
 	@Column(nullable = false)
 	private int rbrOdgovor;
 
 	@Column(nullable = false)
 	private String textOdgovor;
+
+	@ManyToMany(mappedBy = "odgovori")
+	private Collection<Ispunjavanje> ispunjavanja;
 
 	public Odgovor() {
 	}
@@ -63,6 +69,14 @@ public class Odgovor {
 
 	public void setTextOdgovor(String textOdgovor) {
 		this.textOdgovor = textOdgovor;
+	}
+
+	public Collection<Ispunjavanje> getIspunjavanja() {
+		return ispunjavanja;
+	}
+
+	public void setIspunjavanja(Collection<Ispunjavanje> ispunjavanja) {
+		this.ispunjavanja = ispunjavanja;
 	}
 
 	@Override
