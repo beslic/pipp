@@ -32,15 +32,7 @@
           <div class="form-group">
             <label id="passwordlabel" class="col-md-4 control-label" for="passwordinput">Opis ankete</label>
             <div class="col-md-4">
-              
               <textarea id="comment" name="opisAnketa" class="form-control input-md" rows="5"  placeholder="Unesite opis ankete" aria-describedby="errorstatus"></textarea>
-              
-              <c:if test="${greska.opisAnketa != null}">
-                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                <label class="control-label" for="comment">${greska.opisAnketa}</label>
-                <span id="errorstatus" class="sr-only">(error)</span>
-              </c:if>
-             
             </div>
           </div>
           	    
@@ -60,7 +52,7 @@
 		        <label class="col-md-4 control-label"></label>
 		        <div class="col-md-4">
 		            <div class="input-group input-append date" >
-		            <b>Datum provodenja ankete</b>
+		             <b>Datum provodenja ankete</b>
 		            </div>
 		            <hr>
 		        </div>

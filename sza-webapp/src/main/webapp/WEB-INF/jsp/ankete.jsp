@@ -23,25 +23,25 @@
     </c:if>
     
       <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
-            <li <c:if test="${url == 2}"> class="active"</c:if>><a data-toggle="tab" href="#nova-anketa">Nova ankete</a></li>
+            <li <c:if test="${url == 2}"> class="active"</c:if>><a data-toggle="tab" href="#nova-anketa">Nova anketa</a></li>
    	 </c:if>
     	
   </ul>
 
   <div class="tab-content">
-    <div id="javneAnkete" class="tab-pane fade <c:if test="${url == 0}">in active</c:if>">
+    <div id="javne-ankete" class="tab-pane fade <c:if test="${url == 0}">in active</c:if>">
           <h2>Ovdje ide popis javnih anketa</h2>
     </div>
     <c:if test="${sessionScope.korisnik != null}">
     
-    <div id="mojeAnkete" class="tab-pane fade <c:if test="${url == 1}">in active</c:if>">
+    <div id="moje-ankete" class="tab-pane fade <c:if test="${url == 1}">in active</c:if>">
           <h2>Ovdje ide popis privatnih anketa</h2>
     </div>
     </c:if>
     
     <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
     
-    <div id="novaAnketa" class="tab-pane fade <c:if test="${url == 2}">in active</c:if>">
+    <div id="nova-anketa" class="tab-pane fade <c:if test="${url == 2}">in active</c:if>">
           <jsp:include page="anketaForma.jsp" />
     </div>
     </c:if>
@@ -52,9 +52,9 @@
 	$(document).ready(function() {
 		 $('#dateRangePickerFrom')
 	     .datepicker({
-	         format: 'mm/dd/yyyy',
+	         format: 'dd/mm/yyyy',
 	         startDate: '01/01/2010',
-	         endDate: '12/30/2020'
+	         endDate: '31/12/2020'
 	     })
 	     .on('changeDate', function(e) {
 	         // Revalidate the date field
@@ -63,9 +63,9 @@
 	 
     $('#dateRangePickerTo')
         .datepicker({
-            format: 'mm/dd/yyyy',
+            format: 'dd/mm/yyyy',
             startDate: '01/01/2010',
-            endDate: '12/30/2020'
+            endDate: '31/12/2020'
         })
         .on('changeDate', function(e) {
             // Revalidate the date field
@@ -83,13 +83,13 @@
             date: {
                 validators: {
                     notEmpty: {
-                        message: 'The date is required'
+                        message: 'Potrebno je odabrati datum'
                     },
                     date: {
-                        format: 'MM/DD/YYYY',
+                        format: 'DD/MM/YYYY',
                         min: '01/01/2010',
-                        max: '12/30/2020',
-                        message: 'The date is not a valid'
+                        max: '30/12/2020',
+                        message: 'Datum nije ispravan'
                     }
                 }
             }

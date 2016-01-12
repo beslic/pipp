@@ -1,5 +1,7 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
@@ -36,8 +38,13 @@ public class AndroidKontroler {
 		JsonElement je = new JsonParser().parse(json);
 		JsonObject jo = je.getAsJsonObject();
 
-		Map<String, String> greska = Util.provjeriFormuPrijavljivanjaAnketara(jo.get("ime").getAsString(),
-				jo.get("lozinka").getAsString());
+		Map<String, String> greska = null;
+		try {
+			greska = Util.provjeriFormuPrijavljivanjaAnketara(jo.get("ime").getAsString(),
+					jo.get("lozinka").getAsString());
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			e.printStackTrace();
+		}
 
 		JsonObject jsonObj = new JsonObject();
 

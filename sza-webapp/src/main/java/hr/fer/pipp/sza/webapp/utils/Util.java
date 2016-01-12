@@ -94,7 +94,8 @@ public class Util {
 		return greska;
 	}
 
-	public static Map<String, String> provjeriFormuPrijavljivanjaAnketara(String korisnickoIme, String lozinka) {
+	public static Map<String, String> provjeriFormuPrijavljivanjaAnketara(String korisnickoIme, String lozinka)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
 
 		Map<String, String> greska = new HashMap<>();
 
@@ -113,7 +114,7 @@ public class Util {
 		if (lozinka == null || lozinka.length() < 8) {
 			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
 			return greska;
-		} else if (!lozinka.equals(korisnik.getLozinka())) {
+		} else if (!PasswordHash.validatePassword(lozinka, korisnik.getLozinka())) {
 			greska.put("lozinka", "Lozinka je netočna");
 			return greska;
 		}
