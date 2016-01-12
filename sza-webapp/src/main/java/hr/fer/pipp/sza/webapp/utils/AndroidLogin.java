@@ -1,27 +1,27 @@
 package hr.fer.pipp.sza.webapp.utils;
 
 public class AndroidLogin {
-	
-	private String korisnickoIme;
-	
+
+	private String ime;
+
 	private String lozinka;
-	
+
 	public AndroidLogin() {
 
 	}
 
-	public AndroidLogin(String korisnickoIme, String lozinka) {
+	public AndroidLogin(String ime, String lozinka) {
 		super();
-		this.korisnickoIme = korisnickoIme;
+		this.ime = ime;
 		this.lozinka = lozinka;
 	}
 
-	public String getKorisnickoIme() {
-		return korisnickoIme;
+	public String getIme() {
+		return ime;
 	}
 
-	public void setKorisnickoIme(String korisnickoIme) {
-		this.korisnickoIme = korisnickoIme;
+	public void setIme(String ime) {
+		this.ime = ime;
 	}
 
 	public String getLozinka() {
@@ -36,7 +36,7 @@ public class AndroidLogin {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((korisnickoIme == null) ? 0 : korisnickoIme.hashCode());
+		result = prime * result + ((ime == null) ? 0 : ime.hashCode());
 		return result;
 	}
 
@@ -49,17 +49,17 @@ public class AndroidLogin {
 		if (getClass() != obj.getClass())
 			return false;
 		AndroidLogin other = (AndroidLogin) obj;
-		if (korisnickoIme == null) {
-			if (other.korisnickoIme != null)
+		if (ime == null) {
+			if (other.ime != null)
 				return false;
-		} else if (!korisnickoIme.equals(other.korisnickoIme))
+		} else if (!ime.equals(other.ime))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "AndroidLogin [korisnickoIme=" + korisnickoIme + ", lozinka=" + lozinka + "]";
+		return "AndroidLogin [korisnickoIme=" + ime + ", lozinka=" + lozinka + "]";
 	}
 
 }

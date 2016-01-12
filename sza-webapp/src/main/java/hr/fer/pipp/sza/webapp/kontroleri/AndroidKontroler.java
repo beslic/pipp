@@ -15,7 +15,6 @@ import com.google.gson.JsonParser;
 
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
-import hr.fer.pipp.sza.webapp.utils.AndroidLogin;
 import hr.fer.pipp.sza.webapp.utils.Util;
 
 @Path("/android")
@@ -24,22 +23,20 @@ public class AndroidKontroler {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String provjeriKorisnika(AndroidLogin login) {
+	public String provjeriKorisnika(String json) {
 
 		Gson gson = new Gson();
 
-		System.out.println("Android: " + login);
+		System.out.println("Android: " + json);
 
-		if (login == null) {
+		if (json == null || json.length() < 2) {
 			return "{\"status\":\"failed\"}";
 		}
-
-		String json = gson.toJson(login);
 
 		JsonElement je = new JsonParser().parse(json);
 		JsonObject jo = je.getAsJsonObject();
 
-		Map<String, String> greska = Util.provjeriFormuPrijavljivanjaAnketara(jo.get("korisnickoime").getAsString(),
+		Map<String, String> greska = Util.provjeriFormuPrijavljivanjaAnketara(jo.get("ime").getAsString(),
 				jo.get("lozinka").getAsString());
 
 		JsonObject jsonObj = new JsonObject();
@@ -47,15 +44,15 @@ public class AndroidKontroler {
 		if (greska.isEmpty()) {
 			jsonObj.addProperty("status", "success");
 			// dohvati korisnika iz baze
-			Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(jo.get("korisnickoime").getAsString());
+			Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(jo.get("ime").getAsString());
 			// pretvori ga u JSON objekt
 			JsonObject innerJson = new JsonParser().parse(gson.toJson(korisnik)).getAsJsonObject();
 			// spremi ga kako property vanjskog JSON-a
 			jsonObj.add("korisnik", innerJson);
 		} else {
 			jsonObj.addProperty("status", "failed");
-			if (greska.containsKey("korisnickoime")) {
-				jsonObj.addProperty("errormessage", greska.get("korisnickoime"));
+			if (greska.containsKey("ime")) {
+				jsonObj.addProperty("errormessage", greska.get("ime"));
 			} else if (greska.containsKey("lozinka")) {
 				jsonObj.addProperty("errormessage", greska.get("lozinka"));
 			}
