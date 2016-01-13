@@ -191,4 +191,8 @@ public class PasswordHash {
 			return hex;
 	}
 
+	public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		System.out.println(PasswordHash.validatePassword("petar", PasswordHash.createHash("petar")));
+	}
+
 }

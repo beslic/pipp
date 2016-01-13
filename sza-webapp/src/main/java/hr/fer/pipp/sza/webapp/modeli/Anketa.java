@@ -19,7 +19,7 @@ public class Anketa {
 
 	@Id
 	@GeneratedValue
-	private int idAnketa;
+	private long idAnketa;
 
 	@ManyToOne
 	private Korisnik vlasnik;
@@ -64,11 +64,11 @@ public class Anketa {
 		this.aktivnaDo = aktivnaDo;
 	}
 
-	public int getIdAnketa() {
+	public long getIdAnketa() {
 		return idAnketa;
 	}
 
-	public void setIdAnketa(int idAnketa) {
+	public void setIdAnketa(long idAnketa) {
 		this.idAnketa = idAnketa;
 	}
 
@@ -140,7 +140,7 @@ public class Anketa {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + idAnketa;
+		result = prime * result + (int) (idAnketa ^ (idAnketa >>> 32));
 		return result;
 	}
 

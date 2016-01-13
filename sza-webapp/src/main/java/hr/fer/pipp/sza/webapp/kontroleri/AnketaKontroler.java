@@ -36,13 +36,17 @@ public class AnketaKontroler {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziAnkete(@Context HttpServletRequest req) throws ServletException, IOException {
-		List<Anketa> ankete;
-		if (req.getSession().getAttribute("korisnik") == null) {
-			ankete = DAOAnketa.getDAO().dohvatiAnkete(false); // nije logiran
-		} else {
-			ankete = DAOAnketa.getDAO().dohvatiAnkete(true); // logiran
+		List<Anketa> javne = DAOAnketa.getDAO().dohvatiJavneAnkete();
+		if (!javne.isEmpty()) {
+			req.setAttribute("javneAnkete", javne);
 		}
-		req.setAttribute("ankete", ankete);
+		Korisnik k = (Korisnik) req.getSession().getAttribute("korisnik");
+		if (k != null) {
+			List<Anketa> privatne = DAOAnketa.getDAO().dohvatiPrivatneAnkete(k);
+			if (!privatne.isEmpty()) {
+				req.setAttribute("privatneAnkete", privatne);
+			}
+		}
 		if (req.getAttribute("tab") == null) {
 			req.setAttribute("tab", "javne-ankete");
 		}
@@ -50,31 +54,14 @@ public class AnketaKontroler {
 	}
 
 	@GET
-	@Path("/{idnazivanketa}")
+	@Path("/{id-naziv}")
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("idnazivanketa") String idNazivAnketa) {
-		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0])); // dohvati
-																											// po
-																											// id-u
-		if (anketa != null && req.getSession().getAttribute("korisnik") != null) { // ako
-																					// je
-																					// korisnik
-																					// logiran,
-																					// nije
-																					// bitno
-																					// je
-																					// li
-																					// anketa
-																					// privatna
-			req.setAttribute("anketa", anketa);
-		} else if (anketa != null && !anketa.isJePrivatna()) { // ako korisnik
-																// nije logiran,
-																// onda anketa
-																// mora biti
-																// javna da bi
-																// ju vidio
-			req.setAttribute("anketa", anketa);
+	public Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("id-naziv") String idNazivAnketa) {
+		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
+			return Response.ok(new Viewable("/anketa")).build();
 		}
+		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0]));
+
 		return Response.ok(new Viewable("/anketa")).build();
 	}
 

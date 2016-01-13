@@ -17,14 +17,14 @@ public class Korisnik {
 
 	@Id
 	@GeneratedValue
-	private int id;
+	private long id;
 
 	@Column(nullable = false)
 	private String ime;
-	
+
 	@Column(nullable = false)
 	private String prezime;
-	
+
 	@Column(unique = true, nullable = false)
 	private String korisnickoIme;
 
@@ -33,10 +33,10 @@ public class Korisnik {
 
 	@Column(unique = true, nullable = false)
 	private String email;
-	
+
 	@Column(nullable = false)
 	private int razinaPrava;
-	
+
 	@Column
 	@Type(type = "yes_no")
 	private boolean aktivan;
@@ -63,7 +63,7 @@ public class Korisnik {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -135,8 +135,7 @@ public class Korisnik {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + id;
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((korisnickoIme == null) ? 0 : korisnickoIme.hashCode());
 		return result;
 	}
@@ -150,11 +149,6 @@ public class Korisnik {
 		if (getClass() != obj.getClass())
 			return false;
 		Korisnik other = (Korisnik) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
 		if (id != other.id)
 			return false;
 		if (korisnickoIme == null) {

@@ -16,7 +16,7 @@
     <jsp:include page="header.jsp" />
     
 <div class="container" id="odvojiOdHeadera">
-  <ul id="tabovi" class="nav nav-pills nav-justified">
+  <ul id="tabovi" class="nav nav-tabs nav-justified">
     <li class="active"><a data-toggle="tab" href="#javne-ankete">Javne ankete</a></li>
     <c:if test="${sessionScope.korisnik != null}">
 	    <li><a data-toggle="tab" href="#moje-ankete">Moje ankete</a></li>
@@ -30,20 +30,28 @@
 
   <div class="tab-content">
     <div id="javne-ankete" class="tab-pane fade in active">
-          <h2>Ovdje ide popis javnih anketa</h2>
+        <c:if test="${javneAnkete == null}">
+            <h3>Nema javno dostupnih anketa</h3>
+        </c:if>
+        <c:forEach var="anketa" items="${javneAnkete}">
+            <c:set var="uri" value="${anketa.idAnketa}-${anketa.nazivAnketa}"/>
+            <h3><a href="/sza-webapp/ankete/${url}${fn:replace(uri, ' ', '-')}/">${anketa.nazivAnketa}</a></h3>
+        </c:forEach>
     </div>
     <c:if test="${sessionScope.korisnik != null}">
-    
-    <div id="moje-ankete" class="tab-pane fade">
-          <h2>Ovdje ide popis privatnih anketa</h2>
-    </div>
+        <div id="moje-ankete" class="tab-pane fade">
+            <c:if test="${privatneAnkete == null}">
+                <h3>Nemate još nijednu anketu</h3>
+            </c:if>
+            <c:forEach var="anketa" items="${javneAnkete}">
+                <p>${anketa.nazivAnketa}</p>
+            </c:forEach>
+        </div>
     </c:if>
-    
     <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
-    
-    <div id="nova-anketa" class="tab-pane fade">
-          <jsp:include page="anketaForma.jsp" />
-    </div>
+        <div id="nova-anketa" class="tab-pane fade">
+            <jsp:include page="anketaForma.jsp" />
+        </div>
     </c:if>
   </div>
 </div>

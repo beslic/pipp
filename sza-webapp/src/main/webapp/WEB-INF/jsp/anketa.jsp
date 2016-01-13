@@ -12,6 +12,6 @@
 </head>
 <body>
     <jsp:include page="header.jsp" />
-    <h2>Ovdje idu podaci o anketi ${anketa}</h2>
+    
 </body>
 </html>

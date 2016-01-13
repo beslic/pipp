@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
-import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.dao.IDAOAnketa;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
@@ -13,22 +12,7 @@ import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 public class JPADAOAnketa implements IDAOAnketa {
 
 	@Override
-	public List<Anketa> dohvatiAnkete(boolean logiran) {
-		String query = "FROM Anketa";
-		if (!logiran) {
-			query += " A WHERE A.jePrivatna = 'N'";
-		}
-		return JPAEMProvider.getEntityManager().createQuery(query, Anketa.class).getResultList();
-	}
-
-	@Override
-	public List<Anketa> dohvatiOdKorisnika(String korisnickoIme) {
-		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
-		return korisnik.getAnketa();
-	}
-
-	@Override
-	public Anketa dohvatiAnketu(int id) {
+	public Anketa dohvatiAnketu(long id) {
 		Anketa anketa = null;
 		try {
 			anketa = JPAEMProvider.getEntityManager().createQuery("FROM Anketa A WHERE A.id = :id", Anketa.class)
@@ -41,18 +25,31 @@ public class JPADAOAnketa implements IDAOAnketa {
 	@Override
 	public Anketa spremiAnketu(Anketa anketa) {
 		EntityManager em = JPAEMProvider.getEntityManager().getEntityManagerFactory().createEntityManager();
-		Anketa a = em.find(Anketa.class, anketa.getIdAnketa());
+		Korisnik k = em.find(Korisnik.class, anketa.getVlasnik().getId());
 		em.getTransaction().begin();
-		a.setNazivAnketa(anketa.getNazivAnketa());
-		a.setOpisAnketa(anketa.getOpisAnketa());
-		a.setBrojPitanja(anketa.getBrojPitanja());
-		a.setAktivnaDo(anketa.getAktivnaDo());
-		a.setAktivnaOd(anketa.getAktivnaOd());
-		a.setJePrivatna(anketa.isJePrivatna());
-		a.setVlasnik(anketa.getVlasnik());
+		em.persist(anketa);
+		k.getAnketa().add(anketa);
 		em.getTransaction().commit();
 		em.close();
 		return anketa;
+	}
+
+	@Override
+	public List<Anketa> dohvatiPrivatneAnkete(Korisnik korisnik) {
+		return JPAEMProvider.getEntityManager().createQuery("FROM Anketa A WHERE A.vlasnik = :v", Anketa.class)
+				.setParameter("v", korisnik).getResultList();
+	}
+
+	@Override
+	public List<Anketa> dohvatiJavneAnkete() {
+		return JPAEMProvider.getEntityManager().createQuery("FROM Anketa A WHERE A.jePrivatna = 'N'", Anketa.class)
+				.getResultList();
+	}
+
+	public List<Anketa> dohvatiAnkete(boolean logiran) {
+		return JPAEMProvider.getEntityManager()
+				.createQuery("FROM Anketa A" + ((!logiran) ? "WHERE A.jePrivatna = 'N'" : ""), Anketa.class)
+				.getResultList();
 	}
 
 }
