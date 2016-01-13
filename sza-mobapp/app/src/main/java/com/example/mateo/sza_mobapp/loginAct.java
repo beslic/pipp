@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
@@ -56,7 +57,6 @@ public class loginAct extends AppCompatActivity{
         passE=(EditText) findViewById(R.id.loginEdit2);
         login = getSharedPreferences("LOGIN", Context.MODE_PRIVATE); //Podaci o log in-u kao "SharedPreferences"
         loginEdit = login.edit();
-
         gson = new Gson();
     }
 
@@ -73,7 +73,7 @@ public class loginAct extends AppCompatActivity{
         String jsonKorisnik = gson.toJson(korisnik);
         //Korisnik k = gson.fromJson(jsonKorisnik, Korisnik.class);
         Log.d("*****KORISNIK", jsonKorisnik);
-        NetworkConnection PROVJERA = new NetworkConnection(getApplicationContext());
+        NetworkConnection PROVJERA = new NetworkConnection(getApplicationContext(), login.getString("ADRESA_SERVERA", "192.168.1.102")+":8080/sza-webapp/android/");
 
 
         if(PROVJERA.isConnected()==false){
@@ -114,7 +114,12 @@ public class loginAct extends AppCompatActivity{
 
                 if (jsonOdgovor.get("status").toString().equals("success")) {
                     loginEdit.putString("USERNAME", korisnik.getIme());
-                    loginEdit.putString("PASSWORD", korisnik.getLozinka());
+
+                    //*****************************************
+                    loginEdit.putString("PASSWORD", "ovdje treba stavit lozinku");
+                    Log.d("password2", "test lozinke");
+                    //**********************************************
+
                     loginEdit.putBoolean("PRIJAVLJEN", true);
                     loginEdit.commit();
                     Log.d("*****Login", "SUCCESS");
@@ -206,9 +211,40 @@ public class loginAct extends AppCompatActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "Morate biti prijavljeni!", Toast.LENGTH_LONG).show();
             return true;
         }
+        if(id == R.id.network_settings){
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("Network");
+            alertDialog.setMessage("Network address?");
+            final EditText input = new EditText(loginAct.this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            input.setLayoutParams(lp);
+            input.setHint(login.getString("ADRESA_SERVERA", ""));
+            alertDialog.setView(input);
 
+            alertDialog.setPositiveButton("OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            loginEdit.putString("ADRESA_SERVERA", input.getText().toString());
+                            loginEdit.commit();
+                            Log.d("Network Changed", input.getText().toString());
+                        }
+                    });
+
+            alertDialog.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            //cancel = true;
+                        }
+                    });
+
+            alertDialog.show();
+        }
         return super.onOptionsItemSelected(item);
     }
 }

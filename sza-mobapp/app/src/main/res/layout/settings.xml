@@ -29,6 +29,28 @@
         android:layout_height="wrap_content"
         android:text="very important setting"
         android:id="@+id/switch1"
-        android:checked="false"
-        android:layout_weight="0.03" />
+        android:checked="false" />
+
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="more settings"
+        android:id="@+id/switch2"
+        android:checked="false" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="RATE!!!"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>

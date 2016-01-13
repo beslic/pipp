@@ -33,7 +33,7 @@
         </activity>
         <activity
             android:name=".loginAct"
-            android:label="loginActivity1"
+            android:label="Login"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
@@ -44,7 +44,7 @@
         </activity>
         <activity
             android:name=".listaPitanja2"
-            android:label="@string/title_activity_lista_pitanja2"
+            android:label="Pitanja"
             android:parentActivityName=".Pocetak_ispunjavanja_ankete"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -53,12 +53,18 @@
         </activity>
         <activity
             android:name=".Pocetak_ispunjavanja_ankete"
-            android:label="@string/title_activity_pocetak_ispunjavanja_ankete"
+            android:label="Početak ispinjavanja ankete"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.mateo.sza_mobapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Settings"
+            android:label="Postavke"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

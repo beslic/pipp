@@ -1,9 +1,12 @@
 package com.example.mateo.sza_mobapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.*;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,6 +14,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 //import android.widget.ShareActionProvider;
 import android.widget.TextView;
@@ -42,8 +47,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
         view1 = (TextView)findViewById(R.id.text1);
         view2 = (TextView)findViewById(R.id.text2);
+
         loginInfo = getSharedPreferences("LOGIN",Context.MODE_PRIVATE);
         loginInfoEditor = loginInfo.edit();
+        if(loginInfo.getString("ADRESA_SERVERA", "").equals("")){
+            loginInfoEditor.putString("ADRESA_SERVERA", "192.168.1.102");
+            loginInfoEditor.commit();
+        }
 
         Ankete = (ListView)findViewById(R.id.lista);
         Ankete.setOnItemClickListener(this);
@@ -51,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         myArrayAdapter = new AnketeAdapter(this, R.layout.anketa, ankete);
         Ankete.setAdapter(myArrayAdapter);
         dbH = new dataHandler(this, null, null, 1);
+
         //Intent i = new Intent(this, loginAct.class);
         //startActivity(i);
         //refresh();
@@ -80,11 +91,31 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void logout(View view){
-        loginInfoEditor.putString("USERNAME","");
-        loginInfoEditor.putBoolean("PRIJAVLJEN", false);
-        loginInfoEditor.putString("PASSWORD","");
-        loginInfoEditor.commit();
-        login();
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Odjava");
+        alertDialog.setMessage("Jeste li sigurni da se želite odjaviti? (Za ponovnu prijavu potrebna je internetska veza)");
+
+        alertDialog.setPositiveButton("Da",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        loginInfoEditor.putString("USERNAME", "");
+                        loginInfoEditor.putBoolean("PRIJAVLJEN", false);
+                        loginInfoEditor.putString("PASSWORD", "");
+                        loginInfoEditor.commit();
+                        login();
+                    }
+                });
+
+        alertDialog.setNegativeButton("Odustani",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        //cancel = true;
+                    }
+                });
+
+        alertDialog.show();
     }
 
 
@@ -125,9 +156,44 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, Settings.class);
+            startActivity(intent);
             return true;
+        }
+
+        if(id == R.id.network_settings){
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("Network");
+            alertDialog.setMessage("Network address?");
+            final EditText input = new EditText(MainActivity.this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            input.setLayoutParams(lp);
+            input.setHint(loginInfo.getString("ADRESA_SERVERA", ""));
+            alertDialog.setView(input);
+
+            alertDialog.setPositiveButton("OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            loginInfoEditor.putString("ADRESA_SERVERA", input.getText().toString());
+                            Log.d("Network Changed", input.getText().toString());
+                        }
+                    });
+
+            alertDialog.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            //cancel = true;
+                        }
+                    });
+
+            alertDialog.show();
+
         }
 
         return super.onOptionsItemSelected(item);

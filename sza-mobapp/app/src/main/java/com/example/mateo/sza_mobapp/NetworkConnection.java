@@ -2,6 +2,7 @@ package com.example.mateo.sza_mobapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -34,6 +35,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import javax.security.auth.callback.Callback;
@@ -42,21 +44,16 @@ import javax.security.auth.callback.Callback;
  * Created by Mateo on 15.12.2015..
  */
 public class NetworkConnection extends AsyncTask<String, Void, String> {
-    private  String urlString= "http://10.129.46.220:8080/sza-webapp/android/";
+    //private  String urlString= "http://10.129.46.220:8080/sza-webapp/android/";
     //"http://localhost:8080/sza-webapp/android/";
     //String URL="http://gurujsonrpc.appspot.com/guru";
      Context context;
+    String adresa;
 
     @Override
     protected String doInBackground(String... urls) {
-
-        // params comes from the execute() call: params[0] is the url.
-        //try {
             Log.d("checkpoint ","2");
             return asd(urls[0]);
-        //} catch (IOException e) {
-          //  return "Unable to retrieve web page. URL may be invalid.";
-        //}
     }
     // onPostExecute displays the results of the AsyncTask.
 
@@ -69,8 +66,9 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
     }
 
 
-    public NetworkConnection(Context context){
+    public NetworkConnection(Context context, String adresa){
         this.context = context;
+        this.adresa = adresa;
     }
 
 
@@ -78,8 +76,8 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
         String output = "";
         String odgovor = "";
         try {
-            Log.d("pocetak asd","asd");
-            URL url = new URL("http://10.129.46.220:8080/sza-webapp/android/");
+            Log.d("pocetak povezivanja", "http://" + adresa);
+            URL url = new URL("http://" + adresa);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
@@ -93,9 +91,11 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
             os.flush();
 
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                int i=conn.getResponseCode();
+                int i = conn.getResponseCode();
                 String str = Integer.toString(i);
-                Log.d("failed", str );
+                Log.d("failed", str);
+                conn.disconnect();
+                return "{\"status\":\"failed\",\"errormessage\":\"" + str + "\"}";
                 /*throw new RuntimeException("Failed : HTTP error code : "
                         + conn.getResponseCode());*/
             }
@@ -104,14 +104,18 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
                     (conn.getInputStream())));
             System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
-                Log.d("asdf",output);
+                Log.d("asdf", output);
                 odgovor = odgovor.concat(output);
             }
             conn.disconnect();
+        }catch (SocketTimeoutException s){
+            s.printStackTrace();
+            odgovor = "{\"status\":\"failed\",\"errormessage\":\"connection timeout\"}";
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException i) {
+            i.printStackTrace();
+            odgovor = "{\"status\":\"failed\",\"errormessage\":\"connection timeout\"}";
         }
         Log.d("asd return odgovor", " "+odgovor);
         return odgovor;
