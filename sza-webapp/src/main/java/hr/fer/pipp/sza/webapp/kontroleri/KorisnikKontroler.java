@@ -15,8 +15,6 @@ import javax.ws.rs.core.UriInfo;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
-import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
-import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 
 @Path("/korisnici/{korisnickoime}")
 public class KorisnikKontroler {
@@ -32,9 +30,7 @@ public class KorisnikKontroler {
 	@Path("/postavke")
 	public Response prikaziPostavkeKorisnika(@Context HttpServletRequest req,
 			@PathParam("korisnickoime") String korisnickoIme) {
-		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
-		req.setAttribute("postavke", korisnik);
-		return Response.ok(new Viewable("/postavke")).build();
+		return Response.ok(new Viewable("/postavkeKorisnika")).build();
 	}
 
 	@POST

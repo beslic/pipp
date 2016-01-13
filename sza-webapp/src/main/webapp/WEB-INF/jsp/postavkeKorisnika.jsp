@@ -7,18 +7,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Postavke - ${sessionScope.korisnik.korisnickoIme}</title>
     <c:import url="/html/head.html" />
-    <title>Podatci o korisniku</title>
 </head>
-
 <body>
-    <jsp:include page="header.jsp" />
-     
-<div class="container" id="korisnikDetails">
- <h2>Podatci o korisniku</h2>
- <hr>
- <br>    
-  <table class="table table-striped">
+<jsp:include page="header.jsp" />
+<h2>Ovdje idu postavke korisnika ${sessionScope.korisnik.korisnickoIme} karlo</h2>
+<div class="container">
+<div class="col-md-6">
+<table class="table table-striped">
     <thead>
       <tr>
         <th>Korisnicko ime</th>
@@ -71,12 +68,8 @@
       </tr>
     </tbody>
   </table>
-	<div class="col-md-4">
-	<button id="postavke" name="postavke" onclick="location.href='/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/postavke/'" class="btn btn-success">Izmjeni podatke</button>
-	</div>
+	
 </div>
-			
-     
-    
+</div>
 </body>
 </html>
