@@ -47,6 +47,14 @@
 				</select>
 			</div>
 		</div>
+		
+		<div class="form-group">
+            <label id="privatna" class="col-md-4 control-label" for="privatnainput">Privatna anketa</label>
+            <div class="col-md-4 <c:if test="${greska.privatna != null}">has-error has-feedback</c:if>">
+               <input id="privatnainput" name="privatna" class="input-md" type="checkbox" value="privatna" <c:if test="${forma.privatna eq '1'}">checked</c:if> > 
+               <span id="pomoc" class="help-block">Označite ukoliko ne želite da vaša anketa bude javno dostupna na Intenretu</span> 
+            </div>
+        </div>
           	    
        	   	<div class="form-group">
 		        <label class="col-md-4 control-label"></label>
@@ -67,7 +75,7 @@
 		                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 		            </div>
 	                <c:if test="${greska.aktivnaOd != null}">
-                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                           <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                            <label class="control-label" for="from">${greska.aktivnaOd}</label>
                            <label class="control-label" for="from">${greska.aktivnaOdKron}</label>
                    </c:if>
@@ -83,7 +91,7 @@
 		                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 		            </div>
 		            <c:if test="${greska.aktivnaDo != null}">
-                            <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                             <label class="control-label" for="to">${greska.aktivnaDo}</label>
                     </c:if>
 		        </div>
@@ -100,4 +108,53 @@
 		  </fieldset>
 		</form>
 	  </div>
+	   <script>
+    $(document).ready(function() {
+         $('#dateRangePickerFrom')
+         .datepicker({
+             format: 'dd/mm/yyyy',
+             startDate: '01/01/2010',
+             endDate: '31/12/2020'
+         })
+         .on('changeDate', function(e) {
+             // Revalidate the date field
+             $('#dateRangeForm').formValidation('revalidateField', 'date');
+     });
+     
+    $('#dateRangePickerTo')
+        .datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: '01/01/2010',
+            endDate: '31/12/2020'
+        })
+        .on('changeDate', function(e) {
+            // Revalidate the date field
+            $('#dateRangeForm').formValidation('revalidateField', 'date');
+     });
+
+    $('#dateRangeForm').formValidation({
+        framework: 'bootstrap',
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            date: {
+                validators: {
+                    notEmpty: {
+                        message: 'Potrebno je odabrati datum'
+                    },
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        min: '01/01/2010',
+                        max: '30/12/2020',
+                        message: 'Datum nije ispravan'
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
 

@@ -61,7 +61,6 @@
             <label id="pravalabel" class="col-md-4 control-label" for="pravainput">Želim</label>
             <div class="col-md-4 <c:if test="${greska.prava != null}">has-error has-feedback</c:if>">
 		<div class="input-group">
-	      	    <!-- <input name="prava" class="input-md" type="checkbox" <c:if test="${forma.prava != null}">checked</c:if> >  -->
 	      	    <input name="prava" class="input-md" type="radio" value="1" <c:if test="${forma.prava eq '1'}">checked</c:if> >&nbsp;Sastavljati ankete
 	      	    <br>
 	      	    <input name="prava" class="input-md" type="radio" value="2" <c:if test="${forma.prava eq '2'}">checked</c:if> >&nbsp;Samo anketirati
