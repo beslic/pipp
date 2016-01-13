@@ -14,9 +14,6 @@ import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 
 public class Util {
-	String string = "January 2, 2010";
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
-	LocalDate date = LocalDate.parse(string, formatter);
 
 	private static boolean validirajEmail(String email) {
 
