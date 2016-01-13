@@ -138,8 +138,8 @@ public class dataHandler extends SQLiteOpenHelper {
 
     public void addAnketa(Anketa anketa, Context c){
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ANKETA_ID, anketa.getId());
-        values.put(COLUMN_ANKETA_IME, anketa.getIme());
+        values.put(COLUMN_ANKETA_ID, anketa.getIdAnketa());
+        values.put(COLUMN_ANKETA_IME, anketa.getNazivAnketa());
         //values.put(COLUMN_ANKETA_VLASNIK, anketa.getVlasnik());
         SQLiteDatabase db = this.getWritableDatabase();
         if(db.insert(TABLE_ANKETA, null, values)==-1){
@@ -223,18 +223,18 @@ public class dataHandler extends SQLiteOpenHelper {
             Log.d("*****findAnketa ", "moved to first");
             cursor.moveToFirst();
             anketa = new Anketa();
-            anketa.setId(Integer.parseInt(cursor.getString(0)));
-            anketa.setImeAnkete(cursor.getString(1));
+            anketa.setIdAnketa(Integer.parseInt(cursor.getString(0)));
+            anketa.setNazivAnketa(cursor.getString(1));
             //anketa.setVlasnik(cursor.getString(2));
             listaAnketa.add(anketa);
-            Log.d("*****findAnketa ", "dodano na listu: " + anketa.getIme()+ " " +anketa.getId());
+            Log.d("*****findAnketa ", "dodano na listu: " + anketa.getNazivAnketa()+ " " +anketa.getIdAnketa());
             while(cursor.moveToNext() && i<10){
                 anketa = new Anketa();
-                anketa.setId(Integer.parseInt(cursor.getString(0)));
-                anketa.setImeAnkete(cursor.getString(1));
+                anketa.setIdAnketa(Integer.parseInt(cursor.getString(0)));
+                anketa.setNazivAnketa(cursor.getString(1));
                 //anketa.setVlasnik(cursor.getString(2));
                 listaAnketa.add(anketa);
-                Log.d("*****findAnketa ", "dodano na listu: " + anketa.getIme()+ " " +anketa.getId());
+                Log.d("*****findAnketa ", "dodano na listu: " + anketa.getNazivAnketa()+ " " +anketa.getIdAnketa());
                 i++;
             }
             cursor.close();

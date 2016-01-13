@@ -34,7 +34,8 @@
         <activity
             android:name=".loginAct"
             android:label="loginActivity1"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".dodajAnketu"

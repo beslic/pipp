@@ -2,39 +2,56 @@ package com.example.mateo.sza_mobapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Mateo on 28.10.2015..
  */
-public class loginAct extends Activity{
+public class loginAct extends AppCompatActivity{
     EditText imeE;
     EditText passE;
     private SharedPreferences login;
     private SharedPreferences.Editor loginEdit;
     Gson gson;
     Korisnik korisnik;
+    String odgovor;
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_screen);
+        setContentView(R.layout.activity_login);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         imeE=(EditText) findViewById(R.id.loginEdit1);
         passE=(EditText) findViewById(R.id.loginEdit2);
         login = getSharedPreferences("LOGIN", Context.MODE_PRIVATE); //Podaci o log in-u kao "SharedPreferences"
@@ -51,6 +68,7 @@ public class loginAct extends Activity{
 
     public void login1(View view){
         Log.d("*****Login  ", "POCETAK");
+
         korisnik = new Korisnik(imeE.getText().toString(), (passE.getText().toString()));
         String jsonKorisnik = gson.toJson(korisnik);
         //Korisnik k = gson.fromJson(jsonKorisnik, Korisnik.class);
@@ -59,6 +77,7 @@ public class loginAct extends Activity{
 
 
         if(PROVJERA.isConnected()==false){
+
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle("Network");
             alertDialog.setMessage("Network is not enabled. Do you want to go to settings menu?");
@@ -80,11 +99,46 @@ public class loginAct extends Activity{
             alertDialog.show();
         }
         else{
+            try {
+                odgovor=PROVJERA.execute(jsonKorisnik).get();
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }catch (ExecutionException s){
+                s.printStackTrace();
+            }
+            Log.d("checkpoint ", "1");
+            Log.d("odgovor", odgovor);
+            try {
+                JSONObject jsonOdgovor = new JSONObject(odgovor);
+                Log.d("jsonOdgovor", jsonOdgovor.get("status").toString());
 
-            PROVJERA.execute(jsonKorisnik);
+                if (jsonOdgovor.get("status").toString().equals("success")) {
+                    loginEdit.putString("USERNAME", korisnik.getIme());
+                    loginEdit.putString("PASSWORD", korisnik.getLozinka());
+                    loginEdit.putBoolean("PRIJAVLJEN", true);
+                    loginEdit.commit();
+                    Log.d("*****Login", "SUCCESS");
+                    Toast.makeText(getApplicationContext(), "Dobrodošli "+korisnik.getIme()+"!", Toast.LENGTH_LONG).show();
+                    dataRefresh(jsonOdgovor);
+                    finish();
+                } else {
+                    Log.d("*****Login", "FAIL");
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                    alertDialog.setTitle("Prijava");
+                    alertDialog.setMessage("Status prijave: " + jsonOdgovor.get("status").toString() + ": "+jsonOdgovor.get("errormessage").toString());
 
-
-
+                    alertDialog.setNegativeButton("ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    //cancel = true;
+                                }
+                            });
+                    alertDialog.show();
+                }
+                }catch(JSONException e){
+                    e.printStackTrace();
+            }
 
 
             /*PROVJERA.provjeri(jsonKorisnik, new NetworkConnection.OnJSONResponseCallback() {
@@ -114,5 +168,47 @@ public class loginAct extends Activity{
                 }
             }, getApplicationContext());*/
         }
+    }
+
+
+
+
+    public void dataRefresh(JSONObject data){
+        dataHandler dh = new dataHandler(getApplicationContext(), null, null, 1);
+        Anketa anketa;
+        try {
+            JSONArray ankete = data.getJSONArray("anketa");
+            for(int i=0;i<ankete.length();i++){
+                String ime = ankete.getJSONObject(i).get("ime").toString();
+                int id=Integer.parseInt(ankete.getJSONObject(i).get("id").toString());
+
+                anketa = new Anketa(ime, id, "");
+                dh.addAnketa(anketa, getApplicationContext());
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        Log.d("*****onCreateOptMenu  ", "done");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

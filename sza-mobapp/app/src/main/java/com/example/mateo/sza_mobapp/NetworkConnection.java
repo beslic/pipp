@@ -43,19 +43,16 @@ import javax.security.auth.callback.Callback;
  */
 public class NetworkConnection extends AsyncTask<String, Void, String> {
     private  String urlString= "http://10.129.46.220:8080/sza-webapp/android/";
-    private URL url;
     //"http://localhost:8080/sza-webapp/android/";
     //String URL="http://gurujsonrpc.appspot.com/guru";
-     boolean prihvaceno = false;
      Context context;
-     OnJSONResponseCallback callback;
-    JSONObject odg;
 
     @Override
     protected String doInBackground(String... urls) {
 
         // params comes from the execute() call: params[0] is the url.
         //try {
+            Log.d("checkpoint ","2");
             return asd(urls[0]);
         //} catch (IOException e) {
           //  return "Unable to retrieve web page. URL may be invalid.";
@@ -67,61 +64,27 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        Log.d("ODGOVOR",result);
-
+        //Log.d("ODGOVOR"," nesto");
+        //return result;
     }
 
-    public interface OnJSONResponseCallback {
-        public void onJSONResponse(boolean success, JSONObject response);
-    }
 
     public NetworkConnection(Context context){
         this.context = context;
-        this.callback = callback;
-    }
-
-    public JSONObject provjeri(String korisnik, OnJSONResponseCallback callback1, Context context){
-        AsyncHttpClient httpClient = new AsyncHttpClient();
-        callback = callback1;
-        //context = context;
-        RequestParams params = new RequestParams();
-        params.put("json", korisnik);
-
-
-        JsonHttpResponseHandler jsonHandler = new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(JSONObject jsonObject) {
-                Log.d("*****JsonObject", jsonObject.toString());//<-Json objekt koji dobijes kao response
-                //UpdateData(jsonObject);
-                callback.onJSONResponse(true, jsonObject);
-                odg = jsonObject;
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
-                Log.d("*****Failure", "json");
-                callback.onJSONResponse(false, error);
-                odg = error;
-            }
-
-        };
-        httpClient.post(context, urlString, params, jsonHandler);
-        InputStream is = null;
-
-        return odg;
     }
 
 
     protected String asd(String podaci){
         String output = "";
+        String odgovor = "";
         try {
-            Log.d("pocetak asd","");
+            Log.d("pocetak asd","asd");
             URL url = new URL("http://10.129.46.220:8080/sza-webapp/android/");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
+            conn.setConnectTimeout(5000);
 
             //String input = "{\"ime\":\"korisnik123\",\"lozinka\":\"lozinka123\"}";
 
@@ -129,32 +92,29 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
             os.write(podaci.getBytes());
             os.flush();
 
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-                Log.d("failed", "asd");
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                int i=conn.getResponseCode();
+                String str = Integer.toString(i);
+                Log.d("failed", str );
                 /*throw new RuntimeException("Failed : HTTP error code : "
                         + conn.getResponseCode());*/
             }
 
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
-
             System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
                 Log.d("asdf",output);
+                odgovor = odgovor.concat(output);
             }
-
             conn.disconnect();
-
         } catch (MalformedURLException e) {
-
             e.printStackTrace();
-
         } catch (IOException e) {
-
             e.printStackTrace();
-
         }
-        return output;
+        Log.d("asd return odgovor", " "+odgovor);
+        return odgovor;
     }
 
 

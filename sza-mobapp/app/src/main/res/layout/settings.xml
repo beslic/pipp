@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="adresa: "
+        android:id="@+id/adresaTtextView"
+        android:textSize="30sp" />
+
+    <EditText
+        android:layout_below="@id/adresaTtextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="postavi novu adresu"
+        android:id="@+id/button2"
+        android:layout_gravity="right" />
+
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="very important setting"
+        android:id="@+id/switch1"
+        android:checked="false"
+        android:layout_weight="0.03" />
+</LinearLayout>

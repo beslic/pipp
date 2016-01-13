@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Created by Mateo on 28.10.2015..
  */
 public class Pitanje {
+
     private int anketa_id;
     private String pitanje;
     private int pitanje_id;

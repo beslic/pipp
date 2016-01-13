@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void logout(View view){
         loginInfoEditor.putString("USERNAME","");
         loginInfoEditor.putBoolean("PRIJAVLJEN", false);
-        //loginInfoEditor.putString("PASSWORD","");
+        loginInfoEditor.putString("PASSWORD","");
         loginInfoEditor.commit();
         login();
     }
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         myArrayAdapter.clear();
         for(int i=0; i<imeA.size();i++) {
             myArrayAdapter.add(imeA.get(i));
-            Log.d("*****MainActivity", i+" dodana: " + imeA.get(i).getIme());
+            Log.d("*****MainActivity", i+" dodana: " + imeA.get(i).getNazivAnketa());
         }
         myArrayAdapter.notifyDataSetChanged();
     }
@@ -135,12 +135,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-        int aId = myArrayAdapter.anketa.get(position).getId();
+        int aId = myArrayAdapter.anketa.get(position).getIdAnketa();
         Log.d("*****OnItemClick  ", "anketa: " + aId);
         //Intent i2 = new Intent(this, listaPitanja2.class);
         Intent i2 = new Intent(this, Pocetak_ispunjavanja_ankete.class);
         i2.putExtra("anketa", aId);
-        i2.putExtra("anketaIme", myArrayAdapter.anketa.get(position).getIme());
+        i2.putExtra("anketaIme", myArrayAdapter.anketa.get(position).getNazivAnketa());
         startActivity(i2);
     }
 }
