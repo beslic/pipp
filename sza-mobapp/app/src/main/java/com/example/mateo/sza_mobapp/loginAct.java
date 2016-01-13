@@ -17,6 +17,9 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 /**
  * Created by Mateo on 28.10.2015..
  */
@@ -48,11 +51,10 @@ public class loginAct extends Activity{
 
     public void login1(View view){
         Log.d("*****Login  ", "POCETAK");
-        korisnik = new Korisnik(imeE.getText().toString(), passE.getText().toString());
-        String stringKorisnik = gson.toJson(korisnik);
+        korisnik = new Korisnik(imeE.getText().toString(), (passE.getText().toString()));
         String jsonKorisnik = gson.toJson(korisnik);
-
-        Log.d("*****KORISNIK", stringKorisnik);
+        //Korisnik k = gson.fromJson(jsonKorisnik, Korisnik.class);
+        Log.d("*****KORISNIK", jsonKorisnik);
         NetworkConnection PROVJERA = new NetworkConnection(getApplicationContext());
 
 
@@ -78,14 +80,21 @@ public class loginAct extends Activity{
             alertDialog.show();
         }
         else{
-            PROVJERA.provjeri(korisnik, new NetworkConnection.OnJSONResponseCallback() {
+
+            PROVJERA.execute(jsonKorisnik);
+
+
+
+
+
+            /*PROVJERA.provjeri(jsonKorisnik, new NetworkConnection.OnJSONResponseCallback() {
                 @Override
                 public void onJSONResponse(boolean success, JSONObject response) {
                     if (success) {
                         Log.d("SUCCESS", response.toString());
                         if(true) {   //<-Provjera korisnika i sinkronizacija
                             loginEdit.putString("USERNAME", korisnik.getIme());
-                            //loginEdit.putString("PASSWORD", korisnik.getLozinka()); <-Spremanje lozinke
+                            loginEdit.putString("PASSWORD", korisnik.getLozinka()); <-Spremanje lozinke
                             loginEdit.putBoolean("PRIJAVLJEN", true);
                             loginEdit.commit();
                             Log.d("*****Login", "SUCCESS");
@@ -99,11 +108,11 @@ public class loginAct extends Activity{
                             Toast.makeText(getApplicationContext(), "Pogrešno korisničko ime ili lozinka!", Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Log.d("FAIL", /*response.toString()*/"asddf");
+                        Log.d("FAIL", /*response.toString()"asddf");
                         Toast.makeText(getApplicationContext(), "greška u povezivanju", Toast.LENGTH_LONG).show();
                     }
                 }
-            }, getApplicationContext());
+            }, getApplicationContext());*/
         }
     }
 }
