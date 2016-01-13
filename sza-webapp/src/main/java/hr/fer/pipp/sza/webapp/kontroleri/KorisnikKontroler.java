@@ -1,5 +1,7 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -15,6 +17,9 @@ import javax.ws.rs.core.UriInfo;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.utils.Util;
 
 @Path("/korisnici/{korisnickoime}")
 public class KorisnikKontroler {
@@ -34,10 +39,34 @@ public class KorisnikKontroler {
 	}
 
 	@POST
+	@Path("/postavke")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response odjaviKorisnika(@Context HttpServletRequest req, @Context UriInfo uri, @FormParam("button") String button) {
-		
+	public Response promjeniPostavkeKorisnika(@Context HttpServletRequest req, @Context UriInfo uri,  
+			@FormParam("ime") String ime, @FormParam("prezime") String prezime, @FormParam("email") String email){
+		Map<String, String> greska = Util.provjeriFormuPostavkiKorisnika(ime, prezime, email);
+		if (greska.isEmpty()) {
+			
+			Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
+			korisnik.setIme(ime);
+			korisnik.setPrezime(prezime);
+			korisnik.setEmail(email);
+			
+			DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
+			return prikaziKorisnika(req, uri);
+		} else {
+			req.setAttribute("greska", greska);
+			return prikaziPostavkeKorisnika(req, ((Korisnik) req.getSession().getAttribute("korisnik")).getKorisnickoIme());
+		}
+	}
+	
+
+	@POST
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response odjaviKorisnika(@Context HttpServletRequest req, @Context UriInfo uri,
+			@FormParam("button") String button) {
+
 		if ("signout".equals(button)) {
 			req.getSession().invalidate();
 			return Response.seeOther(uri.getBaseUri()).build();

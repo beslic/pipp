@@ -6,7 +6,7 @@ import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 
 public interface IDAOKorisnik {
 
-	public Korisnik spremiKorisnika(Korisnik korisnik);
+	public Korisnik spremiIzmjeneKorisnika(Korisnik korisnik);
 	
 	public Korisnik spremiNovogKorisnika(Korisnik korisnik);
 	

@@ -63,7 +63,7 @@
 			           	Aktivan korisnik  
 		        </c:when>
 		        <c:otherwise>
-		            	Neaktivan korisnikx
+		            	Neaktivan korisnik
 		        </c:otherwise>
      		</c:choose>
         

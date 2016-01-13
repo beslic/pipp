@@ -55,6 +55,7 @@ public class RegistracijaKontroler {
 			korisnik.setEmail(email);
 			korisnik.setRazinaPrava(("1".equals(razinaPrava)) ? 1 : 2);
 			korisnik.setAktivan(true);
+			// TODO administrator treba potvrditi aktivnost
 			try {
 				korisnik.setLozinka(PasswordHash.createHash(lozinka));
 			} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {

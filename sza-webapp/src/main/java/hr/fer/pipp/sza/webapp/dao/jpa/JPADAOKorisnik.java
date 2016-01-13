@@ -11,16 +11,13 @@ import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 public class JPADAOKorisnik implements IDAOKorisnik {
 
 	@Override
-	public Korisnik spremiKorisnika(Korisnik korisnik) {
+	public Korisnik spremiIzmjeneKorisnika(Korisnik korisnik) {
 		EntityManager em = JPAEMProvider.getEntityManager().getEntityManagerFactory().createEntityManager();
 		Korisnik k = em.find(Korisnik.class, korisnik.getId());
 		em.getTransaction().begin();
 		k.setIme(korisnik.getIme());
 		k.setPrezime(korisnik.getPrezime());
 		k.setEmail(korisnik.getEmail());
-		k.setAktivan(korisnik.isAktivan());
-		k.setRazinaPrava(korisnik.getRazinaPrava());
-		k.setAnketa(korisnik.getAnketa());
 		em.getTransaction().commit();
 		em.close();
 		return korisnik;

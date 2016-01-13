@@ -152,7 +152,35 @@ public class Util {
 		}
 
 		return greske;
+	}
+	
+	public static Map<String, String> provjeriFormuPostavkiKorisnika(String ime, String prezime, String email) {
 
+		Map<String, String> greska = new HashMap<>();
+
+		if (ime == null || ime.isEmpty()) {
+			greska.put("ime", "Ime je prazno");
+		}
+
+		if (prezime == null || prezime.isEmpty()) {
+			greska.put("prezime", "Prezime je prazno");
+		}
+		
+		if (email == null || email.isEmpty()) {
+			greska.put("email", "Email je prazan");
+			return greska;
+		} else if (!validirajEmail(email)) {
+			greska.put("email", "Email nije u dobrom formatu");
+			return greska;
+		}
+		
+		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnikaPoMailu(email);
+		
+		if (korisnik != null && !korisnik.getEmail().equals(email)) {
+			greska.put("email", "Email je vec u upotrebi");
+		}
+
+		return greska;
 	}
 
 }
