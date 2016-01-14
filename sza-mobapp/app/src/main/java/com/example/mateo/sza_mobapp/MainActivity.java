@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if(!prijavljen) {
             Intent i = new Intent(this, loginAct.class);
-            startActivity(i);
+            startActivityForResult(i, 1);
         }
         else {
             Toast.makeText(this, "Dobrodošli " + ime + "!", Toast.LENGTH_LONG).show();
@@ -208,5 +208,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         i2.putExtra("anketa", aId);
         i2.putExtra("anketaIme", myArrayAdapter.anketa.get(position).getNazivAnketa());
         startActivity(i2);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 1) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                if(data.getBooleanExtra("IZLAZ", true) == true){
+                    finish();
+                }
+
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+
+                // Do something with the contact here (bigger example below)
+            }
+        }
     }
 }
