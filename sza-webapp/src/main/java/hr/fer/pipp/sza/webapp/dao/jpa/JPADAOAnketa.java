@@ -1,5 +1,6 @@
 package hr.fer.pipp.sza.webapp.dao.jpa;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -19,13 +20,14 @@ public class JPADAOAnketa implements IDAOAnketa {
 					.setParameter("id", id).getSingleResult();
 		} catch (NoResultException ingorable) {
 		}
-		return anketa;
+		return provjeraAktivnosti(anketa, new Date());
 	}
 
 	@Override
 	public Anketa spremiAnketu(Anketa anketa) {
 		EntityManager em = JPAEMProvider.getEntityManager().getEntityManagerFactory().createEntityManager();
 		Korisnik k = em.find(Korisnik.class, anketa.getVlasnik().getId());
+		provjeraAktivnosti(anketa, new Date());
 		em.getTransaction().begin();
 		em.persist(anketa);
 		k.getAnketa().add(anketa);
@@ -36,20 +38,36 @@ public class JPADAOAnketa implements IDAOAnketa {
 
 	@Override
 	public List<Anketa> dohvatiPrivatneAnkete(Korisnik korisnik) {
-		return JPAEMProvider.getEntityManager().createQuery("FROM Anketa A WHERE A.vlasnik = :v", Anketa.class)
-				.setParameter("v", korisnik).getResultList();
+		List<Anketa> ankete = JPAEMProvider.getEntityManager()
+				.createQuery("FROM Anketa A WHERE A.vlasnik = :v", Anketa.class).setParameter("v", korisnik)
+				.getResultList();
+		Date d = new Date();
+		for (Anketa a : ankete) {
+			provjeraAktivnosti(a, d);
+		}
+		return ankete;
 	}
 
 	@Override
 	public List<Anketa> dohvatiJavneAnkete() {
-		return JPAEMProvider.getEntityManager().createQuery("FROM Anketa A WHERE A.jePrivatna = 'N'", Anketa.class)
-				.getResultList();
+		List<Anketa> ankete = JPAEMProvider.getEntityManager()
+				.createQuery("FROM Anketa A WHERE A.jePrivatna = 'N'", Anketa.class).getResultList();
+		Date d = new Date();
+		for (Anketa a : ankete) {
+			provjeraAktivnosti(a, d);
+		}
+		return ankete;
 	}
 
-	public List<Anketa> dohvatiAnkete(boolean logiran) {
-		return JPAEMProvider.getEntityManager()
-				.createQuery("FROM Anketa A" + ((!logiran) ? "WHERE A.jePrivatna = 'N'" : ""), Anketa.class)
-				.getResultList();
+	private Anketa provjeraAktivnosti(Anketa anketa, Date date) {
+		if (anketa != null) {
+			if (date.after(anketa.getAktivnaOd()) && date.before(anketa.getAktivnaDo())) {
+				anketa.setAktivna(true);
+			} else {
+				anketa.setAktivna(false);
+			}
+		}
+		return anketa;
 	}
 
 }
