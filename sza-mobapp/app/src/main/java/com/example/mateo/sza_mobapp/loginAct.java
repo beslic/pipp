@@ -48,10 +48,10 @@ public class loginAct extends AppCompatActivity{
 
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,6 +60,7 @@ public class loginAct extends AppCompatActivity{
         login = getSharedPreferences("LOGIN", Context.MODE_PRIVATE); //Podaci o log in-u kao "SharedPreferences"
         loginEdit = login.edit();
         gson = new Gson();
+
     }
 
     @Override
@@ -140,7 +141,7 @@ public class loginAct extends AppCompatActivity{
                     loginEdit.putString("USERNAME", korisnik.getIme());
 
                     //*****************************************
-                    loginEdit.putString("PASSWORD", "ovdje treba stavit lozinku");
+                    loginEdit.putString("PASSWORD", korisnik.getLozinka());
                     Log.d("password2", "test lozinke");
                     //**********************************************
 
@@ -158,6 +159,7 @@ public class loginAct extends AppCompatActivity{
                     finish();
                 } else {
                     Log.d("*****Login", "FAIL");
+
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                     alertDialog.setTitle("Prijava");
                     alertDialog.setMessage("Status prijave: " + jsonOdgovor.get("status").toString() + ": "+jsonOdgovor.get("errormessage").toString());
@@ -174,39 +176,8 @@ public class loginAct extends AppCompatActivity{
                 }catch(JSONException e){
                     e.printStackTrace();
             }
-
-
-            /*PROVJERA.provjeri(jsonKorisnik, new NetworkConnection.OnJSONResponseCallback() {
-                @Override
-                public void onJSONResponse(boolean success, JSONObject response) {
-                    if (success) {
-                        Log.d("SUCCESS", response.toString());
-                        if(true) {   //<-Provjera korisnika i sinkronizacija
-                            loginEdit.putString("USERNAME", korisnik.getIme());
-                            loginEdit.putString("PASSWORD", korisnik.getLozinka()); <-Spremanje lozinke
-                            loginEdit.putBoolean("PRIJAVLJEN", true);
-                            loginEdit.commit();
-                            Log.d("*****Login", "SUCCESS");
-                            Toast.makeText(getApplicationContext(), "Dobrodošli "+korisnik.getIme()+"!", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                        else {
-                            Log.d("*****Login", "FAIL");
-                            imeE.setHint("ponovo.....");
-                            passE.setHint("ponovo.....");
-                            Toast.makeText(getApplicationContext(), "Pogrešno korisničko ime ili lozinka!", Toast.LENGTH_LONG).show();
-                        }
-                    } else {
-                        Log.d("FAIL", /*response.toString()"asddf");
-                        Toast.makeText(getApplicationContext(), "greška u povezivanju", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }, getApplicationContext());*/
         }
     }
-
-
-
 
     public void dataRefresh(JSONArray data){
         dataHandler dh = new dataHandler(getApplicationContext(), null, null, 1);

@@ -31,18 +31,18 @@
         android:text="Log Out"
         android:textAlignment="center"
         android:onClick="logout"/>
-    <Button
+    <!--<Button
         android:id="@+id/buttonDodaj"
         android:layout_below="@id/mainLogOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Dodaj anketu"
-        android:onClick="Dodaj"/>
+        android:onClick="Dodaj"/> -->
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/buttonRefresh"
-        android:layout_below="@id/buttonDodaj"
+        android:layout_below="@id/mainLogOut"
         android:text="Refresh"
         android:onClick="refresh"/>
     <LinearLayout
