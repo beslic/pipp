@@ -10,23 +10,29 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "odgovori")
 public class Odgovor {
 
 	@Id
 	@GeneratedValue
+	@Expose
 	private int idOdgovor;
 
 	@ManyToOne
 	private Pitanje pitanje;
 
+	@Expose
 	@Column(nullable = false)
 	private int rbrOdgovor;
 
+	@Expose
 	@Column(nullable = false)
 	private String textOdgovor;
 
+	@Expose
 	@ManyToMany(mappedBy = "odgovori")
 	private Collection<Ispunjavanje> ispunjavanja;
 

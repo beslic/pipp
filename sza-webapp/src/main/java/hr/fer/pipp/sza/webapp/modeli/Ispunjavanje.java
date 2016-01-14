@@ -11,26 +11,33 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "ispunjavanja")
 public class Ispunjavanje {
 
 	@Id
 	@GeneratedValue
+	@Expose
 	private long id;
 
 	@ManyToOne
 	private Korisnik anketar;
 
+	@Expose
 	@ManyToOne
 	private Anketa anketa;
 
+	@Expose
 	@Column(nullable = false)
 	private Date vrijeme;
 
+	@Expose
 	@ManyToOne
 	private GPSPozicija pozicija;
 
+	@Expose
 	@ManyToMany
 	private Collection<Odgovor> odgovori;
 

@@ -13,39 +13,50 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "ankete")
 public class Anketa {
 
 	@Id
 	@GeneratedValue
+	@Expose
 	private long idAnketa;
 
 	@ManyToOne
 	private Korisnik vlasnik;
 
+	@Expose
 	@Column(nullable = false)
 	private Date vrijemeIzrada;
 
+	@Expose
 	@Column(nullable = false)
 	private String nazivAnketa;
 
+	@Expose
 	@Column
 	private String opisAnketa;
 
+	@Expose
 	@Column
 	@Type(type = "yes_no")
 	private boolean jePrivatna;
 
+	@Expose
 	@Column(nullable = false)
 	private Date aktivnaOd;
 
+	@Expose
 	@Column(nullable = false)
 	private Date aktivnaDo;
 
+	@Expose
 	@Column
 	private int brojPitanja;
 
+	@Expose
 	@OneToMany(mappedBy = "anketa")
 	private List<Pitanje> pitanja;
 

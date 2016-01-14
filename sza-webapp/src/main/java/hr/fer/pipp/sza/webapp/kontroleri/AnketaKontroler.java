@@ -68,7 +68,7 @@ public class AnketaKontroler {
 
 		Map<String, String> greska = Util.provjeriFormuAnkete(nazivAnketa, opisAnketa, aktivnaOd, aktivnaDo,
 				brojPitanja);
-
+		
 		if (greska.isEmpty()) {
 
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);

@@ -10,23 +10,29 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "pitanja")
 public class Pitanje {
 
 	@Id
 	@GeneratedValue
+	@Expose
 	private int idPitanje;
 	
 	@ManyToOne
 	private Anketa anketa;
 	
+	@Expose
 	@Column(nullable = false)
 	private int rbrPitanje;
 	
+	@Expose
 	@Column(nullable = false)
 	private String textPitanje;
 	
+	@Expose
 	@OneToMany(mappedBy = "pitanje")
 	private List<Odgovor> odgovor;
 
