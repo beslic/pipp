@@ -45,12 +45,20 @@ public class KorisnikKontroler {
 			@FormParam("button") String button, @FormParam("staralozinka") String staraLozinka,
 			@FormParam("novalozinka") String novaLozinka, @FormParam("novalozinkapotvrda") String novaLozinkaPotvrda) {
 
+		System.out.println(ime);
+		System.out.println(prezime);
+		System.out.println(email);
+		System.out.println("Button: " + button);
 		if ("postavke".equals(button)) {
 			Map<String, String> greska = Util.provjeriFormuPostavkiKorisnika(ime, prezime, email);
+			System.out.println("Greska: " + greska);
 
 			if (greska.isEmpty()) {
 				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
-				korisnik.setLozinka(novaLozinkaPotvrda);
+				
+				korisnik.setIme(ime);
+				korisnik.setPrezime(prezime);
+				korisnik.setEmail(email);
 
 				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
 				return prikaziKorisnika(req, uri);
