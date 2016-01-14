@@ -33,6 +33,8 @@ public class dataHandler extends SQLiteOpenHelper {
     public static final String COLUMN_VRIJEME_IZRADE = "vrijemeIzrade";
     public static final String COLUMN_AKTIVNA_OD = "aktivnaOd";
     public static final String COLUMN_AKTIVNA_DO = "aktivnaDo";
+    public static final String COLUMN_ANKETA_OPIS = "anketaOpis";
+
 
     public static final String COLUMN_PITANJE = "pitanje";
     public static final String COLUMN_PITANJE_ID = "pitanje_id";
@@ -60,8 +62,12 @@ public class dataHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db){
         String CREATE_TABLE1 =  "CREATE TABLE IF NOT EXISTS " + TABLE_ANKETA + " ("
                 + COLUMN_ANKETA_ID + " INTEGER PRIMARY KEY, "
-                + COLUMN_ANKETA_IME + " TEXT"
-                + COLUMN_ANKETA_VLASNIK+" TEXT)";
+                + COLUMN_ANKETA_IME + " TEXT, "
+                + COLUMN_ANKETA_VLASNIK+" TEXT, "
+                + COLUMN_ANKETA_OPIS + " TEXT, "
+                + COLUMN_AKTIVNA_OD+" DATETIME, "
+                + COLUMN_VRIJEME_IZRADE + " DATETIME, "
+                + COLUMN_AKTIVNA_DO + " DATETIME)";
 
         String CREATE_TABLE2 =  "CREATE TABLE IF NOT EXISTS " + TABLE_PITANJA + " ("
                 + COLUMN_PITANJE + " TEXT , "
