@@ -83,7 +83,7 @@ public class loginAct extends AppCompatActivity{
                     }
                 });
         alertDialog.show();
-        return;
+        //return;
     }
 
     public void login1(View view){
@@ -91,6 +91,8 @@ public class loginAct extends AppCompatActivity{
 
         korisnik = new Korisnik(imeE.getText().toString(), (passE.getText().toString()));
         String jsonKorisnik = gson.toJson(korisnik);
+
+
         //Korisnik k = gson.fromJson(jsonKorisnik, Korisnik.class);
         Log.d("*****KORISNIK", jsonKorisnik);
         NetworkConnection PROVJERA = new NetworkConnection(getApplicationContext(), login.getString("ADRESA_SERVERA", "192.168.1.102")+":8080/sza-webapp/android/");
@@ -144,7 +146,10 @@ public class loginAct extends AppCompatActivity{
                     loginEdit.commit();
                     Log.d("*****Login", "SUCCESS");
                     Toast.makeText(getApplicationContext(), "Dobrodošli "+korisnik.getIme()+"!", Toast.LENGTH_LONG).show();
-                    dataRefresh(jsonOdgovor);
+                    JSONObject jsonKorisnikOdgovor;
+                    jsonKorisnikOdgovor  = jsonOdgovor.getJSONObject("korisnik");
+                    JSONArray poljeAnketa = jsonKorisnikOdgovor.getJSONArray("anketa");
+                    dataRefresh(poljeAnketa);
                     Intent intent = getIntent();
                     intent.putExtra("IZLAZ", false);
                     setResult(RESULT_OK, intent);
@@ -201,21 +206,23 @@ public class loginAct extends AppCompatActivity{
 
 
 
-    public void dataRefresh(JSONObject data){
+    public void dataRefresh(JSONArray data){
         dataHandler dh = new dataHandler(getApplicationContext(), null, null, 1);
         Anketa anketa;
-        try {
-            JSONArray ankete = data.getJSONArray("anketa");
-            for(int i=0;i<ankete.length();i++){
-                String ime = ankete.getJSONObject(i).get("ime").toString();
-                int id=Integer.parseInt(ankete.getJSONObject(i).get("id").toString());
 
-                anketa = new Anketa(ime, id, "");
-                dh.addAnketa(anketa, getApplicationContext());
+        for (int i = 0; i < data.length(); i++ ){
+            try{
+                Log.d("Broj", i + " data" + data.getJSONObject(i).toString());
+                anketa = gson.fromJson(data.getJSONObject(i).toString(), Anketa.class);
+                dh.addAnketa(anketa,getApplicationContext());
             }
-        }catch (JSONException e){
-            e.printStackTrace();
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+
         }
+
+        Log.d("dataRefresh", data.toString());
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

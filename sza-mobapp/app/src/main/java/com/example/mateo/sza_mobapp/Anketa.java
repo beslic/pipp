@@ -9,7 +9,7 @@ import java.util.List;
 public class Anketa {
     private String nazivAnketa;
     private int idAnketa;
-    private String vlasnik;
+    //private String vlasnik;
     private Date vrijemeIzrada;
     private String opisAnketa;
     private boolean jePrivatna;
@@ -23,15 +23,15 @@ public class Anketa {
     public Anketa(String ime, int idAnketa, String vlasnik){
         this.nazivAnketa = ime;
         this.idAnketa = idAnketa;
-        this.vlasnik = vlasnik;
+        //this.vlasnik = vlasnik;
     }
 
-    public void setVlasnik(String vlasnikId){
-        this.vlasnik = vlasnikId;
-    }
-    public String getVlasnik(){
+    //public void setVlasnik(String vlasnikId){
+    //    this.vlasnik = vlasnikId;
+    //}
+    /*public String getVlasnik(){
         return this.vlasnik;
-    }
+    }*/
     public void setNazivAnketa(String ime){
         this.nazivAnketa = ime;
     }
