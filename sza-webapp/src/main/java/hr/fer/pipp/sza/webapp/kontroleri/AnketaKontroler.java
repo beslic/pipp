@@ -22,8 +22,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import org.glassfish.jersey.server.mvc.Viewable;
+
+import com.google.gson.Gson;
 
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
@@ -53,25 +57,14 @@ public class AnketaKontroler {
 		return Response.ok(new Viewable("/ankete")).build();
 	}
 
-	@GET
-	@Path("/{id-naziv}")
-	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("id-naziv") String idNazivAnketa) {
-		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
-			return Response.ok(new Viewable("/anketa")).build();
-		}
-		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0]));
-
-		return Response.ok(new Viewable("/anketa")).build();
-	}
-
 	@POST
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response dodajAnketu(@Context HttpServletRequest req, @FormParam("nazivAnketa") String nazivAnketa,
 			@FormParam("opisAnketa") String opisAnketa, @FormParam("aktivnaOd") String aktivnaOd,
 			@FormParam("aktivnaDo") String aktivnaDo, @FormParam("brojPitanja") String brojPitanja,
-			@FormParam("privatna") String privatna) throws ParseException, ServletException, IOException {
+			@FormParam("privatna") String privatna, @Context UriInfo uri)
+					throws ParseException, ServletException, IOException {
 
 		Map<String, String> greska = Util.provjeriFormuAnkete(nazivAnketa, opisAnketa, aktivnaOd, aktivnaDo,
 				brojPitanja);
@@ -110,6 +103,27 @@ public class AnketaKontroler {
 			req.setAttribute("tab", "nova-anketa");
 		}
 
-		return prikaziAnkete(req);
+		return Response.seeOther(UriBuilder.fromUri(uri.getRequestUri().toString()).build()).build();
+	}
+
+	@GET
+	@Path("/json")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String prikaziAnketeKaoJSON(@Context HttpServletRequest req) {
+		List<Anketa> javne = DAOAnketa.getDAO().dohvatiJavneAnkete();
+		Gson gson = new Gson();
+		return gson.toJson(javne.get(0));
+	}
+
+	@GET
+	@Path("/{id-naziv}")
+	@Produces(MediaType.TEXT_HTML)
+	public Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("id-naziv") String idNazivAnketa) {
+		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
+			return Response.ok(new Viewable("/anketa")).build();
+		}
+		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0]));
+		// TODO nesto zapoceto, ne znam sta...
+		return Response.ok(new Viewable("/anketa")).build();
 	}
 }
