@@ -60,11 +60,15 @@ public class Anketa {
 	@OneToMany(mappedBy = "anketa")
 	private List<Pitanje> pitanja;
 
+	@Expose
+	@Type(type = "yes_no")
+	private boolean aktivna;
+
 	public Anketa() {
 	}
 
 	public Anketa(Korisnik vlasnik, Date vrijemeIzrada, String nazivAnketa, String opisAnketa, boolean jePrivatna,
-			Date aktivnaOd, Date aktivnaDo) {
+			Date aktivnaOd, Date aktivnaDo, boolean aktivna) {
 		super();
 		this.vlasnik = vlasnik;
 		this.vrijemeIzrada = vrijemeIzrada;
@@ -73,6 +77,7 @@ public class Anketa {
 		this.jePrivatna = jePrivatna;
 		this.aktivnaOd = aktivnaOd;
 		this.aktivnaDo = aktivnaDo;
+		this.aktivna = aktivna;
 	}
 
 	public long getIdAnketa() {
@@ -175,6 +180,14 @@ public class Anketa {
 
 	public void setBrojPitanja(int brojPitanja) {
 		this.brojPitanja = brojPitanja;
+	}
+
+	public boolean isAktivna() {
+		return aktivna;
+	}
+
+	public void setAktivna(boolean aktivna) {
+		this.aktivna = aktivna;
 	}
 
 }
