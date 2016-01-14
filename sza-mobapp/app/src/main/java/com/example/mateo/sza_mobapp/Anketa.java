@@ -7,16 +7,16 @@ import java.util.List;
  * Created by Mateo on 28.10.2015..
  */
 public class Anketa {
-    private String nazivAnketa;
-    private int idAnketa;
-    //private String vlasnik;
-    private Date vrijemeIzrada;
     private String opisAnketa;
-    private boolean jePrivatna;
-    private Date aktivnaOd;
-    private Date aktivnaDo;
-    private int brojPitanja;
     private List<Pitanje> pitanja;
+    private int brojPitanja;
+    private int idAnketa;
+    private String aktivnaDo;
+    private String vrijemeIzrada;
+    private String aktivnaOd;
+    private String nazivAnketa;
+    private boolean jePrivatna;
+    //private String vlasnik;
 
     public Anketa(){}
 
@@ -56,11 +56,11 @@ public class Anketa {
         this.pitanja = pitanja;
     }
 
-    public Date getVrijemeIzrada() {
+    public String getVrijemeIzrada() {
         return vrijemeIzrada;
     }
 
-    public void setVrijemeIzrada(Date vrijemeIzrada) {
+    public void setVrijemeIzrada(String vrijemeIzrada) {
         this.vrijemeIzrada = vrijemeIzrada;
     }
 
@@ -80,19 +80,19 @@ public class Anketa {
         this.jePrivatna = jePrivatna;
     }
 
-    public Date getAktivnaOd() {
+    public String getAktivnaOd() {
         return aktivnaOd;
     }
 
-    public void setAktivnaOd(Date aktivnaOd) {
+    public void setAktivnaOd(String aktivnaOd) {
         this.aktivnaOd = aktivnaOd;
     }
 
-    public Date getAktivnaDo() {
+    public String getAktivnaDo() {
         return aktivnaDo;
     }
 
-    public void setAktivnaDo(Date aktivnaDo) {
+    public void setAktivnaDo(String aktivnaDo) {
         this.aktivnaDo = aktivnaDo;
     }
 

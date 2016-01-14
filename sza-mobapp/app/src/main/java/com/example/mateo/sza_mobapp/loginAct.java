@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -213,7 +215,21 @@ public class loginAct extends AppCompatActivity{
         for (int i = 0; i < data.length(); i++ ){
             try{
                 Log.d("Broj", i + " data" + data.getJSONObject(i).toString());
-                anketa = gson.fromJson(data.getJSONObject(i).toString(), Anketa.class);
+                anketa = new Anketa();
+                JSONObject anketaObjekt;
+                anketaObjekt = data.getJSONObject(i);
+
+                anketa.setOpisAnketa(anketaObjekt.getString("opisAnketa"));
+                //anketa.setPitanja(anketaObjekt.getString("pitanja"));
+                anketa.setBrojPitanja(Integer.parseInt(anketaObjekt.getString("brojPitanja")));
+                anketa.setIdAnketa(Integer.parseInt(anketaObjekt.getString("idAnketa")));
+                anketa.setAktivnaDo(anketaObjekt.getString("aktivnaDo"));
+                anketa.setVrijemeIzrada(anketaObjekt.getString("vrijemeIzrada"));
+                anketa.setAktivnaOd(anketaObjekt.getString("aktivnaOd"));
+                anketa.setNazivAnketa(anketaObjekt.getString("nazivAnketa"));
+                anketa.setJePrivatna(anketaObjekt.getBoolean("jePrivatna"));
+
+                //anketa = gson.fromJson(je, Anketa.class);
                 dh.addAnketa(anketa,getApplicationContext());
             }
             catch (JSONException e){
