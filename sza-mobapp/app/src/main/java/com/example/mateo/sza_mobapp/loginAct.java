@@ -62,7 +62,27 @@ public class loginAct extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Nema nazad!", Toast.LENGTH_LONG).show();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Izlaz");
+        alertDialog.setMessage("Želite li izaći?");
+        alertDialog.setPositiveButton("Da",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = getIntent();
+                        intent.putExtra("IZLAZ", true);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                });
+
+        alertDialog.setNegativeButton("Ne",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        //cancel = true;
+                    }
+                });
+        alertDialog.show();
         return;
     }
 
@@ -125,6 +145,9 @@ public class loginAct extends AppCompatActivity{
                     Log.d("*****Login", "SUCCESS");
                     Toast.makeText(getApplicationContext(), "Dobrodošli "+korisnik.getIme()+"!", Toast.LENGTH_LONG).show();
                     dataRefresh(jsonOdgovor);
+                    Intent intent = getIntent();
+                    intent.putExtra("IZLAZ", false);
+                    setResult(RESULT_OK, intent);
                     finish();
                 } else {
                     Log.d("*****Login", "FAIL");
