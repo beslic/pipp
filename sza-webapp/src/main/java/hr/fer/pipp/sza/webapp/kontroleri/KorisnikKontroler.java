@@ -42,16 +42,11 @@ public class KorisnikKontroler {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response promjeniPostavkeKorisnika(@Context HttpServletRequest req, @Context UriInfo uri,
 			@FormParam("ime") String ime, @FormParam("prezime") String prezime, @FormParam("email") String email,
-			@FormParam("button") String button, @FormParam("staralozinka") String staraLozinka,
+			@FormParam("buttonPostavke") String button, @FormParam("staralozinka") String staraLozinka,
 			@FormParam("novalozinka") String novaLozinka, @FormParam("novalozinkapotvrda") String novaLozinkaPotvrda) {
 
-		System.out.println(ime);
-		System.out.println(prezime);
-		System.out.println(email);
-		System.out.println("Button: " + button);
 		if ("postavke".equals(button)) {
 			Map<String, String> greska = Util.provjeriFormuPostavkiKorisnika(ime, prezime, email);
-			System.out.println("Greska: " + greska);
 
 			if (greska.isEmpty()) {
 				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
