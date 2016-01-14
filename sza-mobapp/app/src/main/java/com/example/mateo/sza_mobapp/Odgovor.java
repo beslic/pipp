@@ -7,6 +7,8 @@ public class Odgovor {
     private int pitanje_id;
     private String odgovor;
     private int brojOdgovora;
+    private int rbrOdgovor;
+    private int idOdgovor;
 
     public Odgovor(){}
 
@@ -15,6 +17,23 @@ public class Odgovor {
         this.odgovor = o;
         this.brojOdgovora=br;
     }
+
+    public int getRbrOdgovor() {
+        return rbrOdgovor;
+    }
+
+    public void setRbrOdgovor(int rbrOdgovor) {
+        this.rbrOdgovor = rbrOdgovor;
+    }
+
+    public int getIdOdgovor() {
+        return idOdgovor;
+    }
+
+    public void setIdOdgovor(int idOdgovor) {
+        this.idOdgovor = idOdgovor;
+    }
+
     public int getPitanje_id(){
         return pitanje_id;
     }

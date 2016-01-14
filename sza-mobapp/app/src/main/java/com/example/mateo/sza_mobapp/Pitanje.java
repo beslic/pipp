@@ -11,6 +11,7 @@ public class Pitanje {
     private String pitanje;
     private int pitanje_id;
     private ArrayList<Odgovor> odgovor;
+    private int rbrPitanje;
 
     dataHandler dH;
 
@@ -22,6 +23,15 @@ public class Pitanje {
         this.pitanje_id=pitanje_id;
         this.odgovor = odg;
     }
+
+    public int getRbrPitanje() {
+        return rbrPitanje;
+    }
+
+    public void setRbrPitanje(int rbrPitanje) {
+        this.rbrPitanje = rbrPitanje;
+    }
+
     public int getPitanje_id(){
         return pitanje_id;
     }

@@ -220,7 +220,6 @@ public class loginAct extends AppCompatActivity{
                 anketaObjekt = data.getJSONObject(i);
 
                 anketa.setOpisAnketa(anketaObjekt.getString("opisAnketa"));
-                //anketa.setPitanja(anketaObjekt.getString("pitanja"));
                 anketa.setBrojPitanja(Integer.parseInt(anketaObjekt.getString("brojPitanja")));
                 anketa.setIdAnketa(Integer.parseInt(anketaObjekt.getString("idAnketa")));
                 anketa.setAktivnaDo(anketaObjekt.getString("aktivnaDo"));
@@ -231,6 +230,32 @@ public class loginAct extends AppCompatActivity{
 
                 //anketa = gson.fromJson(je, Anketa.class);
                 dh.addAnketa(anketa, getApplicationContext());
+
+                JSONArray poljePitanja = anketaObjekt.getJSONArray("pitanja");
+
+                for (int pitanjaBrojac = 0; pitanjaBrojac < poljePitanja.length(); pitanjaBrojac++){
+                    Pitanje novoPitanje = new Pitanje();
+                    JSONObject pitanjeObjekt = poljePitanja.getJSONObject(pitanjaBrojac);
+                    novoPitanje.setAnketa_id(Integer.parseInt(anketaObjekt.getString("idAnketa")));
+                    novoPitanje.setPitanje_id(Integer.parseInt(pitanjeObjekt.getString("idPitanje")));
+                    novoPitanje.setPitanje(pitanjeObjekt.getString("textPitanje"));
+                    novoPitanje.setRbrPitanje(Integer.parseInt(pitanjeObjekt.getString("rbrPitanje")));
+
+                    JSONArray poljeOdgovora = pitanjeObjekt.getJSONArray("odgovor");
+                    dh.addPitanje(novoPitanje, getApplicationContext());
+
+                    for (int odgovorBrojac = 0; odgovorBrojac < poljeOdgovora.length(); odgovorBrojac++){
+                        Odgovor noviOdgovor = new Odgovor();
+                        JSONObject odgovorObjekt = poljeOdgovora.getJSONObject(odgovorBrojac);
+                        noviOdgovor.setPitanje_id(Integer.parseInt(pitanjeObjekt.getString("idPitanje")));
+                        noviOdgovor.setIdOdgovor(Integer.parseInt(odgovorObjekt.getString("idOdgovor")));
+                        noviOdgovor.setRbrOdgovor(Integer.parseInt(odgovorObjekt.getString("rbrOdgovor")));
+                        noviOdgovor.setOdgovor((odgovorObjekt.getString("textOdgovor")));
+                        dh.addOdgovor(noviOdgovor, getApplicationContext());
+                    }
+
+                }
+
             }
             catch (JSONException e){
                 e.printStackTrace();
