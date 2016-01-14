@@ -14,7 +14,7 @@ body{
 #korisnikDetails{
 	margin-top: 50px;
 	width: 50%;
-	
+
 }
 
 #odjavaRight{
@@ -43,3 +43,10 @@ body{
     -o-background-size: cover;
 }
 
+.div-rm-btn {
+	display: none;
+}
+
+.div-odgovor:hover .div-rm-btn {
+	display: block;
+}

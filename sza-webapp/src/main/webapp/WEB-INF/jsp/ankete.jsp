@@ -10,6 +10,9 @@
 <head>
     <title>Ankete</title>
     <c:import url="/html/head.html" />
+    <link rel="stylesheet" href="/sza-webapp/css/datepicker.css">
+    <link rel="stylesheet" href="/sza-webapp/css/datepicker3.css">
+    <script type='text/javascript' src='/sza-webapp/js/bootstrap-datepicker.js'></script>
 </head>
 
 <body>
