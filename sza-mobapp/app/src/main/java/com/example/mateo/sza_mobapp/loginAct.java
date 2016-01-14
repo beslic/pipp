@@ -147,7 +147,6 @@ public class loginAct extends AppCompatActivity{
                     loginEdit.putBoolean("PRIJAVLJEN", true);
                     loginEdit.commit();
                     Log.d("*****Login", "SUCCESS");
-                    Toast.makeText(getApplicationContext(), "Dobrodošli "+korisnik.getIme()+"!", Toast.LENGTH_LONG).show();
                     JSONObject jsonKorisnikOdgovor;
                     jsonKorisnikOdgovor  = jsonOdgovor.getJSONObject("korisnik");
                     JSONArray poljeAnketa = jsonKorisnikOdgovor.getJSONArray("anketa");
@@ -155,6 +154,7 @@ public class loginAct extends AppCompatActivity{
                     Intent intent = getIntent();
                     intent.putExtra("IZLAZ", false);
                     setResult(RESULT_OK, intent);
+                    Toast.makeText(getApplicationContext(), "Dobrodošli "+korisnik.getIme()+"!", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
                     Log.d("*****Login", "FAIL");
@@ -230,7 +230,7 @@ public class loginAct extends AppCompatActivity{
                 anketa.setJePrivatna(anketaObjekt.getBoolean("jePrivatna"));
 
                 //anketa = gson.fromJson(je, Anketa.class);
-                dh.addAnketa(anketa,getApplicationContext());
+                dh.addAnketa(anketa, getApplicationContext());
             }
             catch (JSONException e){
                 e.printStackTrace();

@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if(data.getBooleanExtra("IZLAZ", true) == true){
                     finish();
                 }
-
+                refresh(null);
                 // The user picked a contact.
                 // The Intent's data Uri identifies which contact was selected.
 
