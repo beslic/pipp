@@ -153,7 +153,7 @@ public class Util {
 
 		return greske;
 	}
-	
+
 	public static Map<String, String> provjeriFormuPostavkiKorisnika(String ime, String prezime, String email) {
 
 		Map<String, String> greska = new HashMap<>();
@@ -165,7 +165,7 @@ public class Util {
 		if (prezime == null || prezime.isEmpty()) {
 			greska.put("prezime", "Prezime je prazno");
 		}
-		
+
 		if (email == null || email.isEmpty()) {
 			greska.put("email", "Email je prazan");
 			return greska;
@@ -173,13 +173,33 @@ public class Util {
 			greska.put("email", "Email nije u dobrom formatu");
 			return greska;
 		}
-		
+
 		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnikaPoMailu(email);
-		
+
 		if (korisnik != null && !korisnik.getEmail().equals(email)) {
 			greska.put("email", "Email je vec u upotrebi");
 		}
 
+		return greska;
+	}
+
+	public static Map<String, String> provjeriFormuPromjeneLozinke(String staraLozinka, String novaLozinka,
+			String novaLozinkaPotvrda) {
+		Map<String, String> greska = new HashMap<>();
+		
+		if (staraLozinka == null || staraLozinka.isEmpty()) {
+			greska.put("staralozinka", "Polje stare lozinke je prazno");
+		}
+		if (novaLozinka == null || novaLozinka.isEmpty()) {
+			greska.put("novalozinka", "Polje nove lozinke je prazno");
+		}
+		if (novaLozinkaPotvrda == null || novaLozinkaPotvrda.isEmpty()) {
+			greska.put("novalozinkapotvrda", "Polje potvrde lozinke je prazno");
+		} else if (!novaLozinkaPotvrda.equals(novaLozinka)) {
+			greska.put("novalozinka", "Lozinke se ne podudaraju");
+			greska.put("novalozinkapotvrda", "Lozinke se ne podudaraju");
+		}
+		
 		return greska;
 	}
 

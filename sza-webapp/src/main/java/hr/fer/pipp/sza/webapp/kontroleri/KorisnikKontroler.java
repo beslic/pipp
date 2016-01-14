@@ -8,7 +8,6 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -33,8 +32,7 @@ public class KorisnikKontroler {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	@Path("/postavke")
-	public Response prikaziPostavkeKorisnika(@Context HttpServletRequest req,
-			@PathParam("korisnickoime") String korisnickoIme) {
+	public Response prikaziPostavkeKorisnika(@Context HttpServletRequest req) {
 		return Response.ok(new Viewable("/postavkeKorisnika")).build();
 	}
 
@@ -42,24 +40,46 @@ public class KorisnikKontroler {
 	@Path("/postavke")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response promjeniPostavkeKorisnika(@Context HttpServletRequest req, @Context UriInfo uri,  
-			@FormParam("ime") String ime, @FormParam("prezime") String prezime, @FormParam("email") String email){
-		Map<String, String> greska = Util.provjeriFormuPostavkiKorisnika(ime, prezime, email);
-		if (greska.isEmpty()) {
+	public Response promjeniPostavkeKorisnika(@Context HttpServletRequest req, @Context UriInfo uri,
+			@FormParam("ime") String ime, @FormParam("prezime") String prezime, @FormParam("email") String email,
+			@FormParam("buttonPostavke") String button, @FormParam("staralozinka") String staraLozinka,
+			@FormParam("novalozinka") String novaLozinka, @FormParam("novalozinkapotvrda") String novaLozinkaPotvrda) {
+
+		if ("postavke".equals(button)) {
+			Map<String, String> greska = Util.provjeriFormuPostavkiKorisnika(ime, prezime, email);
+
+			if (greska.isEmpty()) {
+				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
+				
+				korisnik.setIme(ime);
+				korisnik.setPrezime(prezime);
+				korisnik.setEmail(email);
+
+				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
+				return prikaziKorisnika(req, uri);
+			} else {
+				req.setAttribute("greska", greska);
+				return prikaziPostavkeKorisnika(req);
+			}
 			
-			Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
-			korisnik.setIme(ime);
-			korisnik.setPrezime(prezime);
-			korisnik.setEmail(email);
-			
-			DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
-			return prikaziKorisnika(req, uri);
+		} else if ("postavkelozinka".equals(button)) {
+			Map<String, String> greska = Util.provjeriFormuPromjeneLozinke(staraLozinka, novaLozinka,
+					novaLozinkaPotvrda);
+
+			if (greska.isEmpty()) {
+				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
+				korisnik.setLozinka(novaLozinkaPotvrda);
+
+				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
+				return prikaziKorisnika(req, uri);
+			} else {
+				req.setAttribute("greska", greska);
+				return prikaziPostavkeKorisnika(req);
+			}
 		} else {
-			req.setAttribute("greska", greska);
-			return prikaziPostavkeKorisnika(req, ((Korisnik) req.getSession().getAttribute("korisnik")).getKorisnickoIme());
+			return prikaziPostavkeKorisnika(req);
 		}
 	}
-	
 
 	@POST
 	@Produces(MediaType.TEXT_HTML)

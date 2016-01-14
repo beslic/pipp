@@ -76,7 +76,7 @@
 		</table>
 		<div class="col-md-4">
 			
-				<button id="postavke" name="postavke" type="submit" class="btn btn-success">Spremi</button>
+				<button id="postavke" name="buttonPostavke" value="postavke" class="btn btn-success">Spremi</button>
 			</form>
 		</div>
 	</div>
