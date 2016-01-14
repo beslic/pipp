@@ -37,16 +37,12 @@
           </div>
           	    
        	 <div class="form-group">
-       	 	<label class="col-md-4 control-label">Broj pitanja</label>
-       	 
-			<div class="col-md-4">
-				<select class="form-control"  name="brojPitanja" >
-				  <c:forEach var="i" begin="1" end="10">
-				  	<option value="${i}">${i}</option>
-				  </c:forEach>
-				</select>
+				<div class="col-md-offset-4 col-md-4">
+					<button type="button" onclick="dodajPitanje()">Dodaj pitanje</button>
+				</div>
 			</div>
-		</div>
+
+			<div class="form-group pitanja"></div>
 		
 		<div class="form-group">
             <label id="privatna" class="col-md-4 control-label" for="privatnainput">Privatna anketa</label>
@@ -156,5 +152,36 @@
         }
     });
 });
+    
+    function dodajPitanje() 
+	{
+		console.log("Dodajem pitanje");
+		var divPitanja = $(".pitanja");
+		var numOfPitanja = divPitanja.children().length;
+		divPitanja.append(	'<div class="row">' +
+								'<div class="col-md-offset-4 col-md-4">' +
+									'<input type="text" size="60" placeholder="Unesite pitanje"/>' +
+								'</div>' + 
+								'<div class="col-md-2">' +
+									'<button type="button" onclick="dodajOdgovor(' + (numOfPitanja + 1) + ')">Dodaj odgovor</button>' + 
+								'</div>' + 
+							'</div>');
+	}
+
+	function dodajOdgovor(pitanje) 
+	{
+		console.log("Dodajem odgovor za " + pitanje);
+		var divOdgovora = $(".pitanja > :nth-child(" + pitanje + ")");
+		divOdgovora.append(	'<div class="row">' +
+								'<div class="col-md-offset-5 col-md-4">' +
+									'<input type="text" size="40" placeholder="Unesite odgovor"/>' +
+								'</div>' + 
+							'</div>');
+	}
+	
+	function spremi()
+	{
+		// spakiraj sve u neki object i onda post
+	}
 </script>
 
