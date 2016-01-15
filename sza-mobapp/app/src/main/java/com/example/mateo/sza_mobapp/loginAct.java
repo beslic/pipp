@@ -97,7 +97,7 @@ public class loginAct extends AppCompatActivity{
 
 
         //Korisnik k = gson.fromJson(jsonKorisnik, Korisnik.class);
-        Log.d("*****KORISNIK", jsonKorisnik);
+        //Log.d("*****KORISNIK", jsonKorisnik);
         NetworkConnection PROVJERA = new NetworkConnection(getApplicationContext(), login.getString("ADRESA_SERVERA", "192.168.1.102")+":8080/sza-webapp/android/");
 
 
@@ -131,8 +131,8 @@ public class loginAct extends AppCompatActivity{
             }catch (ExecutionException s){
                 s.printStackTrace();
             }
-            Log.d("checkpoint ", "1");
-            Log.d("odgovor", odgovor);
+            //Log.d("checkpoint ", "1");
+            //Log.d("odgovor", odgovor);
             try {
                 JSONObject jsonOdgovor = new JSONObject(odgovor);
                 //Log.d("jsonOdgovor", jsonOdgovor.get("status").toString());
@@ -185,14 +185,14 @@ public class loginAct extends AppCompatActivity{
 
         for (int i = 0; i < data.length(); i++ ){
             try{
-                Log.d("Broj", i + " data" + data.getJSONObject(i).toString());
+                //Log.d("Broj", i + " data" + data.getJSONObject(i).toString());
                 anketa = new Anketa();
                 JSONObject anketaObjekt;
                 anketaObjekt = data.getJSONObject(i);
 
                 anketa.setOpisAnketa(anketaObjekt.getString("opisAnketa"));
                 anketa.setBrojPitanja(Integer.parseInt(anketaObjekt.getString("brojPitanja")));
-                anketa.setIdAnketa(Integer.parseInt(anketaObjekt.getString("idAnketa")));
+                anketa.setIdAnketa(Long.parseLong(anketaObjekt.getString("idAnketa")));
                 anketa.setAktivnaDo(anketaObjekt.getString("aktivnaDo"));
                 anketa.setVrijemeIzrada(anketaObjekt.getString("vrijemeIzrada"));
                 anketa.setAktivnaOd(anketaObjekt.getString("aktivnaOd"));
@@ -207,8 +207,8 @@ public class loginAct extends AppCompatActivity{
                 for (int pitanjaBrojac = 0; pitanjaBrojac < poljePitanja.length(); pitanjaBrojac++){
                     Pitanje novoPitanje = new Pitanje();
                     JSONObject pitanjeObjekt = poljePitanja.getJSONObject(pitanjaBrojac);
-                    novoPitanje.setAnketa_id(Integer.parseInt(anketaObjekt.getString("idAnketa")));
-                    novoPitanje.setPitanje_id(Integer.parseInt(pitanjeObjekt.getString("idPitanje")));
+                    novoPitanje.setAnketa_id(Long.parseLong(anketaObjekt.getString("idAnketa")));
+                    novoPitanje.setPitanje_id(Long.parseLong(pitanjeObjekt.getString("idPitanje")));
                     novoPitanje.setPitanje(pitanjeObjekt.getString("textPitanje"));
                     novoPitanje.setRbrPitanje(Integer.parseInt(pitanjeObjekt.getString("rbrPitanje")));
 
@@ -218,8 +218,8 @@ public class loginAct extends AppCompatActivity{
                     for (int odgovorBrojac = 0; odgovorBrojac < poljeOdgovora.length(); odgovorBrojac++){
                         Odgovor noviOdgovor = new Odgovor();
                         JSONObject odgovorObjekt = poljeOdgovora.getJSONObject(odgovorBrojac);
-                        noviOdgovor.setPitanje_id(Integer.parseInt(pitanjeObjekt.getString("idPitanje")));
-                        noviOdgovor.setIdOdgovor(Integer.parseInt(odgovorObjekt.getString("idOdgovor")));
+                        noviOdgovor.setPitanje_id(Long.parseLong(pitanjeObjekt.getString("idPitanje")));
+                        noviOdgovor.setIdOdgovor(Long.parseLong(odgovorObjekt.getString("idOdgovor")));
                         noviOdgovor.setRbrOdgovor(Integer.parseInt(odgovorObjekt.getString("rbrOdgovor")));
                         noviOdgovor.setOdgovor((odgovorObjekt.getString("textOdgovor")));
                         dh.addOdgovor(noviOdgovor, getApplicationContext());
@@ -234,13 +234,13 @@ public class loginAct extends AppCompatActivity{
 
         }
 
-        Log.d("dataRefresh", data.toString());
+        //Log.d("dataRefresh", data.toString());
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        Log.d("*****onCreateOptMenu  ", "done");
+        //Log.d("*****onCreateOptMenu  ", "done");
         return true;
     }
 

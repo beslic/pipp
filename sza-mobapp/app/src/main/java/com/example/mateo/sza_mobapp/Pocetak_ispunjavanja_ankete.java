@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
-    int anketaId;
+    long anketaId;
     String anketaIme;
     TextView tekst;
     boolean poznataLokacija = false;
@@ -24,16 +24,16 @@ public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
         setContentView(R.layout.activity_pocetak_ispunjavanja_ankete);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tekst = (TextView) findViewById(R.id.pocetakText1);
         Bundle extras = getIntent().getExtras();
         mGPS = new GPSLocator(this);
         anketaId =0;
         anketaIme="default";
         if (extras != null) {
-            anketaId = extras.getInt("anketa");
+            anketaId = extras.getLong("anketa");
             anketaIme = extras.getString("anketaIme");
-            Log.d("*****pocIspunjavanja  ", "extras != null, anketa: " + anketaId);
+            //Log.d("*****pocIspunjavanja  ", "extras != null, anketa: " + anketaId);
             extras.clear();
         }
         tekst.setText(anketaIme);
@@ -48,7 +48,7 @@ public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
             longitude = mGPS.longitude;
             latitude = mGPS.latitude;
             poznataLokacija = true;
-            Log.d("PPA_GPS", "*****lokacija poznata*****");
+            //Log.d("PPA_GPS", "*****lokacija poznata*****");
             start=true;
         }
         else if(start == false){

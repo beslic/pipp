@@ -4,11 +4,11 @@ package com.example.mateo.sza_mobapp;
  * Created by Mateo on 28.10.2015..
  */
 public class Odgovor {
-    private int pitanje_id;
+    private long pitanje_id;
     private String odgovor;
     private int brojOdgovora;
     private int rbrOdgovor;
-    private int idOdgovor;
+    private long idOdgovor;
 
     public Odgovor(){}
 
@@ -26,15 +26,15 @@ public class Odgovor {
         this.rbrOdgovor = rbrOdgovor;
     }
 
-    public int getIdOdgovor() {
+    public long getIdOdgovor() {
         return idOdgovor;
     }
 
-    public void setIdOdgovor(int idOdgovor) {
+    public void setIdOdgovor(long idOdgovor) {
         this.idOdgovor = idOdgovor;
     }
 
-    public int getPitanje_id(){
+    public long getPitanje_id(){
         return pitanje_id;
     }
     public String getOdgovor(){
@@ -43,7 +43,7 @@ public class Odgovor {
     public int getBrojOdgovora(){
         return brojOdgovora;
     }
-    public void setPitanje_id(int id){
+    public void setPitanje_id(long id){
         this.pitanje_id=id;
     }
     public void setOdgovor(String p){
