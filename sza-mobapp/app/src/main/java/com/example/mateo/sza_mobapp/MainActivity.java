@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         List<Anketa> imeA;
         imeA=dbH.findAnketa();
         dbH.ispisBaze();
-        dbH.ispisOdgovora(1);
+        dbH.ispisOdgovora((long) 1);
         myArrayAdapter.clear();
         for(int i=0; i<imeA.size();i++) {
             myArrayAdapter.add(imeA.get(i));

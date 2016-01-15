@@ -42,7 +42,7 @@ public class AnketeAdapter extends ArrayAdapter<Anketa> {
         }
         Anketa anketa1 = anketa.get(position);
         holder.ime.setText(anketa1.getNazivAnketa());
-        holder.id.setText(Integer.toString(anketa1.getIdAnketa()));
+        holder.id.setText(Long.toString(anketa1.getIdAnketa()));
         return row;
     }
 

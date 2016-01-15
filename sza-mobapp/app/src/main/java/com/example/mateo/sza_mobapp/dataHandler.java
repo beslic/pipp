@@ -384,7 +384,7 @@ public class dataHandler extends SQLiteOpenHelper {
         Log.d("*****ISPIS", "POCETAK 2*****");
         if(cursor.moveToFirst()){
             cursor.moveToFirst();
-            Log.d("*****ISPIS ", "korisnik:"+cursor.getString(0)
+            Log.d("*****ISPIS ", "korisnik:"+ cursor.getString(0)
                     +" "+cursor.getString(2)+" "+cursor.getString(3)+"    @"+cursor.getString(4)
                     +" "+cursor.getString(5)+"    "+cursor.getString(9)+" "+cursor.getString(14));
             while(cursor.moveToNext()){
