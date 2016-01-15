@@ -126,11 +126,13 @@ public class AnketaKontroler {
 			}
 			Collections.sort(pitanja, (p1, p2) -> Integer.compare(p1.getRbrPitanje(), p2.getRbrPitanje()));
 
+			Date d = new Date();
 			anketa.setNazivAnketa(nazivAnketa);
 			anketa.setOpisAnketa(opisAnketa);
-			anketa.setVrijemeIzrada(new Date());
+			anketa.setVrijemeIzrada(d);
 			anketa.setAktivnaOd(format.parse(aktivnaOd));
 			anketa.setAktivnaDo(format.parse(aktivnaDo));
+			anketa.setAktivna(Util.provjeraAktivnosti(anketa, d));
 			anketa.setBrojPitanja(brojPitanja);
 			anketa.setVlasnik((Korisnik) req.getSession().getAttribute("korisnik"));
 			anketa.setJePrivatna(("privatna".equals(privatna)) ? true : false);

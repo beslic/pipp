@@ -15,4 +15,6 @@ public interface IDAOAnketa {
 
 	public Anketa spremiAnketu(Anketa anketa);
 
+	public Anketa spremiIzmjeneAnkete(Anketa anketa);
+
 }
