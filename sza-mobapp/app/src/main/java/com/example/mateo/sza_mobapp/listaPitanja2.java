@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -48,6 +49,7 @@ public class listaPitanja2 extends AppCompatActivity {
     dataHandler dH = new dataHandler(this, null, null, 1);
     int anketaId;
     int brojIspunjavanja;
+    SharedPreferences loginInfo;
 
     double longitude = 0;
     double latitude = 0;
@@ -63,7 +65,7 @@ public class listaPitanja2 extends AppCompatActivity {
         //Random r = new Random();
         anketaId =0;
         int i;
-
+        loginInfo = getSharedPreferences("LOGIN",Context.MODE_PRIVATE);
         if (extras != null) {
             anketaId = extras.getInt("anketa1");
             longitude = extras.getDouble("lon");
@@ -79,7 +81,7 @@ public class listaPitanja2 extends AppCompatActivity {
             finish();
         } else {
             Log.d("*****listaPitanja2", "POCETAK");
-            ispunjavanje = new NOVO_ispunjavanjeAnkete(anketaId, latitude, longitude, getApplicationContext(), getDateTime(), poznataLokacija);
+            ispunjavanje = new NOVO_ispunjavanjeAnkete(anketaId, loginInfo.getString("USERNAME", "nije poznato"),latitude, longitude, getApplicationContext(), getDateTime(), poznataLokacija);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             /*
@@ -235,13 +237,13 @@ public class listaPitanja2 extends AppCompatActivity {
             //brIspunjavanja=brIsp;
             Bundle args = new Bundle();
             ispunjavanje = ispun;
-
             ArrayList<String> odgovori1 = new ArrayList<>();
             if(Adapter.getCount() < maxPages) {
                 for (int i = 0; i < pitanja.get(sectionNumber-1).getOdgovor().size(); i++) {
                     odgovori1.add(pitanja.get(sectionNumber-1).getOdgovor().get(i).getOdgovor());
                 }
             }
+
 
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             /*args.putString(PITANJE, pit.getPitanje());
@@ -276,6 +278,8 @@ public class listaPitanja2 extends AppCompatActivity {
                 TextView textView = (TextView) rootView.findViewById(R.id.section_label);
                 ListView listView = (ListView) rootView.findViewById(R.id.listaOdgovora);
                 listView.setOnItemClickListener(this);
+
+
                 ArrayAdapter myAdapter;
                 myAdapter = new ArrayAdapter(context, android.R.layout.simple_list_item_activated_1, odgovori);
                 //myAdapter = new ArrayAdapter(context, R.layout.odgovori, R.id.odgovor, odgovori);
@@ -304,7 +308,13 @@ public class listaPitanja2 extends AppCompatActivity {
             }*/
 
             odabrano.setPitanjeId(pitanja.get(VP.getCurrentItem()).getPitanje_id());
-            odabrano.setOdgovor(s);
+            for(int i = 0; i<pitanja.get(VP.getCurrentItem()).getOdgovor().size(); i++){
+                if(pitanja.get(VP.getCurrentItem()).getOdgovor().get(i).getOdgovor().equals(s)){
+                    odabrano.setOdgovor(pitanja.get(VP.getCurrentItem()).getOdgovor().get(i).getIdOdgovor());
+                    break;
+                }
+            }
+            //odabrano.setOdgovor(s);
             for(int i = 0; i<ispunjavanje.getOdabraniOdgovori().size();i++){
                     if(ispunjavanje.getOdabraniOdgovori().get(i).getPitanjeId() == pitanja.get(VP.getCurrentItem()).getPitanje_id()){
                         ispunjavanje.getOdabraniOdgovori().remove(i);
