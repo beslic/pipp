@@ -120,7 +120,7 @@ public class Util {
 	}
 
 	public static Map<String, String> provjeriFormuAnkete(String nazivAnketa, String opisAnketa, String aktivnaOd,
-			String aktivnaDo, String brojPitanja) {
+			String aktivnaDo) {
 
 		Map<String, String> greske = new HashMap<>();
 

@@ -1,8 +1,10 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,7 +59,7 @@ public class Anketa {
 	private int brojPitanja;
 
 	@Expose
-	@OneToMany(mappedBy = "anketa")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "anketa", orphanRemoval = true)
 	private List<Pitanje> pitanja;
 
 	@Expose
@@ -188,6 +190,13 @@ public class Anketa {
 
 	public void setAktivna(boolean aktivna) {
 		this.aktivna = aktivna;
+	}
+
+	@Override
+	public String toString() {
+		return "Anketa [vrijemeIzrada=" + vrijemeIzrada + ", nazivAnketa=" + nazivAnketa + ", opisAnketa=" + opisAnketa
+				+ ", jePrivatna=" + jePrivatna + ", aktivnaOd=" + aktivnaOd + ", aktivnaDo=" + aktivnaDo
+				+ ", brojPitanja=" + brojPitanja + ", pitanja=" + Arrays.toString(pitanja.toArray()) + "]";
 	}
 
 }

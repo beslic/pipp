@@ -43,6 +43,8 @@ public class dataHandler extends SQLiteOpenHelper {
     public static final String COLUMN_ODGOVOR = "odgovor";
     //public static final String COLUMN_BR_ODGOVORA = "br_odgovora";
     public static final String COLUMN_ODGOVOR_PIT_ID = "odgovor_p";
+    public static final String COLUMN_ODGOVOR_ID = "odgovorId";
+
 
     public static final String COLUMN_IME = "ime";
     public static final String COLUMN_PREZIME = "prezime";
@@ -76,6 +78,7 @@ public class dataHandler extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + COLUMN_PITANJE_A + ") REFERENCES " + TABLE_ANKETA + "(" + COLUMN_ANKETA_ID + ") )";
 
         String CREATE_TABLE3 =  "CREATE TABLE IF NOT EXISTS " + TABLE_ODGOVORI + " ("
+                + COLUMN_ODGOVOR_ID + " INTEGER PRIMARY KEY, "
                 + COLUMN_ODGOVOR_PIT_ID + " INTEGER, "
                 + COLUMN_ODGOVOR + " TEXT, "
                 /*+ COLUMN_BR_ODGOVORA + " INTEGER, "*/
@@ -172,6 +175,7 @@ public class dataHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ODGOVOR_PIT_ID, o.getPitanje_id());
         values.put(COLUMN_ODGOVOR, o.getOdgovor());
+        values.put(COLUMN_ODGOVOR_ID, o.getIdOdgovor());
         //values.put(COLUMN_BR_ODGOVORA, o.getBrojOdgovora());
         SQLiteDatabase db = this.getWritableDatabase();
         if(db.insert(TABLE_ODGOVORI, null, values)==-1){

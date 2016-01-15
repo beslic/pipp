@@ -44,18 +44,6 @@
 				</div>
 			</div>
 
-<!-- 			<div class="form-group"> -->
-<!-- 				<label class="col-md-4 control-label">Broj pitanja</label> -->
-
-<!-- 				<div class="col-md-4"> -->
-<!-- 					<select class="form-control" name="brojPitanja"> -->
-<%-- 						<c:forEach var="i" begin="1" end="10"> --%>
-<%-- 							<option value="${i}">${i}</option> --%>
-<%-- 						</c:forEach> --%>
-<!-- 					</select> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-
 			<div class="form-group">
 				<label id="privatna" class="col-md-3 control-label"
 					for="privatnainput">Privatna anketa</label>
@@ -115,39 +103,14 @@
 				</div>
 			</div>
 			
+		   <div id="pitanja">
+           </div>
+			
 			<div class="form-group">
-			     <label class="col-md-3 control-label"></label>
-			     <div class="col-md-7">
-                    <div class="input-group input-append">
-                        <br>
-                        <b>Dodavanje pitanja i odgovora</b>
-                    </div>
+                <label class="col-md-3 control-label"></label>
+                <div class="col-md-6">
                     <hr>
-                </div>
-            </div>
-            
-            <div id="pitanja">
-                <div class="row">
-                <div class="form-group">
-                    <label class="col-md-3 control-label" for="pitanje1">Pitanje broj 1</label>
-                    <div class="col-md-6">
-                        <input type="text" id="pitanje1" name="pitanje1" class="form-control input-md" placeholder="Tekst 1. pitanja">
-                    </div>
-                    <div class="col-xs-3">
-                        <button type="button" class="btn btn-success" onclick="dodajPitanje()" data-toggle="tooltip" data-placement="top" title="Dodaj novo pitanje"><span class="glyphicon glyphicon-plus"></span></button>
-                    </div>
-                </div>
-                <div id="odgovori1">
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="pitanje1-odgovor1">Odgovor 1</label>
-                    <div class="col-md-4">
-                        <input type="text" id="pitanje1-odgovor1" name="pitanje1-odgovor1" class="form-control input-md" placeholder="Tekst 1. odgovora na 1. pitanje">
-                    </div>
-                    <div class="col-xs-3">
-                        <button type="button" class="btn btn-success" onclick="dodajOdgovor(1)" data-toggle="tooltip" data-placement="top" title="Dodaj novi odgovor"><span class="glyphicon glyphicon-plus"></span></button>
-                    </div>
-                </div>
-                </div>
+                    <button type="button" class="btn btn-success pull-right" onclick="dodajPitanje()" data-toggle="tooltip" data-placement="top" title="Dodaj novo pitanje">Dodaj pitanje</button>
                 </div>
             </div>
             
@@ -195,26 +158,21 @@
 		var divPitanja = $("#pitanja");
 		var brojPitanja = divPitanja.children().length + 1;
 		divPitanja.append(
-			'<div class="row">' +
-			    '<div class="form-group">' +
-			        '<label class="col-md-3 control-label" for="pitanje' + brojPitanja + '">Pitanje broj ' + brojPitanja + '</label>' +
-			        '<div class="col-md-6">' +
-                        '<input type="text" id="pitanje' + brojPitanja + '" name="pitanje' + brojPitanja + '" class="form-control input-md" placeholder="Tekst ' + brojPitanja + '. pitanja">' +
+		    '<div id="pitanje' + brojPitanja + '"><div class="form-group"><div class="col-md-6 col-md-offset-3"><hr><b>Pitanje</b><br></div></div>' +
+				'<div class="form-group div-odgovor">' +
+                    '<div class="col-md-6 col-md-offset-3">' +
+                        '<input type="text" id="pitanje' + brojPitanja + '" name="pitanje' + brojPitanja + '" class="form-control input-md" placeholder="Tekst pitanja">' +
                     '</div>' +
-                    '<div class="col-xs-3">' +
-                        '<button type="button" class="btn btn-danger" onclick="obrisiPitanje(' + brojPitanja + ')" data-toggle="tooltip" data-placement="top" title="Obriši ovo pitanje"><span class="glyphicon glyphicon-minus"></span></button>' +
+                    '<div class="col-md-3 div-rm-btn">' +
+                        '<button type="button" class="btn btn-danger" onclick="obrisiPitanje(' + brojPitanja + ')" data-toggle="tooltip" data-placement="top" title="Obriši pitanje"><span class="glyphicon glyphicon-minus"></span></button>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<div class="col-md-6 col-md-offset-3">' +
+                        '<b>Odgovori</b><span><button type="button" class="btn btn-success pull-right" onclick="dodajOdgovor(' + brojPitanja + ')" data-toggle="tooltip" data-placement="top" title="Dodaj novi odgovor"><span class="glyphicon glyphicon-plus"></span></button></span>' +
                     '</div>' +
                 '</div>' +
                 '<div id="odgovori' + brojPitanja + '">' +
-                    '<div class="form-group">' +
-                        '<label class="col-md-4 control-label" for="pitanje' + brojPitanja + '-odgovor1">Odgovor 1</label>' +
-                        '<div class="col-md-4">' +
-                            '<input type="text" id="pitanje' + brojPitanja + '-odgovor1" name="pitanje' + brojPitanja + '-odgovor1" class="form-control input-md" placeholder="Tekst 1. odgovora na ' + brojPitanja + '. pitanje">' +
-                        '</div>' +
-                        '<div class="col-xs-3">' +
-                            '<button type="button" class="btn btn-success" onclick="dodajOdgovor(' + brojPitanja + ')" data-toggle="tooltip" data-placement="top" title="Dodaj novi odgovor"><span class="glyphicon glyphicon-plus"></span></button>' +
-                        '</div>' +
-                   '</div>' +
                 '</div>' +
             '</div>');
 	}
@@ -224,26 +182,25 @@
         var liOdgovor = $("#odgovori" + pitanje);
         var brojOdgovora = liOdgovor.children().length + 1;
         liOdgovor.append(
-        		'<div class="form-group div-odgovor">' +
-                    '<label class="col-md-4 control-label" for="pitanje' + pitanje + '-odgovor' + brojOdgovora + '">Odgovor ' + brojOdgovora + '</label>' +
-                    '<div class="col-md-4">' +
-                        '<input type="text" id="pitanje' + pitanje + '-odgovor' + brojOdgovora + '" name="pitanje' + brojOdgovora + '" class="form-control input-md" placeholder="Tekst ' + brojOdgovora + '. odgovora na ' + pitanje + '. pitanje">' +
+        		'<div id="pitanje' + pitanje + '-odgovor' + brojOdgovora + '" name="pitanje' + pitanje + '-odgovor' + brojOdgovora + '" class="form-group div-odgovor">' +
+                    '<div class="col-md-4 col-md-offset-4">' +
+                        '<input type="text" name="pitanje' + pitanje + '-odgovor' + brojOdgovora + '" name="pitanje' + pitanje + '-odgovor' + brojOdgovora + '" class="form-control input-md" placeholder="Tekst odgovora">' +
                     '</div>' +
-                    '<div class="col-xs-3 div-rm-btn">' +
-                        '<button type="button" class="btn btn-danger btn-rm" onclick="obrisiOdgovor(' + pitanje + ', ' + brojOdgovora + ')" data-toggle="tooltip" data-placement="top" title="Obriši odgovor"><span class="glyphicon glyphicon-minus"></span></button>' +
+                    '<div class="col-md-1 div-rm-btn">' +
+                        '<button type="button" class="btn btn-danger" onclick="obrisiOdgovor(' + pitanje + ', ' + brojOdgovora + ')" data-toggle="tooltip" data-placement="top" title="Obriši odgovor"><span class="glyphicon glyphicon-minus"></span></button>' +
                     '</div>' +
                 '</div>');
 	}
 	
-	function obrisiOdgovor(pitanje, odgovor) {
-		console.log("Brisem odgovor " + odgovor + " na pitanje " + pitanje);
-		$("#odgovori" + pitanje + " .form-group:nth-child(" + odgovor + ")").remove();
-	}
-	
 	function obrisiPitanje(pitanje) {
 		console.log("Brisem pitanje " + pitanje);
-		$("#pitanja .row:nth-child(" + pitanje + ")").remove();
+		$("#pitanje" + pitanje).remove();
 	}
+	   
+    function obrisiOdgovor(pitanje, odgovor) {
+        console.log("Brisem odgovor " + odgovor + " na pitanje " + pitanje);
+        $("#pitanje" + pitanje + "-odgovor" + odgovor).remove();
+    }
 	
 	function spremi()
 	{

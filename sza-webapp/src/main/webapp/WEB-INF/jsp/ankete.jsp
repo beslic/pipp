@@ -46,7 +46,7 @@
             <c:if test="${privatneAnkete == null}">
                 <h3>Nemate još nijednu anketu</h3>
             </c:if>
-            <c:forEach var="anketa" items="${javneAnkete}">
+            <c:forEach var="anketa" items="${privatneAnkete}">
                 <p>${anketa.nazivAnketa}</p>
             </c:forEach>
         </div>
