@@ -48,7 +48,7 @@ public class listaPitanja2 extends AppCompatActivity {
     ArrayList<Pitanje> lista1;
     dataHandler dH = new dataHandler(this, null, null, 1);
     long anketaId;
-    int brojIspunjavanja;
+    long brojIspunjavanja;
     SharedPreferences loginInfo;
 
     double longitude = 0;
