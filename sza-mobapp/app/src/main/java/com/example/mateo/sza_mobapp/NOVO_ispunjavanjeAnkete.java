@@ -16,7 +16,7 @@ public class NOVO_ispunjavanjeAnkete {
     private double latitude;
     private double longitude;
     private boolean poznataLokacija;
-    private int idIspunjavanja;
+    private long idIspunjavanja;
 
     private String korisnickoIme;
     private String dateTime;
@@ -38,7 +38,7 @@ public class NOVO_ispunjavanjeAnkete {
 
     public void dodajUBazu(){
         do{
-            idIspunjavanja = r.nextInt();
+            idIspunjavanja = r.nextLong();
         }while(dH.addIspunajvanjeAnkete(anketaId, korisnickoIme, idIspunjavanja, dateTime, longitude, latitude, poznataLokacija));
 
         for(int i=0; i<odabraniOdgovori.size();i++){
