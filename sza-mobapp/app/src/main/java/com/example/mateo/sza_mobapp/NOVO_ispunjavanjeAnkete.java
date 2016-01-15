@@ -1,7 +1,6 @@
 package com.example.mateo.sza_mobapp;
 
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 
 import java.util.List;
 import java.util.Random;
@@ -33,7 +32,8 @@ public class NOVO_ispunjavanjeAnkete {
         this.context = context;
         this.dateTime = date;
         this.korisnickoIme = korisnickoIme;
-
+        //dH = new dataHandler(this.context, null, null, 1);
+        //listaPitanja = dH.findPitanje(anketaId);
     }
 
     public NOVO_ispunjavanjeAnkete(){
@@ -43,7 +43,6 @@ public class NOVO_ispunjavanjeAnkete {
     public void dodajUBazu(){
         Random r = new Random();
         dataHandler dH = new dataHandler(context, null, null, 1);
-
         do{
             idIspunjavanja = r.nextLong();
         }while(dH.addIspunajvanjeAnkete(anketaId, korisnickoIme, idIspunjavanja, dateTime, longitude, latitude, poznataLokacija));
