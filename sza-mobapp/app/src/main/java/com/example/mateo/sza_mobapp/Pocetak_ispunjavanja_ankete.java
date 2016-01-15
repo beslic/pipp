@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
-    int anketaId;
+    long anketaId;
     String anketaIme;
     TextView tekst;
     boolean poznataLokacija = false;
@@ -31,7 +31,7 @@ public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
         anketaId =0;
         anketaIme="default";
         if (extras != null) {
-            anketaId = extras.getInt("anketa");
+            anketaId = extras.getLong("anketa");
             anketaIme = extras.getString("anketaIme");
             //Log.d("*****pocIspunjavanja  ", "extras != null, anketa: " + anketaId);
             extras.clear();

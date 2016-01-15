@@ -47,7 +47,7 @@ public class listaPitanja2 extends AppCompatActivity {
     private ViewPager mViewPager;
     ArrayList<Pitanje> lista1;
     dataHandler dH = new dataHandler(this, null, null, 1);
-    int anketaId;
+    long anketaId;
     int brojIspunjavanja;
     SharedPreferences loginInfo;
 
@@ -63,11 +63,11 @@ public class listaPitanja2 extends AppCompatActivity {
         setContentView(R.layout.activity_lista_pitanja2);
         Bundle extras = getIntent().getExtras();
         //Random r = new Random();
-        anketaId =0;
+        anketaId = 0;
         int i;
         loginInfo = getSharedPreferences("LOGIN",Context.MODE_PRIVATE);
         if (extras != null) {
-            anketaId = extras.getInt("anketa1");
+            anketaId = extras.getLong("anketa1");
             longitude = extras.getDouble("lon");
             latitude = extras.getDouble("lat");
             poznataLokacija = extras.getBoolean("poznato");

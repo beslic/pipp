@@ -192,7 +192,7 @@ public class loginAct extends AppCompatActivity{
 
                 anketa.setOpisAnketa(anketaObjekt.getString("opisAnketa"));
                 anketa.setBrojPitanja(Integer.parseInt(anketaObjekt.getString("brojPitanja")));
-                anketa.setIdAnketa(Integer.parseInt(anketaObjekt.getString("idAnketa")));
+                anketa.setIdAnketa(Long.parseLong(anketaObjekt.getString("idAnketa")));
                 anketa.setAktivnaDo(anketaObjekt.getString("aktivnaDo"));
                 anketa.setVrijemeIzrada(anketaObjekt.getString("vrijemeIzrada"));
                 anketa.setAktivnaOd(anketaObjekt.getString("aktivnaOd"));
@@ -207,8 +207,8 @@ public class loginAct extends AppCompatActivity{
                 for (int pitanjaBrojac = 0; pitanjaBrojac < poljePitanja.length(); pitanjaBrojac++){
                     Pitanje novoPitanje = new Pitanje();
                     JSONObject pitanjeObjekt = poljePitanja.getJSONObject(pitanjaBrojac);
-                    novoPitanje.setAnketa_id(Integer.parseInt(anketaObjekt.getString("idAnketa")));
-                    novoPitanje.setPitanje_id(Integer.parseInt(pitanjeObjekt.getString("idPitanje")));
+                    novoPitanje.setAnketa_id(Long.parseLong(anketaObjekt.getString("idAnketa")));
+                    novoPitanje.setPitanje_id(Long.parseLong(pitanjeObjekt.getString("idPitanje")));
                     novoPitanje.setPitanje(pitanjeObjekt.getString("textPitanje"));
                     novoPitanje.setRbrPitanje(Integer.parseInt(pitanjeObjekt.getString("rbrPitanje")));
 
@@ -218,8 +218,8 @@ public class loginAct extends AppCompatActivity{
                     for (int odgovorBrojac = 0; odgovorBrojac < poljeOdgovora.length(); odgovorBrojac++){
                         Odgovor noviOdgovor = new Odgovor();
                         JSONObject odgovorObjekt = poljeOdgovora.getJSONObject(odgovorBrojac);
-                        noviOdgovor.setPitanje_id(Integer.parseInt(pitanjeObjekt.getString("idPitanje")));
-                        noviOdgovor.setIdOdgovor(Integer.parseInt(odgovorObjekt.getString("idOdgovor")));
+                        noviOdgovor.setPitanje_id(Long.parseLong(pitanjeObjekt.getString("idPitanje")));
+                        noviOdgovor.setIdOdgovor(Long.parseLong(odgovorObjekt.getString("idOdgovor")));
                         noviOdgovor.setRbrOdgovor(Integer.parseInt(odgovorObjekt.getString("rbrOdgovor")));
                         noviOdgovor.setOdgovor((odgovorObjekt.getString("textOdgovor")));
                         dh.addOdgovor(noviOdgovor, getApplicationContext());
