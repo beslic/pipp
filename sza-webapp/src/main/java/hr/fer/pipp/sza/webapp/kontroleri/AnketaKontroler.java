@@ -185,4 +185,14 @@ public class AnketaKontroler {
 		req.setAttribute("anketa", anketa);
 		return Response.ok(new Viewable("/anketa")).build();
 	}
+
+	@GET
+	@Path("/{id-naziv}/json")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String prikaziAnketuKaoJSON(@Context HttpServletRequest req, @PathParam("id-naziv") String idNaziv) {
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0]));
+		return gson.toJson(anketa);
+	}
+
 }

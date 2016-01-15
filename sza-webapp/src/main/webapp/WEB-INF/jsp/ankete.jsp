@@ -47,7 +47,8 @@
                 <h3>Nemate još nijednu anketu</h3>
             </c:if>
             <c:forEach var="anketa" items="${privatneAnkete}">
-                <p>${anketa.nazivAnketa}</p>
+                <c:set var="uri" value="${anketa.idAnketa}-${anketa.nazivAnketa}"/>
+	            <h3><a href="/sza-webapp/ankete/${url}${fn:replace(uri, ' ', '-')}/">${anketa.nazivAnketa}</a></h3>
             </c:forEach>
         </div>
     </c:if>
