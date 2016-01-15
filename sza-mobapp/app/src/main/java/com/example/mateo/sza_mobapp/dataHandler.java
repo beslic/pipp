@@ -262,7 +262,7 @@ public class dataHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
             pitanje.setAnketa_id(cursor.getLong(2));
             pitanje.setPitanje_id(cursor.getLong(1));
-            pitanje.setPitanje(cursor.getLong(0));
+            pitanje.setPitanje(cursor.getString(0));
             pitanje.setOdgovor(this.findOdgovor(Integer.parseInt(cursor.getString(1))));
             listaPitanja.add(pitanje);
             //Log.d("*****findPitanje ", "dodano na listu: " + cursor.getString(0)+ " " +cursor.getString(1));
@@ -270,7 +270,7 @@ public class dataHandler extends SQLiteOpenHelper {
                 pitanje = new Pitanje();
                 pitanje.setAnketa_id(cursor.getLong(2));
                 pitanje.setPitanje_id(cursor.getLong(1));
-                pitanje.setPitanje(cursor.getLong(0));
+                pitanje.setPitanje(cursor.getString(0));
                 pitanje.setOdgovor(this.findOdgovor(cursor.getLong(1)));
                 listaPitanja.add(pitanje);
                 //Log.d("*****findPitanje ", "dodano na listu: " + cursor.getString(0)+ " " +cursor.getString(1));
