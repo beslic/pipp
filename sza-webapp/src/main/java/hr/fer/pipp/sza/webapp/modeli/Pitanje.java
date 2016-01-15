@@ -1,7 +1,9 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
+import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,20 +22,20 @@ public class Pitanje {
 	@GeneratedValue
 	@Expose
 	private int idPitanje;
-	
+
 	@ManyToOne
 	private Anketa anketa;
-	
+
 	@Expose
 	@Column(nullable = false)
 	private int rbrPitanje;
-	
+
 	@Expose
 	@Column(nullable = false)
 	private String textPitanje;
 	
 	@Expose
-	@OneToMany(mappedBy = "pitanje")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pitanje", orphanRemoval = true)
 	private List<Odgovor> odgovor;
 
 	public Pitanje() {
@@ -106,6 +108,12 @@ public class Pitanje {
 		if (idPitanje != other.idPitanje)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Pitanje [rbrPitanje=" + rbrPitanje + ", textPitanje=" + textPitanje + ", odgovor="
+				+ Arrays.toString(odgovor.toArray()) + "]";
 	}
 
 }

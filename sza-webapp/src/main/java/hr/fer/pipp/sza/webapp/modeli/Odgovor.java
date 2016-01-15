@@ -107,4 +107,9 @@ public class Odgovor {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Odgovor [rbrOdgovor=" + rbrOdgovor + ", textOdgovor=" + textOdgovor + "]";
+	}
+
 }

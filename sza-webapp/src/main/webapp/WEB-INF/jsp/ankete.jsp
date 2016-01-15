@@ -25,9 +25,9 @@
 	    <li><a data-toggle="tab" href="#moje-ankete">Moje ankete</a></li>
     </c:if>
     
-      <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
+<%--       <c:if test="${sessionScope.korisnik.razinaPrava < 2}"> --%>
             <li><a data-toggle="tab" href="#nova-anketa">Nova anketa</a></li>
-   	 </c:if>
+<%--    	 </c:if> --%>
     	
   </ul>
 
@@ -46,16 +46,16 @@
             <c:if test="${privatneAnkete == null}">
                 <h3>Nemate još nijednu anketu</h3>
             </c:if>
-            <c:forEach var="anketa" items="${javneAnkete}">
+            <c:forEach var="anketa" items="${privatneAnkete}">
                 <p>${anketa.nazivAnketa}</p>
             </c:forEach>
         </div>
     </c:if>
-    <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
+<%--     <c:if test="${sessionScope.korisnik.razinaPrava < 2}"> --%>
         <div id="nova-anketa" class="tab-pane fade">
             <jsp:include page="anketaForma.jsp" />
         </div>
-    </c:if>
+<%--     </c:if> --%>
   </div>
 </div>
 <script type="text/javascript">
