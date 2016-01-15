@@ -124,9 +124,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d("*****Dodaj  ", "zavrsen activity");
     }
 
+
     public void refresh(View view){
+        Korisnik k = new Korisnik(loginInfo.getString("USERNAME", ""), loginInfo.getString("PASSWORD", ""));
+        Refresh r = new Refresh();
+        if(r.refreshAnkete(k, getApplicationContext(), loginInfo.getString("ADRESA_SERVERA", "192.168.1.102"))== false){
+            loginInfoEditor.putBoolean("PRIJAVLJEN", false);
+            loginInfoEditor.commit();
+            login();
+        };
         List<Anketa> imeA;
         imeA=dbH.findAnketa();
+        Log.d("poslije refresh-a", " ");
         dbH.ispisBaze();
         dbH.ispisOdgovora((long) 1);
         myArrayAdapter.clear();
