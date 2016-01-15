@@ -44,7 +44,7 @@ public class Refresh {
             }
             try {
                 JSONObject jsonOdgovor = new JSONObject(odgovor);
-                //Log.d("jsonOdgovor", jsonOdgovor.get("status").toString());
+                Log.d("jsonOdgovor", jsonOdgovor.get("status").toString());
 
                 if (jsonOdgovor.get("status").toString().equals("success")) {
                     JSONObject jsonKorisnikOdgovor;
@@ -125,9 +125,8 @@ public class Refresh {
         dataHandler dh = new dataHandler(context, null, null, 1);
         List<NOVO_ispunjavanjeAnkete> ispunjavanja = dh.findIspunjavajne();
         Gson gson = new Gson();
-        for(int i=0;i<ispunjavanja.size(); i++){
-            //Log.d("ISPUNJENE ", json);
-        }
+        String json = gson.toJson(ispunjavanja);
+        Log.d("ISPUNJENE ", json);
         return false;
     }
 

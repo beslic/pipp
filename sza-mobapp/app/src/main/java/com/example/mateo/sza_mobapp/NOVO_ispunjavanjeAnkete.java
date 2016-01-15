@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Created by Mateo on 14.12.2015..
  */
 public class NOVO_ispunjavanjeAnkete {
-    dataHandler dH;
+
     Context context;
     private long anketaId;
     private double latitude;
@@ -20,9 +20,9 @@ public class NOVO_ispunjavanjeAnkete {
 
     private String korisnickoIme;
     private String dateTime;
-    private List<Pitanje> listaPitanja;
+    //private List<Pitanje> listaPitanja;
     List<NOVO_odabraniOdgovori> odabraniOdgovori = new ArrayList<NOVO_odabraniOdgovori>();
-    Random r = new Random();
+
 
     public NOVO_ispunjavanjeAnkete(long anketaId, String korisnickoIme, double latitude, double longitude, Context context, String date, boolean poznataLokacija) {
         this.anketaId = anketaId;
@@ -32,8 +32,8 @@ public class NOVO_ispunjavanjeAnkete {
         this.context = context;
         this.dateTime = date;
         this.korisnickoIme = korisnickoIme;
-        dH = new dataHandler(this.context, null, null, 1);
-        listaPitanja = dH.findPitanje(anketaId);
+        //dH = new dataHandler(this.context, null, null, 1);
+        //listaPitanja = dH.findPitanje(anketaId);
     }
 
     public NOVO_ispunjavanjeAnkete(){
@@ -41,6 +41,8 @@ public class NOVO_ispunjavanjeAnkete {
     }
 
     public void dodajUBazu(){
+        Random r = new Random();
+        dataHandler dH = new dataHandler(context, null, null, 1);
         do{
             idIspunjavanja = r.nextLong();
         }while(dH.addIspunajvanjeAnkete(anketaId, korisnickoIme, idIspunjavanja, dateTime, longitude, latitude, poznataLokacija));

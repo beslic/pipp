@@ -5,21 +5,21 @@ package com.example.mateo.sza_mobapp;
  */
 public class NOVO_odabraniOdgovori {
     private long pitanjeId;
-    private long odgovor;
+    private long odgovorId;
     private long idIspunjavanja;
     public NOVO_odabraniOdgovori(){}
 
     public NOVO_odabraniOdgovori(long pitanjeId, long odgovor) {
         this.pitanjeId = pitanjeId;
-        this.odgovor = odgovor;
+        this.odgovorId = odgovor;
     }
 
     public long getOdgovor() {
-        return odgovor;
+        return odgovorId;
     }
 
     public void setOdgovor(long odgovor) {
-        this.odgovor = odgovor;
+        this.odgovorId = odgovor;
     }
 
     public long getPitanjeId() {
