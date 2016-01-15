@@ -24,13 +24,14 @@ public class NOVO_ispunjavanjeAnkete {
     ArrayList<NOVO_odabraniOdgovori> odabraniOdgovori = new ArrayList<NOVO_odabraniOdgovori>();
     Random r = new Random();
 
-    public NOVO_ispunjavanjeAnkete(int anketaId, double latitude, double longitude, Context context, String date, boolean poznataLokacija) {
+    public NOVO_ispunjavanjeAnkete(int anketaId, String korisnickoIme, double latitude, double longitude, Context context, String date, boolean poznataLokacija) {
         this.anketaId = anketaId;
         this.latitude = latitude;
         this.longitude = longitude;
         this.poznataLokacija = poznataLokacija;
         this.context = context;
         this.dateTime = date;
+        this.korisnickoIme = korisnickoIme;
         dH = new dataHandler(this.context, null, null, 1);
         listaPitanja = dH.findPitanje(anketaId);
     }
@@ -77,5 +78,19 @@ public class NOVO_ispunjavanjeAnkete {
         this.odabraniOdgovori = odabraniOdgovori;
     }
 
+    public String getKorisnickoIme() {
+        return korisnickoIme;
+    }
 
+    public void setKorisnickoIme(String korisnickoIme) {
+        this.korisnickoIme = korisnickoIme;
+    }
+
+    public boolean isPoznataLokacija() {
+        return poznataLokacija;
+    }
+
+    public void setPoznataLokacija(boolean poznataLokacija) {
+        this.poznataLokacija = poznataLokacija;
+    }
 }

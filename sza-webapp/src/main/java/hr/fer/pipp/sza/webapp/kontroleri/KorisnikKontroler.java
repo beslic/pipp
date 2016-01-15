@@ -56,6 +56,17 @@ public class KorisnikKontroler {
 			@FormParam("buttonPostavke") String button, @FormParam("staralozinka") String staraLozinka,
 			@FormParam("novalozinka") String novaLozinka, @FormParam("novalozinkapotvrda") String novaLozinkaPotvrda) {
 
+		System.out.println(ime);
+		System.out.println(prezime);
+		System.out.println(email);
+		System.out.println(button);
+		System.out.println(staraLozinka);
+		System.out.println(novaLozinka);
+		System.out.println(novaLozinkaPotvrda);
+		System.out.println();
+
+		
+		
 		if ("postavke".equals(button)) {
 			Map<String, String> greska = Util.provjeriFormuPostavkiKorisnika(ime, prezime, email);
 
@@ -76,6 +87,8 @@ public class KorisnikKontroler {
 		} else if ("postavkelozinka".equals(button)) {
 			Map<String, String> greska = Util.provjeriFormuPromjeneLozinke(staraLozinka, novaLozinka,
 					novaLozinkaPotvrda);
+			
+			
 
 			if (greska.isEmpty()) {
 				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");

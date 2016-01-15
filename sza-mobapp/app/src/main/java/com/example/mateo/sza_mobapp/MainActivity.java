@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         loginInfoEditor.putBoolean("PRIJAVLJEN", false);
                         loginInfoEditor.putString("PASSWORD", "");
                         loginInfoEditor.commit();
+                        dbH.brisanjeAnketaPitanjaOdgovora();
                         login();
                     }
                 });
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         List<Anketa> imeA;
         imeA=dbH.findAnketa();
         dbH.ispisBaze();
+        dbH.ispisOdgovora(1);
         myArrayAdapter.clear();
         for(int i=0; i<imeA.size();i++) {
             myArrayAdapter.add(imeA.get(i));

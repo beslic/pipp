@@ -5,20 +5,20 @@ package com.example.mateo.sza_mobapp;
  */
 public class NOVO_odabraniOdgovori {
     private int pitanjeId;
-    private String odgovor;
+    private int odgovor;
 
     public NOVO_odabraniOdgovori(){}
 
-    public NOVO_odabraniOdgovori(int pitanjeId, String odgovor) {
+    public NOVO_odabraniOdgovori(int pitanjeId, int odgovor) {
         this.pitanjeId = pitanjeId;
         this.odgovor = odgovor;
     }
 
-    public String getOdgovor() {
+    public int getOdgovor() {
         return odgovor;
     }
 
-    public void setOdgovor(String odgovor) {
+    public void setOdgovor(int odgovor) {
         this.odgovor = odgovor;
     }
 

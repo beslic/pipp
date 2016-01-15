@@ -90,7 +90,7 @@ public class loginAct extends AppCompatActivity{
     }
 
     public void login1(View view){
-        Log.d("*****Login  ", "POCETAK");
+        //Log.d("*****Login  ", "POCETAK");
 
         korisnik = new Korisnik(imeE.getText().toString(), (passE.getText().toString()));
         String jsonKorisnik = gson.toJson(korisnik);
@@ -135,19 +135,19 @@ public class loginAct extends AppCompatActivity{
             Log.d("odgovor", odgovor);
             try {
                 JSONObject jsonOdgovor = new JSONObject(odgovor);
-                Log.d("jsonOdgovor", jsonOdgovor.get("status").toString());
+                //Log.d("jsonOdgovor", jsonOdgovor.get("status").toString());
 
                 if (jsonOdgovor.get("status").toString().equals("success")) {
                     loginEdit.putString("USERNAME", korisnik.getIme());
 
                     //*****************************************
                     loginEdit.putString("PASSWORD", korisnik.getLozinka());
-                    Log.d("password2", "test lozinke");
+                    //Log.d("password2", "test lozinke");
                     //**********************************************
 
                     loginEdit.putBoolean("PRIJAVLJEN", true);
                     loginEdit.commit();
-                    Log.d("*****Login", "SUCCESS");
+                    //Log.d("*****Login", "SUCCESS");
                     JSONObject jsonKorisnikOdgovor;
                     jsonKorisnikOdgovor  = jsonOdgovor.getJSONObject("korisnik");
                     JSONArray poljeAnketa = jsonKorisnikOdgovor.getJSONArray("anketa");
