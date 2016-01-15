@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class NOVO_ispunjavanjeAnkete {
     dataHandler dH;
     Context context;
-    private int anketaId;
+    private long anketaId;
     private double latitude;
     private double longitude;
     private boolean poznataLokacija;
@@ -24,7 +24,7 @@ public class NOVO_ispunjavanjeAnkete {
     ArrayList<NOVO_odabraniOdgovori> odabraniOdgovori = new ArrayList<NOVO_odabraniOdgovori>();
     Random r = new Random();
 
-    public NOVO_ispunjavanjeAnkete(int anketaId, String korisnickoIme, double latitude, double longitude, Context context, String date, boolean poznataLokacija) {
+    public NOVO_ispunjavanjeAnkete(long anketaId, String korisnickoIme, double latitude, double longitude, Context context, String date, boolean poznataLokacija) {
         this.anketaId = anketaId;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -46,11 +46,11 @@ public class NOVO_ispunjavanjeAnkete {
         }
     }
 
-    public int getAnketaId() {
+    public long getAnketaId() {
         return anketaId;
     }
 
-    public void setAnketaId(int anketaId) {
+    public void setAnketaId(long anketaId) {
         this.anketaId = anketaId;
     }
 

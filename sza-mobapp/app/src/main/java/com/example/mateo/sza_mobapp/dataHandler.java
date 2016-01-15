@@ -165,7 +165,7 @@ public class dataHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public boolean addIspunajvanjeAnkete(int anketaId, String korisnik, int brojIspunjavanja, String timestamp, double longitude, double latitude, boolean poznataLokacija){
+    public boolean addIspunajvanjeAnkete(long anketaId, String korisnik, long brojIspunjavanja, String timestamp, double longitude, double latitude, boolean poznataLokacija){
         boolean rez = false;
         ContentValues values = new ContentValues();
         values.put(COLUMN_ANKETA_ID, anketaId);
@@ -185,7 +185,7 @@ public class dataHandler extends SQLiteOpenHelper {
         return rez;
     }
 
-    public boolean addOdabraniOdgovori(int brojIspunjavanja, int pitanje, int odgovor){
+    public boolean addOdabraniOdgovori(long brojIspunjavanja, long pitanje, long odgovor){
         boolean rez = true;
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID_ISPUNJAVANJA, brojIspunjavanja);
@@ -213,7 +213,7 @@ public class dataHandler extends SQLiteOpenHelper {
             //Log.d("*****findAnketa ", "moved to first");
             cursor.moveToFirst();
             anketa = new Anketa();
-            anketa.setIdAnketa(cursor.getInt(0));
+            anketa.setIdAnketa(cursor.getLong(0));
             anketa.setNazivAnketa(cursor.getString(1));
             //anketa.setVlasnik(cursor.getString(2));
             anketa.setOpisAnketa(cursor.getString(3));
@@ -224,7 +224,7 @@ public class dataHandler extends SQLiteOpenHelper {
             //Log.d("*****findAnketa ", "dodano na listu: " + anketa.getNazivAnketa()+ " " +anketa.getIdAnketa());
             while(cursor.moveToNext() && i<10){
                 anketa = new Anketa();
-                anketa.setIdAnketa(cursor.getInt(0));
+                anketa.setIdAnketa(cursor.getLong(0));
                 anketa.setNazivAnketa(cursor.getString(1));
                 //anketa.setVlasnik(cursor.getString(2));
                 anketa.setOpisAnketa(cursor.getString(3));
@@ -245,7 +245,7 @@ public class dataHandler extends SQLiteOpenHelper {
         return listaAnketa;
     }
 
-    public ArrayList<Pitanje> findPitanje(int anketaId){
+    public ArrayList<Pitanje> findPitanje(long anketaId){
         //Log.d("*****findPitanje  ", "iz " + anketaId);
         ArrayList<Pitanje> listaPitanja;
         listaPitanja = new ArrayList<Pitanje>();
@@ -260,18 +260,18 @@ public class dataHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             //Log.d("*****findPitanje ", "moved to first");
             cursor.moveToFirst();
-            pitanje.setAnketa_id(cursor.getInt(2));
-            pitanje.setPitanje_id(cursor.getInt(1));
-            pitanje.setPitanje(cursor.getString(0));
+            pitanje.setAnketa_id(cursor.getLong(2));
+            pitanje.setPitanje_id(cursor.getLong(1));
+            pitanje.setPitanje(cursor.getLong(0));
             pitanje.setOdgovor(this.findOdgovor(Integer.parseInt(cursor.getString(1))));
             listaPitanja.add(pitanje);
             //Log.d("*****findPitanje ", "dodano na listu: " + cursor.getString(0)+ " " +cursor.getString(1));
             while(cursor.moveToNext()){
                 pitanje = new Pitanje();
-                pitanje.setAnketa_id(cursor.getInt(2));
-                pitanje.setPitanje_id(cursor.getInt(1));
-                pitanje.setPitanje(cursor.getString(0));
-                pitanje.setOdgovor(this.findOdgovor(cursor.getInt(1)));
+                pitanje.setAnketa_id(cursor.getLong(2));
+                pitanje.setPitanje_id(cursor.getLong(1));
+                pitanje.setPitanje(cursor.getLong(0));
+                pitanje.setOdgovor(this.findOdgovor(cursor.getLong(1)));
                 listaPitanja.add(pitanje);
                 //Log.d("*****findPitanje ", "dodano na listu: " + cursor.getString(0)+ " " +cursor.getString(1));
                 i++;
@@ -286,7 +286,7 @@ public class dataHandler extends SQLiteOpenHelper {
         return listaPitanja;
     }
 
-    public ArrayList<Odgovor> findOdgovor(int pitanjeId){
+    public ArrayList<Odgovor> findOdgovor(long pitanjeId){
         ArrayList<Odgovor> list;
         list = new ArrayList<Odgovor>();
         String query = "SELECT * FROM " + TABLE_PITANJA + " JOIN "+ TABLE_ODGOVORI +
@@ -300,16 +300,16 @@ public class dataHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             //Log.d("*****findOdgovor ", "moved to first");
             cursor.moveToFirst();
-            odgovor.setIdOdgovor(cursor.getInt(3));
-            odgovor.setPitanje_id(cursor.getInt(1));
+            odgovor.setIdOdgovor(cursor.getLong(3));
+            odgovor.setPitanje_id(cursor.getLong(1));
             odgovor.setOdgovor(cursor.getString(5));
             odgovor.setRbrOdgovor(cursor.getInt(6));
             list.add(odgovor);
             //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
             while(cursor.moveToNext()){
                 odgovor = new Odgovor();
-                odgovor.setIdOdgovor(cursor.getInt(3));
-                odgovor.setPitanje_id(cursor.getInt(1));
+                odgovor.setIdOdgovor(cursor.getLong(3));
+                odgovor.setPitanje_id(cursor.getLong(1));
                 odgovor.setOdgovor(cursor.getString(5));
                 odgovor.setRbrOdgovor(cursor.getInt(6));
                 list.add(odgovor);
@@ -371,7 +371,7 @@ public class dataHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void ispisOdgovora(int brojIspunjavanja){
+    public void ispisOdgovora(Long brojIspunjavanja){
         String query="SELECT * FROM "+TABLE_ISPUNJAVANJE_ANKETE+" LEFT JOIN "+ TABLE_ODABRANI_ODGOVORI +
                 " ON "+ TABLE_ISPUNJAVANJE_ANKETE+"."+COLUMN_ID_ISPUNJAVANJA+" = "+ TABLE_ODABRANI_ODGOVORI +"."+COLUMN_ID_ISPUNJAVANJA+
                 " LEFT JOIN " + TABLE_PITANJA + " ON "+TABLE_PITANJA+"."+COLUMN_PITANJE_ID+" = "+ TABLE_ODABRANI_ODGOVORI +"."+COLUMN_PITANJE_ID+
