@@ -16,13 +16,15 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
 import com.loopj.android.http.SyncHttpClient;
 
-import org.apache.http.HttpEntity;
+/*import org.apache.http.HttpEntity;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HTTP;*/
+
 import org.json.JSONObject;
-import org.apache.http.entity.StringEntity;
+
+//import org.apache.http.entity.StringEntity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
