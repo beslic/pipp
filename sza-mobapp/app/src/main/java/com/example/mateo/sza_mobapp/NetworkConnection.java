@@ -52,7 +52,7 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... urls) {
-            Log.d("checkpoint ","2");
+            //Log.d("checkpoint ","2");
             return asd(urls[0]);
     }
     // onPostExecute displays the results of the AsyncTask.
@@ -102,7 +102,7 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
-            System.out.println("Output from Server .... \n");
+            //System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
                 //Log.d("asdf", output);
                 odgovor = odgovor.concat(output);
@@ -120,15 +120,6 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
         //Log.d("asd return odgovor", " "+odgovor);
         return odgovor;
     }
-
-
-
-    /*public void UpdateData(JSONObject jsonObject){
-        String json = jsonObject.toString();
-        Log.d("*****UhvacenOdgovor", json);
-        prihvaceno = true;
-    }*/
-
 
     public boolean isConnected(){
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Activity.CONNECTIVITY_SERVICE);

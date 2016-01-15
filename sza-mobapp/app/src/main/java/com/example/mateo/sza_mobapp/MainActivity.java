@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("*****Main  ", "pocetak");
+        //Log.d("*****Main  ", "pocetak");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         view1 = (TextView)findViewById(R.id.text1);
@@ -62,11 +62,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Ankete.setAdapter(myArrayAdapter);
         dbH = new dataHandler(this, null, null, 1);
 
-        //Intent i = new Intent(this, loginAct.class);
-        //startActivity(i);
-        //refresh();
-        //dbH.inicijalizacija();
-        //dbH.ispisKorisnika();
         login();
     }
 
@@ -75,10 +70,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     //LOGIN: podaci o loginu se spremaju kao "SharedPreferences"******************
     public void login(){
         String ime = loginInfo.getString("USERNAME", " ");
-        //String lozinka = loginInfo.getString("PASSWORD", " "); <- Spremanje lozinke********************
         Boolean prijavljen = loginInfo.getBoolean("PRIJAVLJEN", false);
 
-        Log.d("*****Login", "ime: " + ime);
+        //Log.d("*****Login", "ime: " + ime);
 
         if(!prijavljen) {
             Intent i = new Intent(this, loginAct.class);
@@ -138,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         myArrayAdapter.clear();
         for(int i=0; i<imeA.size();i++) {
             myArrayAdapter.add(imeA.get(i));
-            Log.d("*****MainActivity", i+" dodana: " + imeA.get(i).getNazivAnketa());
+            //Log.d("*****MainActivity", i+" dodana: " + imeA.get(i).getNazivAnketa());
         }
         myArrayAdapter.notifyDataSetChanged();
     }
@@ -147,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        Log.d("*****onCreateOptMenu  ", "done");
+        //Log.d("*****onCreateOptMenu  ", "done");
         return true;
     }
 
@@ -204,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id){
         int aId = myArrayAdapter.anketa.get(position).getIdAnketa();
-        Log.d("*****OnItemClick  ", "anketa: " + aId);
+        //Log.d("*****OnItemClick  ", "anketa: " + aId);
         //Intent i2 = new Intent(this, listaPitanja2.class);
         Intent i2 = new Intent(this, Pocetak_ispunjavanja_ankete.class);
         i2.putExtra("anketa", aId);

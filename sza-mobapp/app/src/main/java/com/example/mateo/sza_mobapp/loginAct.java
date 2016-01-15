@@ -97,7 +97,7 @@ public class loginAct extends AppCompatActivity{
 
 
         //Korisnik k = gson.fromJson(jsonKorisnik, Korisnik.class);
-        Log.d("*****KORISNIK", jsonKorisnik);
+        //Log.d("*****KORISNIK", jsonKorisnik);
         NetworkConnection PROVJERA = new NetworkConnection(getApplicationContext(), login.getString("ADRESA_SERVERA", "192.168.1.102")+":8080/sza-webapp/android/");
 
 
@@ -131,8 +131,8 @@ public class loginAct extends AppCompatActivity{
             }catch (ExecutionException s){
                 s.printStackTrace();
             }
-            Log.d("checkpoint ", "1");
-            Log.d("odgovor", odgovor);
+            //Log.d("checkpoint ", "1");
+            //Log.d("odgovor", odgovor);
             try {
                 JSONObject jsonOdgovor = new JSONObject(odgovor);
                 //Log.d("jsonOdgovor", jsonOdgovor.get("status").toString());
@@ -185,7 +185,7 @@ public class loginAct extends AppCompatActivity{
 
         for (int i = 0; i < data.length(); i++ ){
             try{
-                Log.d("Broj", i + " data" + data.getJSONObject(i).toString());
+                //Log.d("Broj", i + " data" + data.getJSONObject(i).toString());
                 anketa = new Anketa();
                 JSONObject anketaObjekt;
                 anketaObjekt = data.getJSONObject(i);
@@ -234,13 +234,13 @@ public class loginAct extends AppCompatActivity{
 
         }
 
-        Log.d("dataRefresh", data.toString());
+        //Log.d("dataRefresh", data.toString());
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        Log.d("*****onCreateOptMenu  ", "done");
+        //Log.d("*****onCreateOptMenu  ", "done");
         return true;
     }
 
