@@ -80,21 +80,21 @@ public class AnketaKontroler {
 
 		Map<String, String> greska = Util.provjeriFormuAnkete(nazivAnketa, opisAnketa, aktivnaOd, aktivnaDo);
 
+		Set<String> pitanjaId = new HashSet<>();
+		Set<String> odgovoriId = new HashSet<>();
+
+		for (String s : form.keySet()) {
+			if (s.matches("pitanje[0-9]+-odgovor[0-9]+")) {
+				pitanjaId.add(s.split("-")[0]);
+				odgovoriId.add(s);
+			}
+		}
+
 		if (greska.isEmpty()) {
 
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
 			Anketa anketa = new Anketa();
-
-			Set<String> pitanjaId = new HashSet<>();
-			Set<String> odgovoriId = new HashSet<>();
-
-			for (String s : form.keySet()) {
-				if (s.matches("pitanje[0-9]+-odgovor[0-9]+")) {
-					pitanjaId.add(s.split("-")[0]);
-					odgovoriId.add(s.split("-")[1]);
-				}
-			}
 
 			int brojPitanja = pitanjaId.size();
 
@@ -107,12 +107,12 @@ public class AnketaKontroler {
 				Pitanje pitanje = new Pitanje();
 				List<Odgovor> odgovori = new ArrayList<>();
 				for (String o : odgovoriId) {
-					String odg = form.getFirst(p + "-" + o);
+					String odg = form.getFirst(o);
 					if (odg == null || odg.length() == 0) {
 						continue;
 					}
 					Odgovor odgovor = new Odgovor();
-					odgovor.setRbrOdgovor(Integer.parseInt(o.replaceFirst("odgovor", "")));
+					odgovor.setRbrOdgovor(Integer.parseInt(o.split("-")[1].replaceFirst("odgovor", "")));
 					odgovor.setTextOdgovor(odg);
 					odgovor.setPitanje(pitanje);
 					odgovori.add(odgovor);
@@ -152,6 +152,15 @@ public class AnketaKontroler {
 			if (privatna != null) {
 				forma.put("privatna", "1");
 			}
+
+			// TODO
+			// Map<String, List<String>> fPitanja = new HashMap<>();
+			// for (String pitanje : pitanjaId) {
+			// fPitanja.put(pitanje, form.getFirst(pitanje));
+			// for (String odgovor: odgovoriId) {
+			// forma.put(odgovor, form.getFirst(odgovor));
+			// }
+			// }
 			req.setAttribute("forma", forma);
 			req.setAttribute("greska", greska);
 			req.getSession().setAttribute("tab", "nova-anketa");

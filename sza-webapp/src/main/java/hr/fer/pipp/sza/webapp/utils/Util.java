@@ -147,7 +147,7 @@ public class Util {
 			LocalDate datumOd = LocalDate.parse(aktivnaOd, formatter);
 			LocalDate datumDo = LocalDate.parse(aktivnaDo, formatter);
 
-			if (!datumOd.isBefore(datumDo)) {
+			if (datumOd.isAfter(datumDo)) {
 				greske.put("aktivnaOdKron", "Datum nije kronološki dobro zadan");
 				greske.put("aktivnaDoKron", "Datum nije kronološki dobro zadan");
 			}

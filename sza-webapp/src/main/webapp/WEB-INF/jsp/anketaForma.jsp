@@ -70,7 +70,7 @@
 			<div class="form-group">
 				<label class="col-md-3 control-label">Od</label>
 				<div
-					class="col-md-3 <c:if test="${greska.aktivnaOd != null}">has-error has-feedback</c:if>">
+					class="col-md-3 <c:if test="${greska.aktivnaOd != null || greska.aktivnaOdKron != null}">has-error has-feedback</c:if>">
 					<div class="input-group input-append date" id="dateRangePickerFrom">
 						<input id="from" type="text" class="form-control input-md-4"
 							name="aktivnaOd" value="${forma.aktivnaOd}" /> <span
@@ -78,9 +78,7 @@
 							class="glyphicon glyphicon-calendar"></span></span>
 					</div>
 					<c:if test="${greska.aktivnaOd != null}">
-						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 						<label class="control-label" for="from">${greska.aktivnaOd}</label>
-						<label class="control-label" for="from">${greska.aktivnaOdKron}</label>
 					</c:if>
 				</div>
 			</div>
@@ -89,16 +87,15 @@
 			<div class="form-group">
 				<label class="col-md-3 control-label">Do</label>
 				<div
-					class="col-md-3 <c:if test="${greska.aktivnaDo != null}">has-error has-feedback</c:if>">
+					class="col-md-3 <c:if test="${greska.aktivnaDo != null || greska.aktivnaDoKron != null}">has-error has-feedback</c:if>">
 					<div class="input-group input-append date" id="dateRangePickerTo">
 						<input id="to" type="text" class="form-control input-md"
 							name="aktivnaDo" value="${forma.aktivnaDo}" /> <span
 							class="input-group-addon add-on"><span
 							class="glyphicon glyphicon-calendar"></span></span>
 					</div>
-					<c:if test="${greska.aktivnaDo != null}">
-						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-						<label class="control-label" for="to">${greska.aktivnaDo}</label>
+					<c:if test="${greska.aktivnaDo != null || greska.aktivnaDoKron != null}">
+						<label class="control-label" for="to">${greska.aktivnaDo}${greska.aktivnaDoKron}</label>
 					</c:if>
 				</div>
 			</div>
