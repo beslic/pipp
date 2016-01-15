@@ -60,7 +60,7 @@
 				<label class="col-md-3 control-label"></label>
 				<div class="col-md-6">
 					<div class="input-group input-append date">
-						<b>Datum provodenja ankete</b>
+						<b>Datum provođenja ankete</b>
 					</div>
 					<hr>
 				</div>
