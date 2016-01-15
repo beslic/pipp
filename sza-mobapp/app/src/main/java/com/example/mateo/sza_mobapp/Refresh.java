@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -117,6 +118,17 @@ public class Refresh {
             }
 
         }
+    }
+
+
+    public boolean slanjeIspunjenih(){
+        dataHandler dh = new dataHandler(context, null, null, 1);
+        List<NOVO_ispunjavanjeAnkete> ispunjavanja = dh.findIspunjavajne();
+        Gson gson = new Gson();
+        for(int i=0;i<ispunjavanja.size(); i++){
+            //Log.d("ISPUNJENE ", json);
+        }
+        return false;
     }
 
 }

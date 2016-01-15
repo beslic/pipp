@@ -21,7 +21,7 @@ public class NOVO_ispunjavanjeAnkete {
     private String korisnickoIme;
     private String dateTime;
     private List<Pitanje> listaPitanja;
-    ArrayList<NOVO_odabraniOdgovori> odabraniOdgovori = new ArrayList<NOVO_odabraniOdgovori>();
+    List<NOVO_odabraniOdgovori> odabraniOdgovori = new ArrayList<NOVO_odabraniOdgovori>();
     Random r = new Random();
 
     public NOVO_ispunjavanjeAnkete(long anketaId, String korisnickoIme, double latitude, double longitude, Context context, String date, boolean poznataLokacija) {
@@ -34,6 +34,10 @@ public class NOVO_ispunjavanjeAnkete {
         this.korisnickoIme = korisnickoIme;
         dH = new dataHandler(this.context, null, null, 1);
         listaPitanja = dH.findPitanje(anketaId);
+    }
+
+    public NOVO_ispunjavanjeAnkete(){
+
     }
 
     public void dodajUBazu(){
@@ -70,11 +74,11 @@ public class NOVO_ispunjavanjeAnkete {
         this.longitude = longitude;
     }
 
-    public ArrayList<NOVO_odabraniOdgovori> getOdabraniOdgovori() {
+    public List<NOVO_odabraniOdgovori> getOdabraniOdgovori() {
         return odabraniOdgovori;
     }
 
-    public void setOdabraniOdgovori(ArrayList<NOVO_odabraniOdgovori> odabraniOdgovori) {
+    public void setOdabraniOdgovori(List<NOVO_odabraniOdgovori> odabraniOdgovori) {
         this.odabraniOdgovori = odabraniOdgovori;
     }
 
@@ -93,4 +97,22 @@ public class NOVO_ispunjavanjeAnkete {
     public void setPoznataLokacija(boolean poznataLokacija) {
         this.poznataLokacija = poznataLokacija;
     }
+
+    public long getIdIspunjavanja() {
+        return idIspunjavanja;
+    }
+
+    public void setIdIspunjavanja(long idIspunjavanja) {
+        this.idIspunjavanja = idIspunjavanja;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+
 }

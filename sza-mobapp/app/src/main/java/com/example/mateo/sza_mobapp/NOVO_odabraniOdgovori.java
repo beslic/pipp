@@ -6,7 +6,7 @@ package com.example.mateo.sza_mobapp;
 public class NOVO_odabraniOdgovori {
     private long pitanjeId;
     private long odgovor;
-
+    private long idIspunjavanja;
     public NOVO_odabraniOdgovori(){}
 
     public NOVO_odabraniOdgovori(long pitanjeId, long odgovor) {
@@ -28,5 +28,13 @@ public class NOVO_odabraniOdgovori {
 
     public void setPitanjeId(long pitanjeId) {
         this.pitanjeId = pitanjeId;
+    }
+
+    public long getIdIspunjavanja() {
+        return idIspunjavanja;
+    }
+
+    public void setIdIspunjavanja(long idIspunjavanja) {
+        this.idIspunjavanja = idIspunjavanja;
     }
 }

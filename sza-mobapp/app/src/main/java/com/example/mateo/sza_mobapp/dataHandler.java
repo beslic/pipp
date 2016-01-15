@@ -325,6 +325,83 @@ public class dataHandler extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<NOVO_ispunjavanjeAnkete> findIspunjavajne(){
+        List<NOVO_ispunjavanjeAnkete> list;
+        list = new ArrayList<NOVO_ispunjavanjeAnkete>();
+        String query = "SELECT * FROM " + TABLE_ISPUNJAVANJE_ANKETE;
+        int i=1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor;
+        cursor = db.rawQuery(query, null);
+        NOVO_ispunjavanjeAnkete ispunjavanje = new NOVO_ispunjavanjeAnkete();
+        if(cursor.moveToFirst()){
+            cursor.moveToFirst();
+            ispunjavanje.setKorisnickoIme(cursor.getString(0));
+            ispunjavanje.setAnketaId(cursor.getLong(1));
+            ispunjavanje.setIdIspunjavanja(cursor.getLong(2));
+            ispunjavanje.setDateTime(cursor.getString(3));
+            ispunjavanje.setLongitude(cursor.getDouble(4));
+            ispunjavanje.setLatitude(cursor.getDouble(5));
+            ispunjavanje.setOdabraniOdgovori(this.findOdabrani(cursor.getLong(2)));
+            list.add(ispunjavanje);
+            //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
+            while(cursor.moveToNext()){
+                ispunjavanje = new NOVO_ispunjavanjeAnkete();
+                ispunjavanje.setKorisnickoIme(cursor.getString(0));
+                ispunjavanje.setAnketaId(cursor.getLong(1));
+                ispunjavanje.setIdIspunjavanja(cursor.getLong(2));
+                ispunjavanje.setDateTime(cursor.getString(3));
+                ispunjavanje.setLongitude(cursor.getDouble(4));
+                ispunjavanje.setLatitude(cursor.getDouble(5));
+                ispunjavanje.setOdabraniOdgovori(this.findOdabrani(cursor.getLong(2)));
+                list.add(ispunjavanje);
+                //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
+                i++;
+            }
+            cursor.close();
+        }
+        else{
+            //list.add(0, "nema odgovora");
+        }
+        db.close();
+        return list;
+    }
+
+    public List<NOVO_odabraniOdgovori> findOdabrani(long idIspiunjavanja){
+        List<NOVO_odabraniOdgovori> list;
+        list = new ArrayList<NOVO_odabraniOdgovori>();
+        String query = "SELECT * FROM " + TABLE_ODABRANI_ODGOVORI
+                +" WHERE "+ COLUMN_ID_ISPUNJAVANJA+ " = "+idIspiunjavanja;
+        int i=1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor;
+        cursor = db.rawQuery(query, null);
+        NOVO_odabraniOdgovori odgovori = new NOVO_odabraniOdgovori();
+        if(cursor.moveToFirst()){
+            cursor.moveToFirst();
+            odgovori.setIdIspunjavanja(cursor.getLong(0));
+            odgovori.setOdgovor(cursor.getLong(2));
+            odgovori.setPitanjeId(cursor.getLong(1));
+            list.add(odgovori);
+            //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
+            while(cursor.moveToNext()){
+                odgovori = new NOVO_odabraniOdgovori();
+                odgovori.setIdIspunjavanja(cursor.getLong(0));
+                odgovori.setOdgovor(cursor.getLong(2));
+                odgovori.setPitanjeId(cursor.getLong(1));
+                list.add(odgovori);
+                list.add(odgovori);
+                //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
+                i++;
+            }
+            cursor.close();
+        }
+        else{
+            //list.add(0, "nema odgovora");
+        }
+        db.close();
+        return list;
+    }
 
     public void brisanjeAnketaPitanjaOdgovora(){
         SQLiteDatabase db = this.getWritableDatabase();

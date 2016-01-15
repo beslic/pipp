@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             loginInfoEditor.commit();
             login();
         };
+        r.slanjeIspunjenih();
         List<Anketa> imeA;
         imeA=dbH.findAnketa();
         Log.d("poslije refresh-a", " ");
