@@ -16,6 +16,9 @@ import javax.ws.rs.core.UriInfo;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 import hr.fer.pipp.sza.webapp.utils.Util;
@@ -27,6 +30,14 @@ public class KorisnikKontroler {
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziKorisnika(@Context HttpServletRequest req, @Context UriInfo uri) {
 		return Response.ok(new Viewable("/korisnik")).build();
+	}
+
+	@GET
+	@Path("/json")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String jsonKorisnik(@Context HttpServletRequest req) {
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+		return gson.toJson(req.getSession().getAttribute("korisnik"), Korisnik.class);
 	}
 
 	@GET
@@ -50,7 +61,7 @@ public class KorisnikKontroler {
 
 			if (greska.isEmpty()) {
 				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
-				
+
 				korisnik.setIme(ime);
 				korisnik.setPrezime(prezime);
 				korisnik.setEmail(email);
@@ -61,7 +72,7 @@ public class KorisnikKontroler {
 				req.setAttribute("greska", greska);
 				return prikaziPostavkeKorisnika(req);
 			}
-			
+
 		} else if ("postavkelozinka".equals(button)) {
 			Map<String, String> greska = Util.provjeriFormuPromjeneLozinke(staraLozinka, novaLozinka,
 					novaLozinkaPotvrda);

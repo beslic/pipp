@@ -32,6 +32,8 @@ import javax.ws.rs.core.UriInfo;
 import org.glassfish.jersey.server.mvc.Viewable;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
@@ -78,7 +80,7 @@ public class AnketaKontroler {
 		String privatna = form.getFirst("privatna");
 
 		Map<String, String> greska = Util.provjeriFormuAnkete(nazivAnketa, opisAnketa, aktivnaOd, aktivnaDo);
-		
+
 		if (greska.isEmpty()) {
 
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
@@ -162,9 +164,14 @@ public class AnketaKontroler {
 	@Path("/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String prikaziAnketeKaoJSON(@Context HttpServletRequest req) {
-		List<Anketa> javne = DAOAnketa.getDAO().dohvatiJavneAnkete();
-		Gson gson = new Gson();
-		return gson.toJson(javne.get(0));
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+		JsonObject ankete = new JsonObject();
+		Object obj = req.getSession().getAttribute("korisnik");
+		if (obj != null) {
+			ankete.add("privatne", gson.toJsonTree(DAOAnketa.getDAO().dohvatiPrivatneAnkete((Korisnik) obj)));
+		}
+		ankete.add("javne", gson.toJsonTree(DAOAnketa.getDAO().dohvatiJavneAnkete()));
+		return gson.toJson(ankete);
 	}
 
 	@GET
