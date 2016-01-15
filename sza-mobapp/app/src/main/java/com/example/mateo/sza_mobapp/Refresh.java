@@ -125,9 +125,9 @@ public class Refresh {
         dataHandler dh = new dataHandler(context, null, null, 1);
         List<NOVO_ispunjavanjeAnkete> ispunjavanja = dh.findIspunjavajne();
         Gson gson = new Gson();
-        for(int i=0;i<ispunjavanja.size(); i++){
-            //Log.d("ISPUNJENE ", json);
-        }
+        String jsonIspunjavanje = gson.toJson(ispunjavanja);
+        Log.d("ISPUNJENE ", jsonIspunjavanje);
+        
         return false;
     }
 

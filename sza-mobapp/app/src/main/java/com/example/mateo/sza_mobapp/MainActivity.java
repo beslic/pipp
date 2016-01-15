@@ -80,8 +80,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         else {
             Toast.makeText(this, "Dobrodošli " + ime + "!", Toast.LENGTH_LONG).show();
+            refresh(null);
         }
-        refresh(null);
+
     }
 
     public void logout(View view){
