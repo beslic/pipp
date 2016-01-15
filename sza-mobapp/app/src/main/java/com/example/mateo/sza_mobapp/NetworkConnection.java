@@ -104,7 +104,7 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
                     (conn.getInputStream())));
             System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
-                Log.d("asdf", output);
+                //Log.d("asdf", output);
                 odgovor = odgovor.concat(output);
             }
             conn.disconnect();
@@ -117,7 +117,7 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
             i.printStackTrace();
             odgovor = "{\"status\":\"failed\",\"errormessage\":\"connection timeout\"}";
         }
-        Log.d("asd return odgovor", " "+odgovor);
+        //Log.d("asd return odgovor", " "+odgovor);
         return odgovor;
     }
 

@@ -1,7 +1,10 @@
 package com.example.mateo.sza_mobapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -33,6 +36,54 @@ public class Settings extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "switch2 changed", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void brisanjeBaze(View view){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Brisanje anketa, pitanja i odgovora");
+        alertDialog.setMessage("Jeste li sigurni?");
+
+        alertDialog.setPositiveButton("Da",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dataHandler dh = new dataHandler(getApplicationContext(), null, null, 1);
+                        dh.brisanjeAnketaPitanjaOdgovora();
+                    }
+                });
+
+        alertDialog.setNegativeButton("Odustani",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        //cancel = true;
+                    }
+                });
+
+        alertDialog.show();
+    }
+    public void brisanjeIspunjavanja(View view){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Brisanje ispunjavanja");
+        alertDialog.setMessage("Jeste li sigurni?");
+
+        alertDialog.setPositiveButton("Da",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dataHandler dh = new dataHandler(getApplicationContext(), null, null, 1);
+                        dh.brisanjeIspunjavanja();
+                    }
+                });
+
+        alertDialog.setNegativeButton("Odustani",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        //cancel = true;
+                    }
+                });
+
+        alertDialog.show();
     }
 
     @Override

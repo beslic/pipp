@@ -26,6 +26,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
@@ -45,8 +46,6 @@ import hr.fer.pipp.sza.webapp.utils.Util;
 @Path("/ankete/")
 public class AnketaKontroler {
 
-	private String tab;
-
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziAnkete(@Context HttpServletRequest req) throws ServletException, IOException {
@@ -60,9 +59,9 @@ public class AnketaKontroler {
 			if (!privatne.isEmpty()) {
 				req.setAttribute("privatneAnkete", privatne);
 			}
-		}
-		if (tab == null) {
-			req.setAttribute("tab", "javne-ankete");
+			if (req.getSession().getAttribute("tab") == null) {
+				req.getSession().setAttribute("tab", "moje-ankete");
+			}
 		}
 		return Response.ok(new Viewable("/ankete")).build();
 	}
@@ -138,10 +137,9 @@ public class AnketaKontroler {
 			anketa.setPitanja(pitanja);
 
 			DAOAnketa.getDAO().spremiAnketu(anketa);
-
-			tab = "moje-ankete";
-
-			return Response.seeOther(UriBuilder.fromUri(uri.getRequestUri().toString()).build()).build();
+			req.getSession().setAttribute("tab", "moje-ankete");
+			return Response.seeOther(UriBuilder.fromUri(uri.getRequestUri().toString()).build())
+					.status(Status.SEE_OTHER).build();
 
 		} else {
 			Map<String, String> forma = new HashMap<>();
@@ -154,8 +152,8 @@ public class AnketaKontroler {
 			}
 			req.setAttribute("forma", forma);
 			req.setAttribute("greska", greska);
-			tab = "nova-anketa";
-			req.setAttribute("tab", tab);
+			req.getSession().setAttribute("tab", "nova-anketa");
+
 			return prikaziAnkete(req);
 		}
 	}

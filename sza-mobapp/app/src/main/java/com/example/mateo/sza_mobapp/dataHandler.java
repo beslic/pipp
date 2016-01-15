@@ -44,7 +44,7 @@ public class dataHandler extends SQLiteOpenHelper {
     //public static final String COLUMN_BR_ODGOVORA = "br_odgovora";
     public static final String COLUMN_ODGOVOR_PIT_ID = "odgovor_p";
     public static final String COLUMN_ODGOVOR_ID = "odgovorId";
-
+    public static final String COLUMN_RBR_ODGOVOR = "rbrOdgovor";
 
     public static final String COLUMN_IME = "ime";
     public static final String COLUMN_PREZIME = "prezime";
@@ -81,15 +81,10 @@ public class dataHandler extends SQLiteOpenHelper {
                 + COLUMN_ODGOVOR_ID + " INTEGER PRIMARY KEY, "
                 + COLUMN_ODGOVOR_PIT_ID + " INTEGER, "
                 + COLUMN_ODGOVOR + " TEXT, "
+                + COLUMN_RBR_ODGOVOR + " INTEGER, "
                 /*+ COLUMN_BR_ODGOVORA + " INTEGER, "*/
                 + " FOREIGN KEY(" + COLUMN_ODGOVOR_PIT_ID + ") REFERENCES " + TABLE_PITANJA + "("+ COLUMN_PITANJE_ID+") )";
 
-        /*String CREATE_TABLE4 = "CREATE TABLE IF NOT EXISTS " + TABLE_KORISNIK + " ("
-                +COLUMN_KORISNICKO_IME+" TEXT PRIMARY KEY, "
-                +COLUMN_LOZINKA+ " TEXT, "
-                +COLUMN_IME+" TEXT, "
-                +COLUMN_PREZIME + " TEXT, "
-                +COLUMN_RAZINA_PRAVA+" INTEGER) ";*/
 
         String CREATE_TABLE5 = "CREATE TABLE IF NOT EXISTS " + TABLE_ISPUNJAVANJE_ANKETE + " ("
                 +COLUMN_KORISNICKO_IME+" TEXT, "
@@ -102,21 +97,14 @@ public class dataHandler extends SQLiteOpenHelper {
         String CREATE_TABLE6 = "CREATE TABLE IF NOT EXISTS " + TABLE_ODABRANI_ODGOVORI + " ("
                 +COLUMN_ID_ISPUNJAVANJA+ " TEXT, "
                 +COLUMN_PITANJE_ID+" INTEGER, "
-                +COLUMN_ODGOVOR + " TEXT, "
+                +COLUMN_ODGOVOR_ID + " INTEGER, "
                 +"PRIMARY KEY ( "+COLUMN_ID_ISPUNJAVANJA+", "+COLUMN_PITANJE_ID+")) ";
-
-        /*String CREATE_TABLE7 = "CREATE TABLE IF NOT EXISTS " + TABLE_DOSTUPNE_ANKETE + " ("
-                +COLUMN_ANKETA_ID+ " INTEGER, "
-                +COLUMN_KORISNICKO_IME+" TEXT, "
-                +"PRIMARY KEY ("+COLUMN_ANKETA_ID+", "+COLUMN_KORISNICKO_IME+"))";*/
 
         db.execSQL(CREATE_TABLE1);
         db.execSQL(CREATE_TABLE2);
         db.execSQL(CREATE_TABLE3);
-        //db.execSQL(CREATE_TABLE4);
         db.execSQL(CREATE_TABLE5);
         db.execSQL(CREATE_TABLE6);
-        //db.execSQL(CREATE_TABLE7);
         Log.d("********  Create table:", "    Success");
     }
 
@@ -132,24 +120,15 @@ public class dataHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    /*public void inicijalizacija(){
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_KORISNICKO_IME, "admin");
-        values.put(COLUMN_PREZIME, "adminPrezime");
-        values.put(COLUMN_IME, "adminIme");
-        values.put(COLUMN_LOZINKA, "admin");
-        SQLiteDatabase db = this.getWritableDatabase();
-        if(db.insert(TABLE_KORISNIK, null, values)==-1){
-            Log.d("*****inicijalizacija  ", "obavljeno");
-        }
-        db.close();
-    }*/
-
     public void addAnketa(Anketa anketa, Context c){
         ContentValues values = new ContentValues();
         values.put(COLUMN_ANKETA_ID, anketa.getIdAnketa());
         values.put(COLUMN_ANKETA_IME, anketa.getNazivAnketa());
         //values.put(COLUMN_ANKETA_VLASNIK, anketa.getVlasnik());
+        values.put(COLUMN_ANKETA_OPIS, anketa.getOpisAnketa());
+        values.put(COLUMN_AKTIVNA_OD, anketa.getAktivnaOd());
+        values.put(COLUMN_VRIJEME_IZRADE, anketa.getVrijemeIzrada());
+        values.put(COLUMN_AKTIVNA_DO, anketa.getAktivnaDo());
         SQLiteDatabase db = this.getWritableDatabase();
         if(db.insert(TABLE_ANKETA, null, values)==-1){
             Toast.makeText(c, "Error", Toast.LENGTH_LONG).show();
@@ -176,6 +155,7 @@ public class dataHandler extends SQLiteOpenHelper {
         values.put(COLUMN_ODGOVOR_PIT_ID, o.getPitanje_id());
         values.put(COLUMN_ODGOVOR, o.getOdgovor());
         values.put(COLUMN_ODGOVOR_ID, o.getIdOdgovor());
+        values.put(COLUMN_RBR_ODGOVOR, o.getRbrOdgovor());
         //values.put(COLUMN_BR_ODGOVORA, o.getBrojOdgovora());
         SQLiteDatabase db = this.getWritableDatabase();
         if(db.insert(TABLE_ODGOVORI, null, values)==-1){
@@ -205,12 +185,12 @@ public class dataHandler extends SQLiteOpenHelper {
         return rez;
     }
 
-    public boolean addOdabraniOdgovori(int brojIspunjavanja, int pitanje, String odgovor){
+    public boolean addOdabraniOdgovori(int brojIspunjavanja, int pitanje, int odgovor){
         boolean rez = true;
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID_ISPUNJAVANJA, brojIspunjavanja);
         values.put(COLUMN_PITANJE_ID, pitanje);
-        values.put(COLUMN_ODGOVOR, odgovor);
+        values.put(COLUMN_ODGOVOR_ID, odgovor);
         SQLiteDatabase db = this.getWritableDatabase();
         if(db.insert(TABLE_ODABRANI_ODGOVORI, null, values)==-1){
             Log.d("*****addOdabrani  ", "error");
@@ -233,16 +213,24 @@ public class dataHandler extends SQLiteOpenHelper {
             Log.d("*****findAnketa ", "moved to first");
             cursor.moveToFirst();
             anketa = new Anketa();
-            anketa.setIdAnketa(Integer.parseInt(cursor.getString(0)));
+            anketa.setIdAnketa(cursor.getInt(0));
             anketa.setNazivAnketa(cursor.getString(1));
             //anketa.setVlasnik(cursor.getString(2));
+            anketa.setOpisAnketa(cursor.getString(3));
+            anketa.setAktivnaOd(cursor.getString(4));
+            anketa.setVrijemeIzrada(cursor.getString(5));
+            anketa.setAktivnaDo(cursor.getString(6));
             listaAnketa.add(anketa);
             Log.d("*****findAnketa ", "dodano na listu: " + anketa.getNazivAnketa()+ " " +anketa.getIdAnketa());
             while(cursor.moveToNext() && i<10){
                 anketa = new Anketa();
-                anketa.setIdAnketa(Integer.parseInt(cursor.getString(0)));
+                anketa.setIdAnketa(cursor.getInt(0));
                 anketa.setNazivAnketa(cursor.getString(1));
                 //anketa.setVlasnik(cursor.getString(2));
+                anketa.setOpisAnketa(cursor.getString(3));
+                anketa.setAktivnaOd(cursor.getString(4));
+                anketa.setVrijemeIzrada(cursor.getString(5));
+                anketa.setAktivnaDo(cursor.getString(6));
                 listaAnketa.add(anketa);
                 Log.d("*****findAnketa ", "dodano na listu: " + anketa.getNazivAnketa()+ " " +anketa.getIdAnketa());
                 i++;
@@ -272,18 +260,18 @@ public class dataHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             Log.d("*****findPitanje ", "moved to first");
             cursor.moveToFirst();
-            pitanje.setAnketa_id(Integer.parseInt(cursor.getString(2)));
-            pitanje.setPitanje_id(Integer.parseInt(cursor.getString(1)));
+            pitanje.setAnketa_id(cursor.getInt(2));
+            pitanje.setPitanje_id(cursor.getInt(1));
             pitanje.setPitanje(cursor.getString(0));
             pitanje.setOdgovor(this.findOdgovor(Integer.parseInt(cursor.getString(1))));
             listaPitanja.add(pitanje);
             Log.d("*****findPitanje ", "dodano na listu: " + cursor.getString(0)+ " " +cursor.getString(1));
             while(cursor.moveToNext()){
                 pitanje = new Pitanje();
-                pitanje.setAnketa_id(Integer.parseInt(cursor.getString(2)));
-                pitanje.setPitanje_id(Integer.parseInt(cursor.getString(1)));
+                pitanje.setAnketa_id(cursor.getInt(2));
+                pitanje.setPitanje_id(cursor.getInt(1));
                 pitanje.setPitanje(cursor.getString(0));
-                pitanje.setOdgovor(this.findOdgovor(Integer.parseInt(cursor.getString(1))));
+                pitanje.setOdgovor(this.findOdgovor(cursor.getInt(1)));
                 listaPitanja.add(pitanje);
                 Log.d("*****findPitanje ", "dodano na listu: " + cursor.getString(0)+ " " +cursor.getString(1));
                 i++;
@@ -312,14 +300,18 @@ public class dataHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             //Log.d("*****findOdgovor ", "moved to first");
             cursor.moveToFirst();
-            odgovor.setPitanje_id(Integer.parseInt(cursor.getString(1)));
-            odgovor.setOdgovor(cursor.getString(4));
+            odgovor.setIdOdgovor(cursor.getInt(3));
+            odgovor.setPitanje_id(cursor.getInt(1));
+            odgovor.setOdgovor(cursor.getString(5));
+            odgovor.setRbrOdgovor(cursor.getInt(6));
             list.add(odgovor);
             //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
             while(cursor.moveToNext()){
                 odgovor = new Odgovor();
-                odgovor.setPitanje_id(Integer.parseInt(cursor.getString(1)));
-                odgovor.setOdgovor(cursor.getString(4));
+                odgovor.setIdOdgovor(cursor.getInt(3));
+                odgovor.setPitanje_id(cursor.getInt(1));
+                odgovor.setOdgovor(cursor.getString(5));
+                odgovor.setRbrOdgovor(cursor.getInt(6));
                 list.add(odgovor);
                 //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
                 i++;
@@ -333,44 +325,21 @@ public class dataHandler extends SQLiteOpenHelper {
         return list;
     }
 
-    /*public void povecajOdg(String odgovor, int pitanje, int anketa){
-        int broj=0;
-        Log.d("*****povecajOdg", odgovor + " " + pitanje + " "+anketa);
-        String query = "SELECT "+COLUMN_BR_ODGOVORA+" FROM "+TABLE_ANKETA+" LEFT JOIN "+TABLE_PITANJA+
-                " ON "+COLUMN_ANKETA_ID+" = "+COLUMN_PITANJE_A+
-                " LEFT JOIN "+TABLE_ODGOVORI+
-                " ON "+ COLUMN_ODGOVOR_PIT_ID +" = "+COLUMN_PITANJE_ID+
-                " WHERE " + COLUMN_ANKETA_ID + " = "+ anketa +
-                " AND "+ COLUMN_PITANJE_ID +" = "+ pitanje +
-                " AND " + COLUMN_ODGOVOR + " = \""+ odgovor + "\"";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor;
-        cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()) {
-            broj = Integer.parseInt(cursor.getString(0));
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_BR_ODGOVORA, broj + 1);
-            db.update(TABLE_ODGOVORI, values, COLUMN_ODGOVOR_PIT_ID + " = " + pitanje + " AND " + COLUMN_ODGOVOR + " = \"" + odgovor + "\" ", null);
-        }
-        else{
-            Log.d("*****povecajOdg", "greska");
-        }
-        cursor.close();
-    }*/
 
-    /*public boolean provjeriKorisnika(String korisnickoIme, String lozinka){
-        boolean ima = false;
-        String query="SELECT * FROM "+TABLE_KORISNIK+" WHERE "+
-                COLUMN_KORISNICKO_IME+" = \""+korisnickoIme+ "\" AND "+
-                COLUMN_LOZINKA+" = \""+lozinka+"\"";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor;
-        cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()){
-            ima=true;
-        }
-        return ima;
-    }*/
+    public void brisanjeAnketaPitanjaOdgovora(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_ODGOVORI, null, null);
+        db.delete(TABLE_PITANJA, null, null);
+        db.delete(TABLE_ANKETA, null, null);
+        db.close();
+    }
+
+    public void brisanjeIspunjavanja(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_ISPUNJAVANJE_ANKETE, null, null);
+        db.delete(TABLE_ODABRANI_ODGOVORI, null, null);
+        db.close();
+    }
 
     public void ispisBaze(){
         String query="SELECT * FROM "+TABLE_ANKETA+" LEFT JOIN "+TABLE_PITANJA+
@@ -384,9 +353,15 @@ public class dataHandler extends SQLiteOpenHelper {
         Log.d("*****ISPIS", "POCETAK 1*****");
         if(cursor.moveToFirst()){
             cursor.moveToFirst();
-            Log.d("*****ISPIS ", cursor.getString(1) + " " + cursor.getString(0) + " " + cursor.getString(2) + " " + cursor.getString(3) + " " + cursor.getString(6) /*+ " " + cursor.getString(7)*/);
+            Log.d("*****ISPIS ", cursor.getString(1) + " " + cursor.getString(0)
+                    + " " + cursor.getString(2) + " " + cursor.getString(3)
+                    + " " + cursor.getString(4) + " " + cursor.getString(6)
+                    + " " + cursor.getString(7)+" "+cursor.getString(12));
             while(cursor.moveToNext()){
-                Log.d("*****ISPIS ", cursor.getString(1)+" "+cursor.getString(0)+" "+cursor.getString(2)+" "+cursor.getString(3)+" "+cursor.getString(6)/*+" "+cursor.getString(7)*/);
+                Log.d("*****ISPIS ", cursor.getString(1)+" "+cursor.getString(0)
+                        +" "+cursor.getString(2)+" "+cursor.getString(3) + " " + cursor.getString(4)
+                        +" "+cursor.getString(6)+" "+cursor.getString(7)
+                        +" "+cursor.getString(12));
             }
             cursor.close();
         }
@@ -397,11 +372,10 @@ public class dataHandler extends SQLiteOpenHelper {
     }
 
     public void ispisOdgovora(int brojIspunjavanja){
-        String query="SELECT "+TABLE_ISPUNJAVANJE_ANKETE+"."+COLUMN_ID_ISPUNJAVANJA+", " +COLUMN_PITANJE+", "+ COLUMN_ODGOVOR+
-                ", "+COLUMN_LONGITUDE+", "+COLUMN_LATITUDE+", "+COLUMN_VRIJEME_IZRADE+
-                " FROM "+TABLE_ISPUNJAVANJE_ANKETE+" LEFT JOIN "+ TABLE_ODABRANI_ODGOVORI +
+        String query="SELECT * FROM "+TABLE_ISPUNJAVANJE_ANKETE+" LEFT JOIN "+ TABLE_ODABRANI_ODGOVORI +
                 " ON "+ TABLE_ISPUNJAVANJE_ANKETE+"."+COLUMN_ID_ISPUNJAVANJA+" = "+ TABLE_ODABRANI_ODGOVORI +"."+COLUMN_ID_ISPUNJAVANJA+
                 " LEFT JOIN " + TABLE_PITANJA + " ON "+TABLE_PITANJA+"."+COLUMN_PITANJE_ID+" = "+ TABLE_ODABRANI_ODGOVORI +"."+COLUMN_PITANJE_ID+
+                " LEFT JOIN " + TABLE_ODGOVORI + " ON " + TABLE_ODABRANI_ODGOVORI+"."+COLUMN_ODGOVOR_ID +" = "+ TABLE_ODGOVORI+"."+COLUMN_ODGOVOR_ID+
                 //" WHERE "+TABLE_ISPUNJAVANJE_ANKETE+"."+COLUMN_ID_ISPUNJAVANJA+" = "+brojIspunjavanja+
                 " ORDER BY "+TABLE_ISPUNJAVANJE_ANKETE+"."+COLUMN_ID_ISPUNJAVANJA+","+ TABLE_ODABRANI_ODGOVORI +"."+COLUMN_PITANJE_ID+" ASC";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -410,9 +384,14 @@ public class dataHandler extends SQLiteOpenHelper {
         Log.d("*****ISPIS", "POCETAK 2*****");
         if(cursor.moveToFirst()){
             cursor.moveToFirst();
-            Log.d("*****ISPIS ", "id:"+cursor.getString(0)+" "+cursor.getString(1)+" "+cursor.getString(2)+"    @"+cursor.getString(3)+" "+cursor.getString(4)+" "+cursor.getString(5));
+            Log.d("*****ISPIS ", "korisnik:"+cursor.getString(0)
+                    +" "+cursor.getString(2)+" "+cursor.getString(3)+"    @"+cursor.getString(4)
+                    +" "+cursor.getString(5)+"    "+cursor.getString(9)+" "+cursor.getString(14));
             while(cursor.moveToNext()){
-                Log.d("*****ISPIS ", "id:"+cursor.getString(0)+" "+cursor.getString(1)+" "+cursor.getString(2)+"    @"+cursor.getString(3)+" "+cursor.getString(4)+" "+cursor.getString(5));
+                Log.d("*****ISPIS ", "korisnik:"+cursor.getString(0)
+                        +" "+cursor.getString(2)+" "+cursor.getString(3)
+                        +"    @"+cursor.getString(4)+" "+cursor.getString(5)
+                        +"    "+cursor.getString(9)+" "+cursor.getString(14));
             }
             cursor.close();
             Log.d("*****ISPIS ", "KRAJ");
@@ -423,23 +402,4 @@ public class dataHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    /*public void ispisKorisnika(){
-        String query="SELECT * FROM "+TABLE_KORISNIK;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor;
-        cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()){
-            cursor.moveToFirst();
-            Log.d("*****ISPIS ", cursor.getString(0)+" "+cursor.getString(1));
-            while(cursor.moveToNext()){
-                Log.d("*****ISPIS ", cursor.getString(0)+" "+cursor.getString(1));
-            }
-            cursor.close();
-            Log.d("*****ISPIS ", "KRAJ");
-        }
-        else{
-            Log.d("*****ISPIS", "prazna baza");
-        }
-        db.close();
-    }*/
 }
