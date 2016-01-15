@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 
 public class Util {
@@ -186,7 +188,7 @@ public class Util {
 	public static Map<String, String> provjeriFormuPromjeneLozinke(String staraLozinka, String novaLozinka,
 			String novaLozinkaPotvrda) {
 		Map<String, String> greska = new HashMap<>();
-		
+
 		if (staraLozinka == null || staraLozinka.isEmpty()) {
 			greska.put("staralozinka", "Polje stare lozinke je prazno");
 		}
@@ -199,8 +201,22 @@ public class Util {
 			greska.put("novalozinka", "Lozinke se ne podudaraju");
 			greska.put("novalozinkapotvrda", "Lozinke se ne podudaraju");
 		}
-		
+
 		return greska;
+	}
+
+	public static boolean provjeraAktivnosti(Anketa anketa, Date date) {
+		if (anketa != null) {
+			if (date.after(anketa.getAktivnaOd()) && date.before(anketa.getAktivnaDo())) {
+				// mora biti aktivna
+				return true;
+			} else {
+				// mora biti neaktivna
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 
 }

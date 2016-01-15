@@ -27,7 +27,6 @@ public class JPADAOAnketa implements IDAOAnketa {
 	public Anketa spremiAnketu(Anketa anketa) {
 		EntityManager em = JPAEMProvider.getEntityManager().getEntityManagerFactory().createEntityManager();
 		Korisnik k = em.find(Korisnik.class, anketa.getVlasnik().getId());
-		provjeraAktivnosti(anketa, new Date());
 		em.getTransaction().begin();
 		em.persist(anketa);
 		k.getAnketa().add(anketa);
@@ -59,12 +58,39 @@ public class JPADAOAnketa implements IDAOAnketa {
 		return ankete;
 	}
 
+	@Override
+	public Anketa spremiIzmjeneAnkete(Anketa anketa) {
+		EntityManager em = JPAEMProvider.getEntityManager().getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		Anketa a = em.find(Anketa.class, anketa.getIdAnketa());
+		a.setAktivna(anketa.isAktivna());
+		a.setAktivnaDo(anketa.getAktivnaDo());
+		a.setAktivnaOd(anketa.getAktivnaOd());
+		a.setBrojPitanja(anketa.getBrojPitanja());
+		a.setJePrivatna(anketa.isJePrivatna());
+		a.setNazivAnketa(anketa.getNazivAnketa());
+		a.setOpisAnketa(anketa.getOpisAnketa());
+		a.setPitanja(anketa.getPitanja());
+		// TODO dodati izmjene anketara
+		em.getTransaction().commit();
+		em.close();
+		return anketa;
+	}
+
 	private Anketa provjeraAktivnosti(Anketa anketa, Date date) {
 		if (anketa != null) {
 			if (date.after(anketa.getAktivnaOd()) && date.before(anketa.getAktivnaDo())) {
-				anketa.setAktivna(true);
+				// mora biti aktivna
+				if (!anketa.isAktivna()) {
+					anketa.setAktivna(true);
+					spremiIzmjeneAnkete(anketa);
+				}
 			} else {
-				anketa.setAktivna(false);
+				// mora biti neaktivna
+				if (anketa.isAktivna()) {
+					anketa.setAktivna(false);
+					spremiIzmjeneAnkete(anketa);
+				}
 			}
 		}
 		return anketa;
