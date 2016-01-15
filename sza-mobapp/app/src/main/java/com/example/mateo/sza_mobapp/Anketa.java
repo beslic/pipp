@@ -10,7 +10,7 @@ public class Anketa {
     private String opisAnketa;
     private List<Pitanje> pitanja;
     private int brojPitanja;
-    private int idAnketa;
+    private long idAnketa;
     private String aktivnaDo;
     private String vrijemeIzrada;
     private String aktivnaOd;
@@ -20,7 +20,7 @@ public class Anketa {
 
     public Anketa(){}
 
-    public Anketa(String ime, int idAnketa, String vlasnik){
+    public Anketa(String ime, long idAnketa, String vlasnik){
         this.nazivAnketa = ime;
         this.idAnketa = idAnketa;
         //this.vlasnik = vlasnik;
@@ -40,11 +40,11 @@ public class Anketa {
         return nazivAnketa;
     }
 
-    public int getIdAnketa() {
+    public long getIdAnketa() {
         return idAnketa;
     }
 
-    public void setIdAnketa(int idAnketa) {
+    public void setIdAnketa(long idAnketa) {
         this.idAnketa = idAnketa;
     }
 

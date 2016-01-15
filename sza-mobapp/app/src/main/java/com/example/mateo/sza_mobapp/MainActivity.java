@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-        int aId = myArrayAdapter.anketa.get(position).getIdAnketa();
+        long aId = myArrayAdapter.anketa.get(position).getIdAnketa();
         //Log.d("*****OnItemClick  ", "anketa: " + aId);
         //Intent i2 = new Intent(this, listaPitanja2.class);
         Intent i2 = new Intent(this, Pocetak_ispunjavanja_ankete.class);

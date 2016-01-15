@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 public class Pitanje {
 
-    private int anketa_id;
+    private long anketa_id;
     private String pitanje;
-    private int pitanje_id;
+    private long pitanje_id;
     private ArrayList<Odgovor> odgovor;
     private int rbrPitanje;
 
@@ -17,7 +17,7 @@ public class Pitanje {
 
     public Pitanje(){}
 
-    public Pitanje(int id, String pit, int pitanje_id, ArrayList<Odgovor> odg){
+    public Pitanje(long id, String pit, long pitanje_id, ArrayList<Odgovor> odg){
         this.anketa_id = id;
         this.pitanje = pit;
         this.pitanje_id=pitanje_id;
@@ -32,22 +32,22 @@ public class Pitanje {
         this.rbrPitanje = rbrPitanje;
     }
 
-    public int getPitanje_id(){
+    public long getPitanje_id(){
         return pitanje_id;
     }
     public String getPitanje(){
         return pitanje;
     }
-    public int getAnketa_id(){
+    public long getAnketa_id(){
         return anketa_id;
     }
-    public void setPitanje_id(int id){
+    public void setPitanje_id(long id){
         this.pitanje_id=id;
     }
     public void setPitanje(String p){
         this.pitanje = p;
     }
-    public void setAnketa_id(int id){
+    public void setAnketa_id(long id){
         this.anketa_id = id;
     }
 
