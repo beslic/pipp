@@ -121,12 +121,39 @@ public class Refresh {
     }
 
 
-    public boolean slanjeIspunjenih(){
+    public boolean slanjeIspunjenih(String adresa){
+
         dataHandler dh = new dataHandler(context, null, null, 1);
         List<NOVO_ispunjavanjeAnkete> ispunjavanja = dh.findIspunjavajne();
         Gson gson = new Gson();
-        String json = gson.toJson(ispunjavanja);
-        Log.d("ISPUNJENE ", json);
+        String jsonIspunjavanja = gson.toJson(ispunjavanja);
+        Log.d("ISPUNJENE ", jsonIspunjavanja);
+        String odgovor = "";
+        NetworkConnection PROVJERA = new NetworkConnection(context, adresa + ":8080/sza-webapp/****/");
+        if (PROVJERA.isConnected() == false) {
+            Toast.makeText(context, "Nema internetske veze", Toast.LENGTH_LONG).show();
+        } else {
+            try {
+                odgovor = PROVJERA.execute(jsonIspunjavanja).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException s) {
+                s.printStackTrace();
+            }
+            try {
+                JSONObject jsonOdgovor = new JSONObject(odgovor);
+                Log.d("jsonOdgovor", jsonOdgovor.get("status").toString());
+
+                if (jsonOdgovor.get("status").toString().equals("success")) {
+                    return true;
+                } else {
+                    Log.d("*****Slanje", "FAIL");
+                    return false;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         return false;
     }
 

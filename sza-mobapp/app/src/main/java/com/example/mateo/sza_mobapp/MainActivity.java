@@ -133,7 +133,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             loginInfoEditor.commit();
             login();
         };
-        r.slanjeIspunjenih();
+        if(r.slanjeIspunjenih(loginInfo.getString("ADRESA_SERVERA", "192.168.1.102")) == true){
+            dbH.brisanjeIspunjavanja();
+        }
         List<Anketa> imeA;
         imeA=dbH.findAnketa();
         Log.d("poslije refresh-a", " ");
