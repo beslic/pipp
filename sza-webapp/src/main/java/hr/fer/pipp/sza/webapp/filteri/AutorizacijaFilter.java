@@ -36,25 +36,25 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 		if (korisnik == null) {
 			if (url.matches(Util.PRAVA_ANONIMNOG_KORISNIKA)) {
 				if (url.matches("/ankete/[0-9]+-[A-Za-z0-9]+/")) {
-					Util.provjeraPrivatnostiAnkete(req, uri);
+					Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
 				}
 				return;
 			} else if (url.matches(Util.PRAVA_REGISTRIRANOG_KORISNIKA)) {
-				Util.r403();
+				requestContext.abortWith(Util.r403());
 			} else {
-				Util.r404();
+				requestContext.abortWith(Util.r404());
 			}
 		} else {
 			if (korisnik.getRazinaPrava() == 1) { // ako nije admin
 				if (url.matches(Util.PRAVA_REGISTRIRANOG_KORISNIKA)) {
 					if (url.matches("/ankete/[0-9]+-[A-Za-z0-9]+/")) {
-						Util.provjeraPrivatnostiAnkete(req, uri);
+						Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
 					}
 					return;
 				} else if (url.matches(Util.PRAVA_ANONIMNOG_KORISNIKA)) {
-					Util.r403();
+					requestContext.abortWith(Util.r404());
 				} else {
-					Util.r404();
+					requestContext.abortWith(Util.r403());
 				}
 			} else { // ako je admin
 				// TODO prava admina

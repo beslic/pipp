@@ -20,6 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -35,23 +36,14 @@ import hr.fer.pipp.sza.webapp.modeli.Odgovor;
 import hr.fer.pipp.sza.webapp.modeli.Pitanje;
 
 public class Util {
-	
-	public final static String PRAVA_ANONIMNOG_KORISNIKA = "/prijava/|" + 
-			"/registracija/|" +
-			"/ankete/|" +
-			"/ankete/[0-9]+-[A-Za-z0-9]+/";
-	public final static String PRAVA_REGISTRIRANOG_KORISNIKA = "/korisnici/|" +
-			"/korisnici/[A-Za-z0-9]+/|" +
-			"/korisnici/[A-Za-z0-9]+/postavke/|" +
-	        "/korisnici/[A-Za-z0-9]+/ankete/|" +
-			"/korisnici/[A-Za-z0-9]+/ankete/[0-9]+-[A-Za-z0-9]+/|" +
-			"/korisnici/[A-Za-z0-9]+/ankete/nova/|" +
-	        "/android/|" +
-	        "/anketari/|" +
-			"/ankete/|" +
-	        "/ankete/json/|" + 
-			"/ankete/[0-9]+-[A-Za-z0-9]+|" +
-	        "/ankete/[0-9]+-/[A-Za-z0-9]+/json/";
+
+	public final static String PRAVA_ANONIMNOG_KORISNIKA = "/prijava/|" + "/registracija/|" + "/ankete/|"
+			+ "/ankete/[0-9]+-[A-Za-z0-9]+/";
+	public final static String PRAVA_REGISTRIRANOG_KORISNIKA = "/korisnici/|" + "/korisnici/[A-Za-z0-9]+/|"
+			+ "/korisnici/[A-Za-z0-9]+/postavke/|" + "/korisnici/[A-Za-z0-9]+/ankete/|"
+			+ "/korisnici/[A-Za-z0-9]+/ankete/[0-9]+-[A-Za-z0-9]+/|" + "/korisnici/[A-Za-z0-9]+/ankete/nova/|"
+			+ "/android/|" + "/anketari/|" + "/ankete/|" + "/ankete/json/|" + "/ankete/[0-9]+-[A-Za-z0-9]+|"
+			+ "/ankete/[0-9]+-/[A-Za-z0-9]+/json/";
 
 	private static boolean validirajEmail(String email) {
 
@@ -312,23 +304,25 @@ public class Util {
 
 		return greska;
 	}
-	
-	public static void provjeraPrivatnostiAnkete(HttpServletRequest req, UriInfo uri) {
+
+	public static void provjeraPrivatnostiAnkete(ContainerRequestContext requestContext, HttpServletRequest req,
+			UriInfo uri) {
 		String idNazivAnketa = uri.getPathSegments().get(uri.getPathSegments().size() - 2).toString();
 		Anketa a = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0]));
 		if (a != null) {
 			if (a.isJePrivatna()) {
 				Korisnik k = (Korisnik) req.getSession().getAttribute("Korisnik");
 				if (k == null) {
-					Util.r404();
+					requestContext.abortWith(Util.r404());
 				}
 				if (!k.equals(a.getVlasnik())) {
-					Util.r403();
+					requestContext.abortWith(Util.r403());
 				}
 			}
+			req.setAttribute("anketa", a);
 			return;
 		} else {
-			Util.r404();
+			requestContext.abortWith(Util.r404());
 		}
 	}
 

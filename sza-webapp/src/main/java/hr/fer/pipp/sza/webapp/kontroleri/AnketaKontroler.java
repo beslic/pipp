@@ -79,21 +79,8 @@ public class AnketaKontroler {
 		// TODO ove provjere treba ubaciti u filter (i samo dohvacanje ankete da
 		// se radi u filteru i onda samo salje preko requesta) i isto ovo treba
 		// napraviti i kod korisnika
-		Anketa a = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0]));
-		if (a != null ) {
-			if (a.isJePrivatna()) {
-				Korisnik k = (Korisnik) req.getSession().getAttribute("Korisnik");
-				if (k == null) {
-					return Util.r404();
-				}
-				if (!k.equals(a.getVlasnik())) {
-					return Util.r403();
-				}
-			}
-			return ispunjavanjeAnkete(req, a);
-		} else {
-			return Util.r404();
-		}
+		Anketa a = (Anketa) req.getAttribute("anketa");
+		return ispunjavanjeAnkete(req, a);
 	}
 
 	@GET
