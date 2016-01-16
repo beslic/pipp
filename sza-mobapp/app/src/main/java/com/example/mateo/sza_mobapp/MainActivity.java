@@ -21,8 +21,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
@@ -80,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         else {
             Toast.makeText(this, "Dobrodošli " + ime + "!", Toast.LENGTH_LONG).show();
-            refresh(null);
+            refreshTablica();
         }
     }
 
@@ -136,6 +141,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(r.slanjeIspunjenih(loginInfo.getString("ADRESA_SERVERA", "192.168.1.102")) == true){
             dbH.brisanjeIspunjavanja();
         }
+        refreshTablica();
+    }
+
+    public void refreshTablica(){
         List<Anketa> imeA;
         imeA=dbH.findAnketa();
         Log.d("poslije refresh-a", " ");
@@ -209,13 +218,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-        long aId = myArrayAdapter.anketa.get(position).getIdAnketa();
-        //Log.d("*****OnItemClick  ", "anketa: " + aId);
-        //Intent i2 = new Intent(this, listaPitanja2.class);
-        Intent i2 = new Intent(this, Pocetak_ispunjavanja_ankete.class);
-        i2.putExtra("anketa", aId);
-        i2.putExtra("anketaIme", myArrayAdapter.anketa.get(position).getNazivAnketa());
-        startActivity(i2);
+        Date curDate = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
+        try {
+            Date AktivnaOd = format.parse(myArrayAdapter.anketa.get(position).getAktivnaOd());
+            Date AktivnaDo = format.parse(myArrayAdapter.anketa.get(position).getAktivnaDo());
+            Log.d("aktivna od", AktivnaOd.toString());
+            Log.d("aktivna do", AktivnaDo.toString());
+            Log.d("sada je   ", curDate.toString());
+
+            if(AktivnaDo.before(curDate) || AktivnaOd.after(curDate)){
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle("Anketa nije dostupna");
+                alertDialog.setMessage("Dostupnost ankete:\n" + format.format(AktivnaOd) + " - \n" + format.format(AktivnaDo));
+                alertDialog.setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                alertDialog.show();
+            }
+            else{
+                long aId = myArrayAdapter.anketa.get(position).getIdAnketa();
+                //Log.d("*****OnItemClick  ", "anketa: " + aId);
+                //Intent i2 = new Intent(this, listaPitanja2.class);
+                Intent i2 = new Intent(this, Pocetak_ispunjavanja_ankete.class);
+                i2.putExtra("anketa", aId);
+                i2.putExtra("anketaIme", myArrayAdapter.anketa.get(position).getNazivAnketa());
+                startActivity(i2);
+            }
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -227,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if(data.getBooleanExtra("IZLAZ", true) == true){
                     finish();
                 }
-                refresh(null);
+                refreshTablica();
                 // The user picked a contact.
                 // The Intent's data Uri identifies which contact was selected.
 
