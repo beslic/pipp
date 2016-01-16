@@ -110,16 +110,24 @@ public class KorisnikKontroler {
 	@GET
 	@Path("/ankete")
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziAnketeKorisnika(@Context HttpServletRequest req, @PathParam("korisnickoime") String name) {
+	public static Response prikaziAnketeKorisnika(@Context HttpServletRequest req,
+			@PathParam("korisnickoime") String name) {
 		return AnketaKontroler.prikaziAnkete(req, ((Korisnik) req.getSession().getAttribute("korisnik")).getAnketa(),
-				"Moje ankete", "Niste napravili niti jednu anketu", "korisnici/" + name + "/");
+				"Moje ankete", "Nemate napravljenih anketa", "korisnici/" + name + "/");
 	}
 
 	@GET
 	@Path("ankete/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response prikaziAnketeJSON(@Context HttpServletRequest req) {
+	public static Response prikaziAnketeJSON(@Context HttpServletRequest req) {
 		return AnketaKontroler.prikaziAnketeJSON(((Korisnik) req.getSession().getAttribute("korisnik")).getAnketa());
+	}
+
+	@GET
+	@Path("ankete/nova")
+	@Produces(MediaType.TEXT_HTML)
+	public static Response prikaziFormuZaNovuAnketu(@Context HttpServletRequest req) {
+		return AnketaKontroler.prikaziFormuAnkete(req, "Nova anketa");
 	}
 
 	@GET
@@ -136,9 +144,25 @@ public class KorisnikKontroler {
 	@GET
 	@Path("ankete/{id-naziv}/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response prikaziAnketuKaoJSON(@Context HttpServletRequest req, @PathParam("id-naziv") String idNaziv) {
+	public static Response prikaziAnketuKaoJSON(@Context HttpServletRequest req,
+			@PathParam("id-naziv") String idNaziv) {
+		if (idNaziv == null || idNaziv.length() == 0) {
+			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
+		}
 		return AnketaKontroler
 				.prikaziAnketuJSON(DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0])));
+	}
+
+	@GET
+	@Path("ankete/{id-naziv}/izmijeni")
+	@Produces(MediaType.TEXT_HTML)
+	public static Response izmijeniAnketu(@Context HttpServletRequest req,
+			@PathParam("id-naziv") String idNazivAnketa) {
+		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
+			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
+		}
+		return AnketaKontroler.izmijeniAnketu(req,
+				DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0])));
 	}
 
 	@POST

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -20,6 +20,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import org.glassfish.jersey.server.mvc.Viewable;
 
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
@@ -133,123 +137,111 @@ public class Util {
 		return greska;
 	}
 
-	public static Map<String, String> provjeriFormuAnkete(Anketa anketa, MultivaluedMap<String, String> form,
-			Set<String> pitanjaId, Set<String> odgovoriId, Map<String, Object> forma) throws ParseException {
+	public static Anketa provjeriFormuAnkete(MultivaluedMap<String, String> form, Map<String, String> greske)
+			throws ParseException {
+		provjeriGreske(form, greske);
+		return dohvatiAnketu(form, greske);
 
-		Map<String, String> greske = new HashMap<>();
+	}
 
+	private static void provjeriGreske(MultivaluedMap<String, String> form, Map<String, String> greske) {
 		String nazivAnketa = form.getFirst("nazivAnketa");
-		String opisAnketa = form.getFirst("opisAnketa");
 		String aktivnaOd = form.getFirst("aktivnaOd");
 		String aktivnaDo = form.getFirst("aktivnaDo");
-		String privatna = form.getFirst("privatna");
-
-		for (String s : form.keySet()) {
-			if (s.matches("pitanje[0-9]+")) {
-				pitanjaId.add(s);
-			}
-			if (s.matches("pitanje[0-9]+-odgovor[0-9]+")) {
-				odgovoriId.add(s);
-			}
-		}
 
 		if (nazivAnketa == null || nazivAnketa.isEmpty()) {
 			greske.put("nazivAnketa", "Nije zadan ispravan naziv ankete");
 		}
-
 		if (aktivnaOd == null || aktivnaOd.isEmpty()) {
 			greske.put("aktivnaOd", "Nije zadan datum početka ankete");
 		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
 			greske.put("aktivnaOd", "Format nije dobro zadan - dd/mm/gggg");
+			greske.put("aktivnaOdForma", aktivnaOd);
 		}
-
 		if (aktivnaDo == null || aktivnaDo.isEmpty()) {
 			greske.put("aktivnaDo", "Nije zadan datum završetka ankete");
 		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
 			greske.put("aktivnaDo", "Format nije dobro zadan - dd/mm/gggg");
+			greske.put("aktivnaDoForma", aktivnaDo);
 		}
-
 		if (!(greske.containsKey("aktivnaDo") || greske.containsKey("aktivnaOd"))) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
 			LocalDate datumOd = LocalDate.parse(aktivnaOd, formatter);
 			LocalDate datumDo = LocalDate.parse(aktivnaDo, formatter);
-
 			if (datumOd.isAfter(datumDo)) {
 				greske.put("kron", "Datum nije kronološki dobro zadan");
+				greske.put("aktivnaDoForma", aktivnaDo);
+				greske.put("aktivnaOoForma", aktivnaOd);
 			}
 		}
+	}
 
+	private static Anketa dohvatiAnketu(MultivaluedMap<String, String> form, Map<String, String> greske)
+			throws ParseException {
+		Anketa anketa = new Anketa();
+		anketa.setNazivAnketa(form.getFirst("nazivAnketa"));
+		anketa.setOpisAnketa(form.getFirst("opisAnketa"));
+		anketa.setJePrivatna(("privatna".equals(form.getFirst("privatna"))) ? true : false);
+		anketa.setPitanja(dohvatiPitanja(form, anketa));
+		anketa.setBrojPitanja(anketa.getPitanja().size());
+		// TODO dodati anketare
 		if (greske.isEmpty()) {
+			Date date = new Date();
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+			anketa.setAktivnaOd(format.parse(form.getFirst("aktivnaOd")));
+			anketa.setAktivnaDo(format.parse(form.getFirst("aktivnaDo")));
+			anketa.setAktivna(provjeraAktivnosti(anketa, date));
+			anketa.setVrijemeIzrada(date);
+		}
+		return anketa;
+	}
 
-			int brojPitanja = pitanjaId.size();
-
-			List<Pitanje> pitanja = new ArrayList<>();
-			for (String p : pitanjaId) {
-				String pit = form.getFirst(p);
-				if (pit == null || pit.length() == 0) {
-					continue;
-				}
-				Pitanje pitanje = new Pitanje();
-				List<Odgovor> odgovori = new ArrayList<>();
-				for (String o : odgovoriId) {
-					String odg = form.getFirst(o);
-					if (odg == null || odg.length() == 0) {
-						continue;
-					}
-					Odgovor odgovor = new Odgovor();
-					odgovor.setRbrOdgovor(Integer.parseInt(o.split("-")[1].replaceFirst("odgovor", "")));
-					odgovor.setTextOdgovor(odg);
-					odgovor.setPitanje(pitanje);
-					odgovori.add(odgovor);
-				}
-				Collections.sort(odgovori, (o1, o2) -> Integer.compare(o1.getRbrOdgovor(), o2.getRbrOdgovor()));
-				pitanje.setAnketa(anketa);
-				pitanje.setOdgovor(odgovori);
-				pitanje.setRbrPitanje(Integer.parseInt(p.replaceFirst("pitanje", "")));
-				pitanje.setTextPitanje(pit);
-				pitanja.add(pitanje);
-				Collections.sort(pitanja, (p1, p2) -> Integer.compare(p1.getRbrPitanje(), p2.getRbrPitanje()));
+	private static List<Pitanje> dohvatiPitanja(MultivaluedMap<String, String> form, Anketa anketa) {
+		Set<String> pitanjaId = dohvatiId(form, "pitanje[0-9]+");
+		List<Pitanje> pitanja = new ArrayList<>();
+		for (String p : pitanjaId) {
+			String pit = form.getFirst(p);
+			if (pit == null || pit.length() == 0) {
+				continue;
 			}
-			Date d = new Date();
-			anketa.setNazivAnketa(nazivAnketa);
-			anketa.setOpisAnketa(opisAnketa);
-			anketa.setVrijemeIzrada(d);
-			anketa.setAktivnaOd(format.parse(aktivnaOd));
-			anketa.setAktivnaDo(format.parse(aktivnaDo));
-			anketa.setAktivna(Util.provjeraAktivnosti(anketa, d));
-			anketa.setBrojPitanja(brojPitanja);
-			anketa.setJePrivatna(("privatna".equals(privatna)) ? true : false);
-			anketa.setPitanja(pitanja);
+			Pitanje pitanje = new Pitanje();
+			List<Odgovor> odgovori = dohvatiOdgovore(form, pitanje);
+			pitanje.setAnketa(anketa);
+			pitanje.setOdgovor(odgovori);
+			pitanje.setRbrPitanje(Integer.parseInt(p.replaceFirst("pitanje", "")));
+			pitanje.setTextPitanje(pit);
+			pitanja.add(pitanje);
+		}
+		Collections.sort(pitanja, (p1, p2) -> Integer.compare(p1.getRbrPitanje(), p2.getRbrPitanje()));
+		return pitanja;
+	}
 
-		} else {
-
-			forma.put("nazivAnketa", nazivAnketa);
-			forma.put("opisAnketa", opisAnketa);
-			forma.put("aktivnaOd", aktivnaOd);
-			forma.put("aktivnaDo", aktivnaDo);
-			if (privatna != null) {
-				forma.put("privatna", "1");
+	private static List<Odgovor> dohvatiOdgovore(MultivaluedMap<String, String> form, Pitanje pitanje) {
+		Set<String> odgovoriId = dohvatiId(form, "pitanje" + pitanje.getRbrPitanje() + "-odgovor[0-9]+");
+		List<Odgovor> odgovori = new ArrayList<>();
+		for (String o : odgovoriId) {
+			String odg = form.getFirst(o);
+			if (odg == null || odg.length() == 0) {
+				continue;
 			}
+			Odgovor odgovor = new Odgovor();
+			odgovor.setRbrOdgovor(Integer.parseInt(o.split("-")[1].replaceFirst("odgovor", "")));
+			odgovor.setTextOdgovor(odg);
+			odgovor.setPitanje(pitanje);
+			odgovori.add(odgovor);
+		}
+		Collections.sort(odgovori, (o1, o2) -> Integer.compare(o1.getRbrOdgovor(), o2.getRbrOdgovor()));
+		return odgovori;
+	}
 
-			Map<String, List<String>> fPitanja = new LinkedHashMap<>();
-			for (String pitanje : pitanjaId) {
-				List<String> odg = new ArrayList<>();
-				for (String odgovor : odgovoriId) {
-					if (odgovor.split("-")[0].equals(pitanje)) {
-						odg.add(form.getFirst(odgovor));
-					}
-				}
-				fPitanja.put(pitanje, odg);
-				forma.put(pitanje, form.getFirst(pitanje));
-			}
-			if (!fPitanja.isEmpty()) {
-				forma.put("pitanja", fPitanja);
+	private static Set<String> dohvatiId(MultivaluedMap<String, String> form, String regex) {
+		Set<String> id = new LinkedHashSet<>();
+		for (String key : form.keySet()) {
+			if (key.matches(regex)) {
+				id.add(key);
 			}
 		}
-
-		return greske;
-
+		return id;
 	}
 
 	public static Map<String, String> provjeriFormuPostavkiKorisnika(String ime, String prezime, String email) {
@@ -313,6 +305,19 @@ public class Util {
 		} else {
 			return false;
 		}
+	}
+
+	public static String formatDatum(Date datum) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		return dateFormat.format(datum);
+	}
+
+	public static Response r404() {
+		return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
+	}
+
+	public static Response r403() {
+		return Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build();
 	}
 
 }

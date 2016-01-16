@@ -3,10 +3,8 @@ package hr.fer.pipp.sza.webapp.kontroleri;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -47,23 +45,20 @@ public class AnketaKontroler {
 	@POST
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response dodajAnketu(@Context HttpServletRequest req, @Context UriInfo uri,
+	public static Response dodajAnketu(@Context HttpServletRequest req, @Context UriInfo uri,
 			MultivaluedMap<String, String> form) throws ParseException, ServletException, IOException {
-
-		Anketa anketa = new Anketa();
-		Map<String, Object> forma = new HashMap<>();
-		Set<String> pitanjaId = new LinkedHashSet<>();
-		Set<String> odgovoriId = new LinkedHashSet<>();
-		Map<String, String> greska = Util.provjeriFormuAnkete(anketa, form, pitanjaId, odgovoriId, forma);
-
+		Map<String, String> greska = new HashMap<>();
+		Korisnik k = (Korisnik) req.getSession().getAttribute("korisnik");
+		Anketa anketa = Util.provjeriFormuAnkete(form, greska);
 		if (greska.isEmpty()) {
-			anketa.setVlasnik((Korisnik) req.getSession().getAttribute("korisnik"));
+			anketa.setVlasnik(k);
 			DAOAnketa.getDAO().spremiAnketu(anketa);
 			return Response.seeOther(UriBuilder.fromUri(uri.getRequestUri().toString()).build()).build();
 		} else {
-			req.setAttribute("forma", forma);
+			req.setAttribute("anketa", anketa);
+			req.setAttribute("forma", form);
 			req.setAttribute("greska", greska);
-			return prikaziAnkete(req);
+			return KorisnikKontroler.prikaziAnketeKorisnika(req, k.getKorisnickoIme());
 		}
 	}
 
@@ -81,7 +76,20 @@ public class AnketaKontroler {
 		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
 			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
 		}
-		return ispunjavanjeAnkete(req, DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0])));
+		// TODO ove provjere treba ubaciti u filter (i samo dohvacanje ankete da
+		// se radi u filteru i onda samo salje preko requesta) i isto ovo treba
+		// napraviti i kod korisnika
+		Anketa a = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0]));
+		if (a.isJePrivatna()) {
+			Korisnik k = (Korisnik) req.getSession().getAttribute("Korisnik");
+			if (k == null) {
+				return Util.r404();
+			}
+			if (!k.equals(a.getVlasnik())) {
+				return Util.r403();
+			}
+		}
+		return ispunjavanjeAnkete(req, a);
 	}
 
 	@GET
@@ -91,13 +99,25 @@ public class AnketaKontroler {
 		return prikaziAnketuJSON(DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0])));
 	}
 
-	public static Response prikaziAnkete(@Context HttpServletRequest req, List<Anketa> ankete, String naslov,
-			String nemaAnketa, String url) {
+	public static Response prikaziAnkete(HttpServletRequest req, List<Anketa> ankete, String naslov, String prazno,
+			String url) {
 		req.setAttribute("naslov", naslov);
-		req.setAttribute("nema-anketa", nemaAnketa);
+		req.setAttribute("prazno", prazno);
 		req.setAttribute("url", url);
 		req.setAttribute("ankete", ankete);
 		return Response.ok(new Viewable("/prikazAnketa")).build();
+	}
+
+	public static Response prikaziFormuAnkete(HttpServletRequest req, String naslov) {
+		req.setAttribute("naslov", naslov);
+		return Response.ok(new Viewable("/anketaForma")).build();
+	}
+
+	public static Response izmijeniAnketu(HttpServletRequest req, Anketa anketa) {
+		req.setAttribute("anketa", anketa);
+		req.setAttribute("aktivnaDoForma", Util.formatDatum(anketa.getAktivnaDo()));
+		req.setAttribute("aktivnaOdForma", Util.formatDatum(anketa.getAktivnaOd()));
+		return prikaziFormuAnkete(req, "Izmijeni anketu \"" + anketa.getNazivAnketa() + "\"");
 	}
 
 	public static Response prikaziAnketeJSON(List<Anketa> ankete) {
@@ -105,7 +125,7 @@ public class AnketaKontroler {
 		return Response.ok(gson.toJson(ankete)).build();
 	}
 
-	public static Response ispunjavanjeAnkete(@Context HttpServletRequest req, Anketa anketa) {
+	public static Response ispunjavanjeAnkete(HttpServletRequest req, Anketa anketa) {
 		req.setAttribute("anketa", anketa);
 		return Response.ok(new Viewable("/ispunjavanjeAnkete")).build();
 	}
