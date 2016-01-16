@@ -21,7 +21,7 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Korisnicko ime</th>
+        <th>Korisničko ime</th>
         <th><b>${sessionScope.korisnik.korisnickoIme}</b></th>
       </tr>
     </thead>
@@ -47,7 +47,7 @@
 			           	Administrator sustava 
 		        </c:when>
 		        <c:when test="${sessionScope.korisnik.razinaPrava == 1}">
-			           	Narucitelj ankete 
+			           	Naručitelj ankete 
 		        </c:when>
 		        <c:otherwise>
 		            	Anketar
