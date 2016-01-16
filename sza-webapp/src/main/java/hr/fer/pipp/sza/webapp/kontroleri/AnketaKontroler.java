@@ -48,7 +48,7 @@ public class AnketaKontroler {
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziAnkete(@Context HttpServletRequest req) throws ServletException, IOException {
+	public Response prikaziAnkete(@Context HttpServletRequest req) {
 		Korisnik k = (Korisnik) req.getSession().getAttribute("korisnik");
 		List<Anketa> privatne = null;
 		if (k != null) {

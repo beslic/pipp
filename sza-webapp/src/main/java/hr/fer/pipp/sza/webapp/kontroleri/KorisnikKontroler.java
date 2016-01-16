@@ -1,7 +1,9 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
+import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -65,8 +67,6 @@ public class KorisnikKontroler {
 		System.out.println(novaLozinkaPotvrda);
 		System.out.println();
 
-		
-		
 		if ("postavke".equals(button)) {
 			Map<String, String> greska = Util.provjeriFormuPostavkiKorisnika(ime, prezime, email);
 
@@ -87,8 +87,6 @@ public class KorisnikKontroler {
 		} else if ("postavkelozinka".equals(button)) {
 			Map<String, String> greska = Util.provjeriFormuPromjeneLozinke(staraLozinka, novaLozinka,
 					novaLozinkaPotvrda);
-			
-			
 
 			if (greska.isEmpty()) {
 				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
@@ -103,6 +101,13 @@ public class KorisnikKontroler {
 		} else {
 			return prikaziPostavkeKorisnika(req);
 		}
+	}
+
+	@GET
+	@Path("/ankete")
+	@Produces(MediaType.TEXT_HTML)
+	public Response prikaziAnketeKorisnika(@Context HttpServletRequest req) throws ServletException, IOException {
+		return new AnketaKontroler().prikaziAnkete(req);
 	}
 
 	@POST
