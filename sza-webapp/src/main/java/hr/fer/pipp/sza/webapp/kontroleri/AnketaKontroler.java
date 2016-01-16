@@ -76,9 +76,7 @@ public class AnketaKontroler {
 		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
 			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
 		}
-		// TODO ove provjere treba ubaciti u filter (i samo dohvacanje ankete da
-		// se radi u filteru i onda samo salje preko requesta) i isto ovo treba
-		// napraviti i kod korisnika
+		
 		Anketa a = (Anketa) req.getAttribute("anketa");
 		return ispunjavanjeAnkete(req, a);
 	}

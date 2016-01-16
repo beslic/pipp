@@ -41,7 +41,8 @@ public class Util {
 			+ "/ankete/[0-9]+-[A-Za-z0-9]+/";
 	public final static String PRAVA_REGISTRIRANOG_KORISNIKA = "/korisnici/|" + "/korisnici/[A-Za-z0-9]+/|"
 			+ "/korisnici/[A-Za-z0-9]+/postavke/|" + "/korisnici/[A-Za-z0-9]+/ankete/|"
-			+ "/korisnici/[A-Za-z0-9]+/ankete/[0-9]+-[A-Za-z0-9]+/|" + "/korisnici/[A-Za-z0-9]+/ankete/nova/|"
+			+ "/korisnici/[A-Za-z0-9]+/ankete/[0-9]+-[A-Za-z0-9]+/|"
+			+ "/korisnici/[A-Za-z0-9]+/ankete/[0-9]+-[A-Za-z0-9]+/izmijeni/|" + "/korisnici/[A-Za-z0-9]+/ankete/nova/|"
 			+ "/android/|" + "/anketari/|" + "/ankete/|" + "/ankete/json/|" + "/ankete/[0-9]+-[A-Za-z0-9]+|"
 			+ "/ankete/[0-9]+-/[A-Za-z0-9]+/json/";
 
@@ -311,7 +312,7 @@ public class Util {
 		Anketa a = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0]));
 		if (a != null) {
 			if (a.isJePrivatna()) {
-				Korisnik k = (Korisnik) req.getSession().getAttribute("Korisnik");
+				Korisnik k = (Korisnik) req.getSession().getAttribute("korisnik");
 				if (k == null) {
 					requestContext.abortWith(Util.r404());
 				}
