@@ -14,6 +14,13 @@
 		    
 		    <ul class="nav navbar-nav navbar-left">
 		    	<li><a href="/sza-webapp/ankete/">Ankete</a></li>
+		    	<c:if test="${sessionScope.korisnik != null}">
+		    	    <li><a href="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/">Moje ankete</a></li>
+		    	</c:if>
+		    	<c:if test="${sessionScope.korisnik != null && sessionScope.korisnik.razinaPrava == 1}">
+                    <li><a href="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/#nova-anketa">Nova anketa</a></li>
+                    <li><a href="/sza-webapp/anketari/">Anketari</a></li>
+                </c:if>
 		    </ul>
 		      
 			<ul class="nav navbar-nav navbar-right">

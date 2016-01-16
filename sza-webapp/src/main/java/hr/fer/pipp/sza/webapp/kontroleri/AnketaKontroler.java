@@ -64,7 +64,8 @@ public class AnketaKontroler {
 		if (!javne.isEmpty()) {
 			req.setAttribute("javneAnkete", javne);
 		}
-		return Response.ok(new Viewable("/ankete")).build();
+		// return Response.ok(new Viewable("/ankete")).build();
+		return prikaziAnkete(req, javne, "Javne ankete", "Nema dostupnih javnih anketa", "");
 	}
 
 	@POST
@@ -209,6 +210,15 @@ public class AnketaKontroler {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0]));
 		return gson.toJson(anketa);
+	}
+
+	public static Response prikaziAnkete(@Context HttpServletRequest req, List<Anketa> ankete, String naslov,
+			String nemaAnketa, String url) {
+		req.setAttribute("naslov", naslov);
+		req.setAttribute("nema-anketa", nemaAnketa);
+		req.setAttribute("url", url);
+		req.setAttribute("ankete", ankete);
+		return Response.ok(new Viewable("/prikazAnketa")).build();
 	}
 
 }

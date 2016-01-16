@@ -5,28 +5,36 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
+
 <html>
 
-<head>
-    <title>Ankete</title>
-    <c:import url="/html/head.html" />
-    <link rel="stylesheet" href="/sza-webapp/css/datepicker.css">
-    <link rel="stylesheet" href="/sza-webapp/css/datepicker3.css">
-    <script type='text/javascript' src='/sza-webapp/js/bootstrap-datepicker.js'></script>
-</head>
+    <head>
+	    <title>Ankete</title>
+	    <c:import url="/html/head.html" />
+    </head>
 
-<body>
+    <body>
+        
+        <jsp:include page="header.jsp" />
+        
+        <div class="container">
+            <div class="col-md-10">
+                <h2>${naslov}</h2>
+                <hr>
+            </div>
+            <c:if test="${ankete == null}">
+                <h3>${nema-anketa}</h3>
+            </c:if>
+            <div class="col-md-10">
+	            <c:forEach var="anketa" items="${ankete}">
+	                <c:set var="uri" value="${anketa.idAnketa}-${anketa.nazivAnketa}"/>
+	                <div class="col-md-6 col-md-offset-1">
+	                   <h3><a href="/sza-webapp/${url}ankete/${fn:replace(uri, ' ', '-')}/">${anketa.nazivAnketa}</a></h3>
+	                </div>
+	            </c:forEach>
+	        </div>
+        </div>
+        
+    </body>
 
-    <div class="container">
-	    <c:if test="${ankete == null}">
-	        <h3>Nemate još nijednu anketu</h3>
-	    </c:if>
-	    <c:forEach var="anketa" items="${ankete}">
-	        <c:set var="uri" value="${anketa.nazivAnketa}"/>
-	        <h3><a href="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/${fn:replace(uri, ' ', '-')}/">${anketa.nazivAnketa}</a></h3>
-	    </c:forEach>
-    </div>
-    
-    
-</body>
 </html>

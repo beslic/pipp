@@ -1,15 +1,14 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
-import java.io.IOException;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -106,8 +105,9 @@ public class KorisnikKontroler {
 	@GET
 	@Path("/ankete")
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziAnketeKorisnika(@Context HttpServletRequest req) throws ServletException, IOException {
-		return new AnketaKontroler().prikaziAnkete(req);
+	public Response prikaziAnketeKorisnika(@Context HttpServletRequest req, @PathParam("korisnickoime") String name) {
+		return AnketaKontroler.prikaziAnkete(req, ((Korisnik) req.getSession().getAttribute("korisnik")).getAnketa(),
+				"Moje ankete", "Niste napravili niti jednu anketu", "korisnici/" + name + "/");
 	}
 
 	@POST
