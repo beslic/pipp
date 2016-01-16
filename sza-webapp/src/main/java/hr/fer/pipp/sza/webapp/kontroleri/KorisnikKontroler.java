@@ -1,5 +1,6 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
+import java.net.URI;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,7 +83,8 @@ public class KorisnikKontroler {
 				korisnik.setEmail(email);
 
 				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
-				return prikaziKorisnika(req, korisnik.getKorisnickoIme());
+				return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
+
 			} else {
 				req.setAttribute("greska", greska);
 				return prikaziPostavkeKorisnika(req);
@@ -97,7 +99,8 @@ public class KorisnikKontroler {
 				korisnik.setLozinka(novaLozinkaPotvrda);
 
 				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
-				return prikaziKorisnika(req, korisnik.getKorisnickoIme());
+				return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
+
 			} else {
 				req.setAttribute("greska", greska);
 				return prikaziPostavkeKorisnika(req);
