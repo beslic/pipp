@@ -18,24 +18,24 @@
 		<hr>
 		<br>
 
-
-		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" class="active"><a href="#home"
-				aria-controls="home" role="tab" data-toggle="tab">Osobni podatci</a></li>
-			<li role="presentation"><a href="#profile"
-				aria-controls="profile" role="tab" data-toggle="tab">Izmjena
+<div class="tabbable">
+		<ul class="nav nav-tabs" role="tablist" id="tab">
+			<li role="presentation" class="active"><a href="#tab1"
+				aria-controls="tab1" role="tab" data-toggle="tab">Osobni podatci</a></li>
+			<li role="presentation"><a href="#tab2"
+				aria-controls="tab2" role="tab" data-toggle="tab">Izmjena
 					lozinke</a></li>
 
 		</ul>
 
 		<!-- Tab panes -->
 		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="home">
+			<div role="tabpanel" class="tab-pane active" id="tab1">
 
 				<form class="form-horizontal" method="post"
 					action="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/postavke/">
 
-
+					<hr>
 					<!-- First Name input-->
 					<div class="form-group">
 						<label id="usernamelabel" class="col-md-4 control-label"
@@ -96,95 +96,130 @@
 
 						<button id="postavke" name="buttonPostavke" value="postavke"
 							class="btn btn-success">Spremi</button>
+					</div>
 				</form>
+
+
+
+			</div>
+			<div role="tabpanel" class="tab-pane" id="tab2">
+
+
+				<form class="form-horizontal" method="post"
+					action="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/postavke/">
+
+					<hr>
+					<!-- Old Password input-->
+					<div class="form-group">
+						<label id="staraLozinkalabel" class="col-md-4 control-label"
+							for="confirmpasswordinput">Stara lozinka</label>
+						<div
+							class="col-md-4 <c:if test="${greska.staraLozinka != null}">has-error has-feedback</c:if>">
+							<input id="staralozinka" name="staralozinka" type="password"
+								class="form-control input-md"
+								placeholder="Unesite staru lozinku">
+							<c:if test="${greska.staralozinka != null}">
+								<span class="glyphicon glyphicon-remove form-control-feedback"
+									aria-hidden="true"></span>
+								<label class="control-label" for="confirmpasswordinput">${greska.staralozinka}</label>
+								<span id="errorstatus" class="sr-only">(error)</span>
+							</c:if>
+						</div>
+					</div>
+
+
+
+					<!-- Password input-->
+					<div class="form-group">
+						<label id="passwordlabel" class="col-md-4 control-label"
+							for="passwordinput">Nova lozinka</label>
+						<div
+							class="col-md-4 <c:if test="${greska.novalozinka != null}">has-error has-feedback</c:if>">
+							<input id="passwordinput" name="novalozinka" type="password"
+								class="form-control input-md" placeholder="Unesite novu lozinku"
+								aria-describedby="errorstatus">
+							<c:if test="${greska.novalozinka != null}">
+								<span class="glyphicon glyphicon-remove form-control-feedback"
+									aria-hidden="true"></span>
+								<label class="control-label" for="passwordinput">${greska.novalozinka}</label>
+								<span id="errorstatus" class="sr-only">(error)</span>
+								<script type="text/javascript">
+								$(document).ready(function(){
+							        activaTab('tab2');
+							    });
+								function activaTab(tab){
+							        $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+							    };
+								</script>
+								
+							</c:if>
+						</div>
+					</div>
+					<!-- Confirm Password input-->
+					<div class="form-group">
+						<label id="confirmpasswordlabel" class="col-md-4 control-label"
+							for="confirmpasswordinput">Potvrdite lozinku</label>
+						<div
+							class="col-md-4 <c:if test="${greska.novalozinkapotvrda != null}">has-error has-feedback</c:if>">
+							<input id="confirmpasswordinput" name="novalozinkapotvrda"
+								type="password" class="form-control input-md"
+								placeholder="Potvrdite novu lozinku">
+							<c:if test="${greska.novalozinkapotvrda != null}">
+								<span class="glyphicon glyphicon-remove form-control-feedback"
+									aria-hidden="true"></span>
+								<label class="control-label" for="confirmpasswordinput">${greska.novalozinkapotvrda}</label>
+								<span id="errorstatus" class="sr-only">(error)</span>
+							</c:if>
+						</div>
+					</div>
+
+
+					<div class="col-md-4">
+
+						<button id="postavkelozinka" name="buttonPostavke"
+							value="postavkelozinka" class="btn btn-success">Spremi
+							lozinku</button>
+					</div>
+				</form>
+
+
+
 			</div>
 
-
-
 		</div>
-		<div role="tabpanel" class="tab-pane" id="profile">
+		
+		
+		<script>
+		
+		
+		
+	    $('#tab a').click(function (e) {
+	        e.preventDefault();
+	        $(this).tab('show');
+	    });
 
+	    // store the currently selected tab in the hash value
+	    $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+	        var id = $(e.target).attr("href").substr(1);
+	        window.location.hash = id;
+	    });
 
-			<form class="form-horizontal" method="post"
-				action="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/postavke/">
-
-				<!-- Old Password input-->
-				<div class="form-group">
-					<label id="staraLozinkalabel" class="col-md-4 control-label"
-						for="confirmpasswordinput">Stara lozinka</label>
-					<div
-						class="col-md-4 <c:if test="${greska.staraLozinka != null}">has-error has-feedback</c:if>">
-						<input id="staralozinka" name="staralozinka"
-							type="password" class="form-control input-md"
-							placeholder="Unesite staru lozinku">
-						<c:if test="${greska.staralozinka != null}">
-							<span class="glyphicon glyphicon-remove form-control-feedback"
-								aria-hidden="true"></span>
-							<label class="control-label" for="confirmpasswordinput">${greska.staralozinka}</label>
-							<span id="errorstatus" class="sr-only">(error)</span>
-						</c:if>
-					</div>
-				</div>
-
-
-
-				<!-- Password input-->
-				<div class="form-group">
-					<label id="passwordlabel" class="col-md-4 control-label"
-						for="passwordinput">Nova lozinka</label>
-					<div
-						class="col-md-4 <c:if test="${greska.novalozinka != null}">has-error has-feedback</c:if>">
-						<input id="passwordinput" name="novalozinka" type="password"
-							class="form-control input-md" placeholder="Unesite novu lozinku"
-							aria-describedby="errorstatus">
-						<c:if
-							test="${greska.novalozinka != null}">
-							<span class="glyphicon glyphicon-remove form-control-feedback"
-								aria-hidden="true"></span>
-							<label class="control-label" for="passwordinput">${greska.novalozinka}${greska.novalozinkapotvrda}</label>
-							<span id="errorstatus" class="sr-only">(error)</span>
-						</c:if>
-					</div>
-				</div>
-				<!-- Confirm Password input-->
-				<div class="form-group">
-					<label id="confirmpasswordlabel" class="col-md-4 control-label"
-						for="confirmpasswordinput">Potvrdite lozinku</label>
-					<div
-						class="col-md-4 <c:if test="${greska.novalozinkapotvrda != null}">has-error has-feedback</c:if>">
-						<input id="confirmpasswordinput" name="novalozinkapotvrda"
-							type="password" class="form-control input-md"
-							placeholder="Potvrdite novu lozinku">
-						<c:if test="${greska.novalozinkapotvrda != null}">
-							<span class="glyphicon glyphicon-remove form-control-feedback"
-								aria-hidden="true"></span>
-							<label class="control-label" for="confirmpasswordinput">${greska.novalozinkapotvrda}</label>
-							<span id="errorstatus" class="sr-only">(error)</span>
-						</c:if>
-					</div>
-				</div>
-
-
-				<div class="col-md-4">
-
-					<button id="postavkelozinka" name="buttonPostavke"
-						value="postavkelozinka" class="btn btn-success">Spremi lozinku</button>
-			</form>
-		</div>
-
-
-
-	</div>
-
-	</div>
-
+	    // on load of the page: switch to the currently selected tab
+	    var hash = window.location.hash;
+	    $('#tab a[href="' + hash + '"]').tab('show');
+	</script>
+		
+		
+		
+		
+		
+		
+		
+		
 	</div>
 
 
 
-
-
-	</div>
 
 
 
