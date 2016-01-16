@@ -80,16 +80,20 @@ public class AnketaKontroler {
 		// se radi u filteru i onda samo salje preko requesta) i isto ovo treba
 		// napraviti i kod korisnika
 		Anketa a = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0]));
-		if (a.isJePrivatna()) {
-			Korisnik k = (Korisnik) req.getSession().getAttribute("Korisnik");
-			if (k == null) {
-				return Util.r404();
+		if (a != null ) {
+			if (a.isJePrivatna()) {
+				Korisnik k = (Korisnik) req.getSession().getAttribute("Korisnik");
+				if (k == null) {
+					return Util.r404();
+				}
+				if (!k.equals(a.getVlasnik())) {
+					return Util.r403();
+				}
 			}
-			if (!k.equals(a.getVlasnik())) {
-				return Util.r403();
-			}
+			return ispunjavanjeAnkete(req, a);
+		} else {
+			return Util.r404();
 		}
-		return ispunjavanjeAnkete(req, a);
 	}
 
 	@GET
