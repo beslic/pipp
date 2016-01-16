@@ -142,14 +142,13 @@ public class Util {
 			greske.put("aktivnaDo", "Format nije dobro zadan - dd/mm/gggg");
 		}
 
-		if (greske.isEmpty()) {
+		if (!(greske.containsKey("aktivnaDo") || greske.containsKey("aktivnaOd"))) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
 			LocalDate datumOd = LocalDate.parse(aktivnaOd, formatter);
 			LocalDate datumDo = LocalDate.parse(aktivnaDo, formatter);
 
 			if (datumOd.isAfter(datumDo)) {
-				greske.put("aktivnaOdKron", "Datum nije kronološki dobro zadan");
-				greske.put("aktivnaDoKron", "Datum nije kronološki dobro zadan");
+				greske.put("kron", "Datum nije kronološki dobro zadan");
 			}
 		}
 

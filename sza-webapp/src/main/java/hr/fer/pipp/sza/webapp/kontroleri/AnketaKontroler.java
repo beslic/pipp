@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -26,7 +27,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
@@ -49,19 +49,20 @@ public class AnketaKontroler {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziAnkete(@Context HttpServletRequest req) throws ServletException, IOException {
-		List<Anketa> javne = DAOAnketa.getDAO().dohvatiJavneAnkete();
-		if (!javne.isEmpty()) {
-			req.setAttribute("javneAnkete", javne);
-		}
 		Korisnik k = (Korisnik) req.getSession().getAttribute("korisnik");
+		List<Anketa> privatne = null;
 		if (k != null) {
-			List<Anketa> privatne = DAOAnketa.getDAO().dohvatiPrivatneAnkete(k);
+			privatne = k.getAnketa();
 			if (!privatne.isEmpty()) {
 				req.setAttribute("privatneAnkete", privatne);
 			}
-			if (req.getSession().getAttribute("tab") == null) {
-				req.getSession().setAttribute("tab", "moje-ankete");
+			if (req.getAttribute("tab") == null) {
+				req.setAttribute("tab", "moje-ankete");
 			}
+		}
+		List<Anketa> javne = DAOAnketa.getDAO().dohvatiJavneAnkete();
+		if (!javne.isEmpty()) {
+			req.setAttribute("javneAnkete", javne);
 		}
 		return Response.ok(new Viewable("/ankete")).build();
 	}
@@ -80,12 +81,14 @@ public class AnketaKontroler {
 
 		Map<String, String> greska = Util.provjeriFormuAnkete(nazivAnketa, opisAnketa, aktivnaOd, aktivnaDo);
 
-		Set<String> pitanjaId = new HashSet<>();
-		Set<String> odgovoriId = new HashSet<>();
+		Set<String> pitanjaId = new LinkedHashSet<>();
+		Set<String> odgovoriId = new LinkedHashSet<>();
 
 		for (String s : form.keySet()) {
+			if (s.matches("pitanje[0-9]+")) {
+				pitanjaId.add(s);
+			}
 			if (s.matches("pitanje[0-9]+-odgovor[0-9]+")) {
-				pitanjaId.add(s.split("-")[0]);
 				odgovoriId.add(s);
 			}
 		}
@@ -139,12 +142,10 @@ public class AnketaKontroler {
 			anketa.setPitanja(pitanja);
 
 			DAOAnketa.getDAO().spremiAnketu(anketa);
-			req.getSession().setAttribute("tab", "moje-ankete");
-			return Response.seeOther(UriBuilder.fromUri(uri.getRequestUri().toString()).build())
-					.status(Status.SEE_OTHER).build();
+			return Response.seeOther(UriBuilder.fromUri(uri.getRequestUri().toString()).build()).build();
 
 		} else {
-			Map<String, String> forma = new HashMap<>();
+			Map<String, Object> forma = new HashMap<>();
 			forma.put("nazivAnketa", nazivAnketa);
 			forma.put("opisAnketa", opisAnketa);
 			forma.put("aktivnaOd", aktivnaOd);
@@ -153,17 +154,23 @@ public class AnketaKontroler {
 				forma.put("privatna", "1");
 			}
 
-			// TODO
-			// Map<String, List<String>> fPitanja = new HashMap<>();
-			// for (String pitanje : pitanjaId) {
-			// fPitanja.put(pitanje, form.getFirst(pitanje));
-			// for (String odgovor: odgovoriId) {
-			// forma.put(odgovor, form.getFirst(odgovor));
-			// }
-			// }
+			Map<String, List<String>> fPitanja = new LinkedHashMap<>();
+			for (String pitanje : pitanjaId) {
+				List<String> odg = new ArrayList<>();
+				for (String odgovor : odgovoriId) {
+					if (odgovor.split("-")[0].equals(pitanje)) {
+						odg.add(form.getFirst(odgovor));
+					}
+				}
+				fPitanja.put(pitanje, odg);
+				forma.put(pitanje, form.getFirst(pitanje));
+			}
+			if (!fPitanja.isEmpty()) {
+				forma.put("pitanja", fPitanja);
+			}
 			req.setAttribute("forma", forma);
 			req.setAttribute("greska", greska);
-			req.getSession().setAttribute("tab", "nova-anketa");
+			req.setAttribute("tab", "nova-anketa");
 
 			return prikaziAnkete(req);
 		}

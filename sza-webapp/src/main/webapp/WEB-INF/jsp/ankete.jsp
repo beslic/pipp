@@ -60,7 +60,7 @@
   </div>
 </div>
 <script type="text/javascript">
-  $('#tabovi a[href="#${sessionScope.tab}"]').tab('show')
+  $('#tabovi a[href="#${tab}"]').tab('show')
 </script>
 
 </body>

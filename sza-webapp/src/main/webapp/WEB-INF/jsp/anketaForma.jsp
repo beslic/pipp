@@ -70,7 +70,7 @@
 			<div class="form-group">
 				<label class="col-md-3 control-label">Od</label>
 				<div
-					class="col-md-3 <c:if test="${greska.aktivnaOd != null || greska.aktivnaOdKron != null}">has-error has-feedback</c:if>">
+					class="col-md-3 <c:if test="${greska.aktivnaOd != null || greska.kron != null}">has-error has-feedback</c:if>">
 					<div class="input-group input-append date" id="dateRangePickerFrom">
 						<input id="from" type="text" class="form-control input-md-4"
 							name="aktivnaOd" value="${forma.aktivnaOd}" /> <span
@@ -87,22 +87,52 @@
 			<div class="form-group">
 				<label class="col-md-3 control-label">Do</label>
 				<div
-					class="col-md-3 <c:if test="${greska.aktivnaDo != null || greska.aktivnaDoKron != null}">has-error has-feedback</c:if>">
+					class="col-md-3 <c:if test="${greska.aktivnaDo != null || greska.kron != null}">has-error has-feedback</c:if>">
 					<div class="input-group input-append date" id="dateRangePickerTo">
-						<input id="to" type="text" class="form-control input-md"
-							name="aktivnaDo" value="${forma.aktivnaDo}" /> <span
-							class="input-group-addon add-on"><span
-							class="glyphicon glyphicon-calendar"></span></span>
+						<input id="to" type="text" class="form-control input-md" name="aktivnaDo" value="${forma.aktivnaDo}" /> <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 					</div>
-					<c:if test="${greska.aktivnaDo != null || greska.aktivnaDoKron != null}">
-						<label class="control-label" for="to">${greska.aktivnaDo}${greska.aktivnaDoKron}</label>
+					<c:if test="${greska.aktivnaDo != null || greska.kron != null}">
+						<label class="control-label" for="to">${greska.aktivnaDo}${greska.kron}</label>
 					</c:if>
 				</div>
 			</div>
-			
+
 		   <div id="pitanja">
-           </div>
-			
+		    <c:if test="${forma.pitanja != null}">
+          <c:forEach var="entry" items="${forma.pitanja}" varStatus="p">
+          <c:set var="pid" value="${p.index + 1}" />
+		      <div id="pitanje${pid}"><div class="form-group"><div class="col-md-6 col-md-offset-3"><hr><b>Pitanje</b><br></div></div>
+            <div class="form-group div-odgovor">
+              <div class="col-md-6 col-md-offset-3">
+                <input type="text" id="pitanje${pid}" name="pitanje${pid}" class="form-control input-md" placeholder="Tekst pitanja" value="${forma[entry.key]}">
+              </div>
+              <div class="col-md-3 div-rm-btn">
+                <button type="button" class="btn btn-danger" onclick="obrisiPitanje(${pid})" data-toggle="tooltip" data-placement="top" title="Obriši pitanje"><span class="glyphicon glyphicon-minus"></span></button>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-6 col-md-offset-3">
+                <b>Odgovori</b><span><button type="button" class="btn btn-success pull-right" onclick="dodajOdgovor(${pid})" data-toggle="tooltip" data-placement="top" title="Dodaj novi odgovor"><span class="glyphicon glyphicon-plus"></span></button></span>
+              </div>
+            </div>
+            <div id="odgovori${pid}">
+              <c:forEach var="odg" items="${entry.value}" varStatus="o">
+              <c:set var="oid" value="${o.index + 1}" />
+                <div id="pitanje${pid}-odgovor${oid}" name="pitanje${pid}-odgovor${oid}" class="form-group div-odgovor">
+                    <div class="col-md-4 col-md-offset-4">
+                        <input type="text" name="pitanje${pid}-odgovor${oid}" name="pitanje${pid}-odgovor${oid}" class="form-control input-md" placeholder="Tekst odgovora" value="${odg}">
+                    </div>
+                    <div class="col-md-1 div-rm-btn">
+                        <button type="button" class="btn btn-danger" onclick="obrisiOdgovor(${pid}, ${oid})" data-toggle="tooltip" data-placement="top" title="Obriši odgovor"><span class="glyphicon glyphicon-minus"></span></button>
+                    </div>
+                </div>
+              </c:forEach>
+            </div>
+          </div>
+        </c:forEach>
+		    </c:if>
+      </div>
+
 			<div class="form-group">
                 <label class="col-md-3 control-label"></label>
                 <div class="col-md-6">
@@ -110,7 +140,7 @@
                     <button type="button" class="btn btn-success pull-right" onclick="dodajPitanje()" data-toggle="tooltip" data-placement="top" title="Dodaj novo pitanje">Dodaj pitanje</button>
                 </div>
             </div>
-            
+
 			<!-- Buttons -->
 			<div class="form-group">
 				<div class="col-md-10">
@@ -137,7 +167,7 @@
              // Revalidate the date field
              $('#dateRangeForm').formValidation('revalidateField', 'date');
      });
-     
+
     $('#dateRangePickerTo')
         .datepicker({
             format: 'dd/mm/yyyy',
@@ -149,7 +179,7 @@
             $('#dateRangeForm').formValidation('revalidateField', 'date');
      });
 });
-    
+
     function dodajPitanje() {
 		console.log("Dodajem pitanje");
 		var divPitanja = $("#pitanja");
@@ -188,20 +218,19 @@
                     '</div>' +
                 '</div>');
 	}
-	
+
 	function obrisiPitanje(pitanje) {
 		console.log("Brisem pitanje " + pitanje);
 		$("#pitanje" + pitanje).remove();
 	}
-	   
+
     function obrisiOdgovor(pitanje, odgovor) {
         console.log("Brisem odgovor " + odgovor + " na pitanje " + pitanje);
         $("#pitanje" + pitanje + "-odgovor" + odgovor).remove();
     }
-	
+
 	function spremi()
 	{
 		// spakiraj sve u neki object i onda post
 	}
 </script>
-
