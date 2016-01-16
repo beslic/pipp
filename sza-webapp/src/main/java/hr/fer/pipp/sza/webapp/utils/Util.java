@@ -2,18 +2,30 @@ package hr.fer.pipp.sza.webapp.utils;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.ws.rs.core.MultivaluedMap;
 
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.modeli.Odgovor;
+import hr.fer.pipp.sza.webapp.modeli.Pitanje;
 
 public class Util {
 
@@ -121,10 +133,25 @@ public class Util {
 		return greska;
 	}
 
-	public static Map<String, String> provjeriFormuAnkete(String nazivAnketa, String opisAnketa, String aktivnaOd,
-			String aktivnaDo) {
+	public static Map<String, String> provjeriFormuAnkete(Anketa anketa, MultivaluedMap<String, String> form,
+			Set<String> pitanjaId, Set<String> odgovoriId, Map<String, Object> forma) throws ParseException {
 
 		Map<String, String> greske = new HashMap<>();
+
+		String nazivAnketa = form.getFirst("nazivAnketa");
+		String opisAnketa = form.getFirst("opisAnketa");
+		String aktivnaOd = form.getFirst("aktivnaOd");
+		String aktivnaDo = form.getFirst("aktivnaDo");
+		String privatna = form.getFirst("privatna");
+
+		for (String s : form.keySet()) {
+			if (s.matches("pitanje[0-9]+")) {
+				pitanjaId.add(s);
+			}
+			if (s.matches("pitanje[0-9]+-odgovor[0-9]+")) {
+				odgovoriId.add(s);
+			}
+		}
 
 		if (nazivAnketa == null || nazivAnketa.isEmpty()) {
 			greske.put("nazivAnketa", "Nije zadan ispravan naziv ankete");
@@ -152,7 +179,77 @@ public class Util {
 			}
 		}
 
+		if (greske.isEmpty()) {
+			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+
+			int brojPitanja = pitanjaId.size();
+
+			List<Pitanje> pitanja = new ArrayList<>();
+			for (String p : pitanjaId) {
+				String pit = form.getFirst(p);
+				if (pit == null || pit.length() == 0) {
+					continue;
+				}
+				Pitanje pitanje = new Pitanje();
+				List<Odgovor> odgovori = new ArrayList<>();
+				for (String o : odgovoriId) {
+					String odg = form.getFirst(o);
+					if (odg == null || odg.length() == 0) {
+						continue;
+					}
+					Odgovor odgovor = new Odgovor();
+					odgovor.setRbrOdgovor(Integer.parseInt(o.split("-")[1].replaceFirst("odgovor", "")));
+					odgovor.setTextOdgovor(odg);
+					odgovor.setPitanje(pitanje);
+					odgovori.add(odgovor);
+				}
+				Collections.sort(odgovori, (o1, o2) -> Integer.compare(o1.getRbrOdgovor(), o2.getRbrOdgovor()));
+				pitanje.setAnketa(anketa);
+				pitanje.setOdgovor(odgovori);
+				pitanje.setRbrPitanje(Integer.parseInt(p.replaceFirst("pitanje", "")));
+				pitanje.setTextPitanje(pit);
+				pitanja.add(pitanje);
+				Collections.sort(pitanja, (p1, p2) -> Integer.compare(p1.getRbrPitanje(), p2.getRbrPitanje()));
+			}
+			Date d = new Date();
+			anketa.setNazivAnketa(nazivAnketa);
+			anketa.setOpisAnketa(opisAnketa);
+			anketa.setVrijemeIzrada(d);
+			anketa.setAktivnaOd(format.parse(aktivnaOd));
+			anketa.setAktivnaDo(format.parse(aktivnaDo));
+			anketa.setAktivna(Util.provjeraAktivnosti(anketa, d));
+			anketa.setBrojPitanja(brojPitanja);
+			anketa.setJePrivatna(("privatna".equals(privatna)) ? true : false);
+			anketa.setPitanja(pitanja);
+
+		} else {
+
+			forma.put("nazivAnketa", nazivAnketa);
+			forma.put("opisAnketa", opisAnketa);
+			forma.put("aktivnaOd", aktivnaOd);
+			forma.put("aktivnaDo", aktivnaDo);
+			if (privatna != null) {
+				forma.put("privatna", "1");
+			}
+
+			Map<String, List<String>> fPitanja = new LinkedHashMap<>();
+			for (String pitanje : pitanjaId) {
+				List<String> odg = new ArrayList<>();
+				for (String odgovor : odgovoriId) {
+					if (odgovor.split("-")[0].equals(pitanje)) {
+						odg.add(form.getFirst(odgovor));
+					}
+				}
+				fPitanja.put(pitanje, odg);
+				forma.put(pitanje, form.getFirst(pitanje));
+			}
+			if (!fPitanja.isEmpty()) {
+				forma.put("pitanja", fPitanja);
+			}
+		}
+
 		return greske;
+
 	}
 
 	public static Map<String, String> provjeriFormuPostavkiKorisnika(String ime, String prezime, String email) {

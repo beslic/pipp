@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.glassfish.jersey.server.mvc.Viewable;
@@ -20,6 +21,7 @@ import org.glassfish.jersey.server.mvc.Viewable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 import hr.fer.pipp.sza.webapp.utils.Util;
@@ -29,7 +31,10 @@ public class KorisnikKontroler {
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziKorisnika(@Context HttpServletRequest req, @Context UriInfo uri) {
+	public Response prikaziKorisnika(@Context HttpServletRequest req, @PathParam("korisnickoime") String ime) {
+		if (DAOKorisnik.getDAO().dohvatiKorisnika(ime) == null) {
+			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
+		}
 		return Response.ok(new Viewable("/korisnik")).build();
 	}
 
@@ -77,7 +82,7 @@ public class KorisnikKontroler {
 				korisnik.setEmail(email);
 
 				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
-				return prikaziKorisnika(req, uri);
+				return prikaziKorisnika(req, korisnik.getKorisnickoIme());
 			} else {
 				req.setAttribute("greska", greska);
 				return prikaziPostavkeKorisnika(req);
@@ -92,7 +97,7 @@ public class KorisnikKontroler {
 				korisnik.setLozinka(novaLozinkaPotvrda);
 
 				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
-				return prikaziKorisnika(req, uri);
+				return prikaziKorisnika(req, korisnik.getKorisnickoIme());
 			} else {
 				req.setAttribute("greska", greska);
 				return prikaziPostavkeKorisnika(req);
@@ -110,17 +115,42 @@ public class KorisnikKontroler {
 				"Moje ankete", "Niste napravili niti jednu anketu", "korisnici/" + name + "/");
 	}
 
+	@GET
+	@Path("ankete/json")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response prikaziAnketeJSON(@Context HttpServletRequest req) {
+		return AnketaKontroler.prikaziAnketeJSON(((Korisnik) req.getSession().getAttribute("korisnik")).getAnketa());
+	}
+
+	@GET
+	@Path("ankete/{id-naziv}")
+	@Produces(MediaType.TEXT_HTML)
+	public static Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("id-naziv") String idNazivAnketa) {
+		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
+			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
+		}
+		return AnketaKontroler.ispunjavanjeAnkete(req,
+				DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0])));
+	}
+
+	@GET
+	@Path("ankete/{id-naziv}/json")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response prikaziAnketuKaoJSON(@Context HttpServletRequest req, @PathParam("id-naziv") String idNaziv) {
+		return AnketaKontroler
+				.prikaziAnketuJSON(DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0])));
+	}
+
 	@POST
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response odjaviKorisnika(@Context HttpServletRequest req, @Context UriInfo uri,
 			@FormParam("button") String button) {
-
 		if ("signout".equals(button)) {
 			req.getSession().invalidate();
 			return Response.seeOther(uri.getBaseUri()).build();
 		}
-		return prikaziKorisnika(req, uri);
+		return prikaziKorisnika(req, ((Korisnik) req.getSession().getAttribute("korisnik")).getKorisnickoIme());
 	}
 
 }
