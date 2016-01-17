@@ -46,7 +46,7 @@
 							<input id="firstnameinput" name="ime" type="text"
 								class="form-control input-md"
 								value="${sessionScope.korisnik.ime}"
-								aria-describedby="errorstatus" autofocus="true">
+								aria-describedby="errorstatus" autofocus>
 							<c:if test="${greska.ime != null}">
 								<span class="glyphicon glyphicon-remove form-control-feedback"
 									aria-hidden="true"></span>

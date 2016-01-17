@@ -2,6 +2,7 @@
     pageEncoding="UTF-8" session="true"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -21,7 +22,7 @@
         <c:if test="${anketa != null}">
             <c:set var="uri" value="${anketa.idAnketa}-${anketa.nazivAnketa}/"/>
         </c:if>
-        <form class="form-horizontal" action="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/${uri}${akcija}/" method="post">
+        <form class="form-horizontal" action="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/$${fn:replace(uri, ' ', '-')}${akcija}/" method="post">
         <!-- Form Name -->
         <div class="col-md-10">
           <h2>${naslov}

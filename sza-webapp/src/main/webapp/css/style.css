@@ -26,6 +26,14 @@ body{
 	margin-bottom: 1px;
 }
 
+.odg {
+	cursor: pointer;
+}
+
+.odg-line:hover {
+	background-color: #f8f8f8;
+}
+
 .carousel,
 .item,
 .active {
