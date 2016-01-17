@@ -38,6 +38,7 @@ public class AnketaKontroler {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziAnkete(@Context HttpServletRequest req) {
+		Util.setAktivno(req, "aktivAnkete");
 		return prikaziAnkete(req, DAOAnketa.getDAO().dohvatiJavneAnkete(), "Javne ankete",
 				"Nema dostupnih javnih anketa", "");
 	}
@@ -78,9 +79,8 @@ public class AnketaKontroler {
 		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
 			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
 		}
-
-		Anketa a = (Anketa) req.getAttribute("anketa");
-		return ispunjavanjeAnkete(req, a);
+		Util.setAktivno(req, "aktivAnkete");
+		return ispunjavanjeAnkete(req, (Anketa) req.getAttribute("anketa"));
 	}
 
 	@GET
@@ -105,6 +105,7 @@ public class AnketaKontroler {
 	}
 
 	public static Response izmijeniAnketu(HttpServletRequest req, Anketa anketa) {
+		Util.setAktivno(req, "aktivMoje");
 		req.setAttribute("anketa", anketa);
 		req.setAttribute("aktivnaDoForma", Util.formatDatum(anketa.getAktivnaDo()));
 		req.setAttribute("aktivnaOdForma", Util.formatDatum(anketa.getAktivnaOd()));

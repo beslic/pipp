@@ -354,4 +354,8 @@ public class Util {
 		return Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build();
 	}
 
+	public static void setAktivno(HttpServletRequest req, String naziv) {
+		req.setAttribute(naziv, "class=\"active\"");
+	}
+
 }

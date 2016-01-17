@@ -15,7 +15,7 @@
 		    <ul class="nav navbar-nav navbar-left">
 		    	<li ${aktivAnkete}><a href="/sza-webapp/ankete/">Ankete</a></li>
 		    	<c:if test="${sessionScope.korisnik != null}">
-		    	    <li ${aktivMoj}><a href="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/">Moje ankete</a></li>
+		    	    <li ${aktivMoje}><a href="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/">Moje ankete</a></li>
 		    	</c:if>
 		    	<c:if test="${sessionScope.korisnik != null && sessionScope.korisnik.razinaPrava == 1}">
                     <li ${aktivNova}><a href="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/nova/">Nova anketa</a></li>

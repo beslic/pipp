@@ -36,6 +36,7 @@ public class KorisnikKontroler {
 		if (DAOKorisnik.getDAO().dohvatiKorisnika(ime) == null) {
 			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
 		}
+		Util.setAktivno(req, "aktivProfil");
 		return Response.ok(new Viewable("/korisnik")).build();
 	}
 
@@ -51,6 +52,7 @@ public class KorisnikKontroler {
 	@Produces(MediaType.TEXT_HTML)
 	@Path("/postavke")
 	public Response prikaziPostavkeKorisnika(@Context HttpServletRequest req) {
+		Util.setAktivno(req, "aktivProfil");
 		return Response.ok(new Viewable("/postavkeKorisnika")).build();
 	}
 
@@ -115,6 +117,7 @@ public class KorisnikKontroler {
 	@Produces(MediaType.TEXT_HTML)
 	public static Response prikaziAnketeKorisnika(@Context HttpServletRequest req,
 			@PathParam("korisnickoime") String name) {
+		Util.setAktivno(req, "aktivMoje");
 		return AnketaKontroler.prikaziAnkete(req, ((Korisnik) req.getSession().getAttribute("korisnik")).getAnketa(),
 				"Moje ankete", "Nemate napravljenih anketa", "korisnici/" + name + "/");
 	}
@@ -130,6 +133,7 @@ public class KorisnikKontroler {
 	@Path("ankete/nova")
 	@Produces(MediaType.TEXT_HTML)
 	public static Response prikaziFormuZaNovuAnketu(@Context HttpServletRequest req) {
+		Util.setAktivno(req, "aktivNova");
 		return AnketaKontroler.prikaziFormuAnkete(req, "Nova anketa");
 	}
 
@@ -140,6 +144,7 @@ public class KorisnikKontroler {
 		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
 			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
 		}
+		Util.setAktivno(req, "aktivMoje");
 		return AnketaKontroler.ispunjavanjeAnkete(req,
 				DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0])));
 	}
@@ -164,6 +169,7 @@ public class KorisnikKontroler {
 		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
 			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
 		}
+		Util.setAktivno(req, "aktivMoje");
 		return AnketaKontroler.izmijeniAnketu(req,
 				DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0])));
 	}
