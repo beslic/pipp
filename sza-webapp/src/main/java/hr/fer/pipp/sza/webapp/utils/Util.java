@@ -38,13 +38,13 @@ import hr.fer.pipp.sza.webapp.modeli.Pitanje;
 public class Util {
 
 	public final static String PRAVA_ANONIMNOG_KORISNIKA = "/prijava/|" + "/registracija/|" + "/ankete/|"
-			+ "/ankete/[0-9]+-[\\p{L}+0-9\\-]+/";
-	public final static String PRAVA_REGISTRIRANOG_KORISNIKA = "/korisnici/|" + "/korisnici/[A-Za-z0-9]+/|"
-			+ "/korisnici/[\\p{L}+0-9]+/postavke/|" + "/korisnici/[\\p{L}+0-9]+/ankete/|"
-			+ "/korisnici/[\\p{L}+0-9]+/ankete/[0-9]+-[\\p{L}+0-9\\-]+/|"
-			+ "/korisnici/[\\p{L}+0-9]+/ankete/[0-9]+-\\p{L}+0-9\\-]+/izmijeni/|" + "/korisnici/\\p{L}+0-9]+/ankete/nova/|"
-			+ "/android/|" + "/anketari/|" + "/ankete/|" + "/ankete/json/|" + "/ankete/[0-9]+-[\\p{L}+0-9\\-]+/|"
-			+ "/ankete/[0-9]+-/[\\p{L}+0-9\\-]+/json/";
+			+ "/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/";
+	public final static String PRAVA_REGISTRIRANOG_KORISNIKA = "/korisnici/|" + "/korisnici/[\\p{L}+0-9_]+/|"
+			+ "/korisnici/[\\p{L}+0-9_]+/postavke/|" + "/korisnici/[\\p{L}+0-9_]+/ankete/|"
+			+ "/korisnici/[\\p{L}+0-9_]+/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/|"
+			+ "/korisnici/[\\p{L}+0-9_]+/ankete/[0-9]+-\\p{L}+0-9\\-_]+/izmijeni/|"
+			+ "/korisnici/[\\p{L}+0-9_]+/ankete/nova/|" + "/android/|" + "/anketari/|" + "/ankete/|" + "/ankete/json/|"
+			+ "/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/|" + "/ankete/[0-9]+-/[\\p{L}+0-9\\-_]+/json/";
 
 	private static boolean validirajEmail(String email) {
 
@@ -93,7 +93,7 @@ public class Util {
 	public static Map<String, String> provjeriFormuPrijavljivanja(String korisnickoIme, String lozinka) {
 
 		Map<String, String> greska = new HashMap<>();
-
+		
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
 			greska.put("korisnickoime", "Korisničko ime je prazno");
 			return greska;
