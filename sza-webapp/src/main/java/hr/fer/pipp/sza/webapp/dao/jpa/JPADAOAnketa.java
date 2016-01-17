@@ -62,16 +62,7 @@ public class JPADAOAnketa implements IDAOAnketa {
 	public Anketa spremiIzmjeneAnkete(Anketa anketa) {
 		EntityManager em = JPAEMProvider.getEntityManager().getEntityManagerFactory().createEntityManager();
 		em.getTransaction().begin();
-		Anketa a = em.find(Anketa.class, anketa.getIdAnketa());
-		a.setAktivna(anketa.isAktivna());
-		a.setAktivnaDo(anketa.getAktivnaDo());
-		a.setAktivnaOd(anketa.getAktivnaOd());
-		a.setBrojPitanja(anketa.getBrojPitanja());
-		a.setJePrivatna(anketa.isJePrivatna());
-		a.setNazivAnketa(anketa.getNazivAnketa());
-		a.setOpisAnketa(anketa.getOpisAnketa());
-		a.setPitanja(anketa.getPitanja());
-		// TODO dodati izmjene anketara
+		em.merge(anketa);
 		em.getTransaction().commit();
 		em.close();
 		return anketa;

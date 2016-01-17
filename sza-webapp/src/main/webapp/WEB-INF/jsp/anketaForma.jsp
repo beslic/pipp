@@ -17,13 +17,17 @@
   <body>
     <jsp:include page="header.jsp" />
      <div class="container">
-        <form class="form-horizontal" action="/sza-webapp/ankete/" method="post">
+        <c:set var="uri" value="" />
+        <c:if test="${anketa != null}">
+            <c:set var="uri" value="${anketa.idAnketa}-${anketa.nazivAnketa}/"/>
+        </c:if>
+        <form class="form-horizontal" action="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/${uri}${akcija}/" method="post">
         <!-- Form Name -->
         <div class="col-md-10">
           <h2>${naslov}
             <!-- Buttons -->
             <span class="pull-right">
-                <button id="napravi" type="submit" name="napravi" class="btn btn-success">Spremi</button>
+                <button id="napravi" type="submit" name="spremi" value="${akcija}" class="btn btn-success">Spremi</button>
                 <button id="reset" type="reset" name="reset" class="btn btn-warning col-md-offset-">Poništi</button>
             </span>
           </h2>
@@ -36,87 +40,85 @@
                  <li><a href="#tab-pitanja" data-toggle="tab">Pitanja i odgovori</a></li>
                 <li><a href="#tab-anketari" data-toggle="tab">Anketari</a></li>
             </ul>
+        <fieldset>
         <div class="tab-content">
             <div class="tab-pane fade in active" id="tab-opcenito">
-                <fieldset>
-                    <!-- Poll input-->
-                    <div class="form-group">
-                        <label id="usernamelabel" class="col-md-3 control-label"
-                            for="usernameinput">Ime ankete</label>
-                        <div
-                            class="col-md-6 <c:if test="${greska.nazivAnketa != null}">has-error has-feedback</c:if>">
-                            <input id="usernameinput" name="nazivAnketa" type="text"
-                                class="form-control input-md" value="${anketa.nazivAnketa}"
-                                placeholder="Unesite naziv ankete" aria-describedby="errorstatus">
-                            <c:if test="${greska.nazivAnketa != null}">
-                                <span class="glyphicon glyphicon-remove form-control-feedback"
-                                    aria-hidden="true"></span>
-                                <label class="control-label" for="usernameinput">${greska.nazivAnketa}</label>
-                                <span id="errorstatus" class="sr-only">(error)</span>
-                            </c:if>
-                        </div>
-                    </div>
-                    <!-- Poll description-->
-                    <div class="form-group">
-                        <label id="opis" class="col-md-3 control-label"
-                            for="opisinput">Opis ankete</label>
-                        <div class="col-md-6">
-                            <textarea id="opisinput" name="opisAnketa"
-                                class="form-control input-md col-md-6" rows="3"
-                                placeholder="Unesite opis ankete" aria-describedby="errorstatus">${anketa.opisAnketa}</textarea>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label id="privatna" class="col-md-3 control-label"
-                            for="privatnainput">Privatna anketa</label>
-                        <div
-                            class="col-md-6 <c:if test="${greska.privatna != null}">has-error has-feedback</c:if>">
-                            <input id="privatnainput" name="privatna" class="input-md"
-                                type="checkbox" value="privatna"
-                                <c:if test="${anketa.jePrivatna == true}">checked</c:if>>
-                                <span class="help-block">Označite ukoliko ne želite da vaša anketa bude javno dostupna na Internetu</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-6">
-                            <div class="input-group input-append date">
-                                <b>Datum provođenja ankete</b>
-                            </div>
-                            <hr>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Od</label>
-                        <div
-                            class="col-md-4 <c:if test="${greska.aktivnaOd != null || greska.kron != null}">has-error has-feedback</c:if>">
-                            <div class="input-group input-append date" id="dateRangePickerFrom">
-                                <input id="from" type="text" class="form-control input-md-4"
-                                    name="aktivnaOd" value="${aktivnaOdForma}" /> <span
-                                    class="input-group-addon add-on"><span
-                                    class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                            <c:if test="${greska.aktivnaOd != null}">
-                                <label class="control-label" for="from">${greska.aktivnaOd}</label>
-                            </c:if>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Do</label>
-                        <div
-                            class="col-md-4 <c:if test="${greska.aktivnaDo != null || greska.kron != null}">has-error has-feedback</c:if>">
-                            <div class="input-group input-append date" id="dateRangePickerTo">
-                                <input id="to" type="text" class="form-control input-md" name="aktivnaDo" value="${aktivnaDoForma}" /> <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                            <c:if test="${greska.aktivnaDo != null || greska.kron != null}">
-                                <label class="control-label" for="to">${greska.aktivnaDo}${greska.kron}</label>
-                            </c:if>
-                        </div>
-                    </div>
-                </fieldset>
+               <!-- Poll input-->
+               <div class="form-group">
+                   <label id="usernamelabel" class="col-md-3 control-label"
+                       for="usernameinput">Ime ankete</label>
+                   <div
+                       class="col-md-6 <c:if test="${greska.nazivAnketa != null}">has-error has-feedback</c:if>">
+                       <input id="usernameinput" name="nazivAnketa" type="text"
+                           class="form-control input-md" value="${anketa.nazivAnketa}"
+                           placeholder="Unesite naziv ankete" aria-describedby="errorstatus">
+                       <c:if test="${greska.nazivAnketa != null}">
+                           <span class="glyphicon glyphicon-remove form-control-feedback"
+                               aria-hidden="true"></span>
+                           <label class="control-label" for="usernameinput">${greska.nazivAnketa}</label>
+                           <span id="errorstatus" class="sr-only">(error)</span>
+                       </c:if>
+                   </div>
+               </div>
+               <!-- Poll description-->
+               <div class="form-group">
+                   <label id="opis" class="col-md-3 control-label"
+                       for="opisinput">Opis ankete</label>
+                   <div class="col-md-6">
+                       <textarea id="opisinput" name="opisAnketa"
+                           class="form-control input-md col-md-6" rows="3"
+                           placeholder="Unesite opis ankete" aria-describedby="errorstatus">${anketa.opisAnketa}</textarea>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label id="privatna" class="col-md-3 control-label"
+                       for="privatnainput">Privatna anketa</label>
+                   <div
+                       class="col-md-6 <c:if test="${greska.privatna != null}">has-error has-feedback</c:if>">
+                       <input id="privatnainput" name="privatna" class="input-md"
+                           type="checkbox" value="privatna"
+                           <c:if test="${anketa.jePrivatna == true}">checked</c:if>>
+                           <span class="help-block">Označite ukoliko ne želite da vaša anketa bude javno dostupna na Internetu</span>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-md-3 control-label"></label>
+                   <div class="col-md-6">
+                       <div class="input-group input-append date">
+                           <b>Datum provođenja ankete</b>
+                       </div>
+                       <hr>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-md-3 control-label">Od</label>
+                   <div
+                       class="col-md-4 <c:if test="${greska.aktivnaOd != null || greska.kron != null}">has-error has-feedback</c:if>">
+                       <div class="input-group input-append date" id="dateRangePickerFrom">
+                           <input id="from" type="text" class="form-control input-md-4"
+                               name="aktivnaOd" value="${aktivnaOdForma}" /> <span
+                               class="input-group-addon add-on"><span
+                               class="glyphicon glyphicon-calendar"></span></span>
+                       </div>
+                       <c:if test="${greska.aktivnaOd != null}">
+                           <label class="control-label" for="from">${greska.aktivnaOd}</label>
+                       </c:if>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-md-3 control-label">Do</label>
+                   <div
+                       class="col-md-4 <c:if test="${greska.aktivnaDo != null || greska.kron != null}">has-error has-feedback</c:if>">
+                       <div class="input-group input-append date" id="dateRangePickerTo">
+                           <input id="to" type="text" class="form-control input-md" name="aktivnaDo" value="${aktivnaDoForma}" /> <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                       </div>
+                       <c:if test="${greska.aktivnaDo != null || greska.kron != null}">
+                           <label class="control-label" for="to">${greska.aktivnaDo}${greska.kron}</label>
+                       </c:if>
+                   </div>
+               </div>
             </div>
             <div class="tab-pane fade" id="tab-pitanja">
-                <fieldset>
                 <div class="form-group"><div class="col-md-8 col-md-offset-2"><b>Pitanja</b><br></div></div>
                     <div id="pitanja">
                         <c:if test="${anketa != null}">
@@ -140,7 +142,7 @@
                                     <div id="odgovori${pid}">
                                         <c:forEach var="odg" items="${pitanje.odgovor}" varStatus="o">
                                             <c:set var="oid" value="${o.index + 1}" />
-                                            <div id="pitanje${pid}-odgovor${oid}" name="pitanje${pid}-odgovor${oid}" class="form-group div-odgovor">
+                                            <div id="pitanje${pid}-odgovor${oid}" class="form-group div-odgovor">
                                                 <div class="col-md-4 col-md-offset-4">
                                                     <input type="text" name="pitanje${pid}-odgovor${oid}" name="pitanje${pid}-odgovor${oid}" class="form-control input-md" placeholder="Tekst odgovora" value="${odg.textOdgovor}">
                                                 </div>
@@ -160,14 +162,12 @@
                             <button type="button" class="btn btn-success pull-right" onclick="dodajPitanje()" data-toggle="tooltip" data-placement="top" title="Dodaj novo pitanje">Dodaj pitanje</button>
                         </div>
                     </div>
-                </fieldset>
             </div>
             <div class="tab-pane fade" id="tab-anketari">
-                <fieldset>
                     Ovdje ide lista anketara s checkboxovima
-                </fieldset>
             </div>
         </div>
+        </fieldset>
     </div>
     </form>
     </div>
