@@ -53,12 +53,14 @@ public class AnketaKontroler {
 		if (greska.isEmpty()) {
 			anketa.setVlasnik(k);
 			DAOAnketa.getDAO().spremiAnketu(anketa);
-			return Response.seeOther(UriBuilder.fromUri(uri.getRequestUri().toString()).build()).build();
+			return Response.seeOther(UriBuilder
+					.fromUri(uri.getBaseUri().toString() + "korisnici/" + k.getKorisnickoIme() + "/ankete/").build())
+					.build();
 		} else {
 			req.setAttribute("anketa", anketa);
 			req.setAttribute("forma", form);
 			req.setAttribute("greska", greska);
-			return KorisnikKontroler.prikaziAnketeKorisnika(req, k.getKorisnickoIme());
+			return KorisnikKontroler.prikaziFormuZaNovuAnketu(req);
 		}
 	}
 
@@ -76,7 +78,7 @@ public class AnketaKontroler {
 		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
 			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
 		}
-		
+
 		Anketa a = (Anketa) req.getAttribute("anketa");
 		return ispunjavanjeAnkete(req, a);
 	}

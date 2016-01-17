@@ -3,7 +3,7 @@ html{
 }
 
 body{
-	padding-top: 50px;
+	padding-top: 60px;
     height: 100%;
 }
 
@@ -19,6 +19,11 @@ body{
 
 #odjavaRight{
 	margin-right: 5px;
+}
+
+#pitanja input[type="text"] {
+	margin-top: 1px;
+	margin-bottom: 1px;
 }
 
 .carousel,

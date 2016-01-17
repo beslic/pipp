@@ -17,6 +17,7 @@
 		<h2>Izmjena podataka o korisniku</h2>
 		<hr>
 		<br>
+	</div>
 
 <div class="tabbable">
 		<ul class="nav nav-tabs" role="tablist" id="tab">

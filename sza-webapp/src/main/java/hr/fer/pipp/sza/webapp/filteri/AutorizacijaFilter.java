@@ -5,18 +5,16 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.ext.Provider;
 
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 import hr.fer.pipp.sza.webapp.utils.Util;
 
-@Provider
-@PreMatching
+//@Provider
+//@PreMatching
 public class AutorizacijaFilter implements ContainerRequestFilter {
 
 	@Context
@@ -49,11 +47,12 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 		} else {
 			if (korisnik.getRazinaPrava() == 1) { // ako nije admin
 				if (url.matches(Util.PRAVA_REGISTRIRANOG_KORISNIKA)) {
-					
+
 					if (url.matches("/korisnici/[A-Za-z0-9]+/ankete/[0-9]+-[A-Za-z0-9]+/(izmijeni/){0,1}")) {
-						
+
 						if (url.endsWith("/izmijeni/")) {
-							String idNazivAnketa = uri.getPathSegments().get(uri.getPathSegments().size() - 3).toString();
+							String idNazivAnketa = uri.getPathSegments().get(uri.getPathSegments().size() - 3)
+									.toString();
 							Anketa a = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0]));
 							if (a != null) {
 								if (a.isJePrivatna()) {
@@ -73,8 +72,7 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 						} else {
 							Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
 						}
-						
-						
+
 					} else if (url.matches("/ankete/[0-9]+-[A-Za-z0-9]+/")) {
 						Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
 					}

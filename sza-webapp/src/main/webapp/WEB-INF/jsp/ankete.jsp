@@ -21,17 +21,17 @@
     <jsp:include page="header.jsp" />
     
 <div class="container" id="odvojiOdHeadera">
-<!--   <ul id="tabovi" class="nav nav-tabs nav-justified"> -->
-<!--     <li class="active"><a data-toggle="tab" href="#javne-ankete">Javne ankete</a></li> -->
-<%--     <c:if test="${sessionScope.korisnik != null}"> --%>
-<!-- 	    <li><a data-toggle="tab" href="#moje-ankete">Moje ankete</a></li> -->
-<%--     </c:if> --%>
+  <ul id="tabovi" class="nav nav-tabs nav-justified">
+    <li class="active"><a data-toggle="tab" href="#javne-ankete">Javne ankete</a></li>
+    <c:if test="${sessionScope.korisnik != null}">
+	    <li><a data-toggle="tab" href="#moje-ankete">Moje ankete</a></li>
+    </c:if>
     
-<%--       <c:if test="${sessionScope.korisnik.razinaPrava < 2}"> --%>
-<!--             <li><a data-toggle="tab" href="#nova-anketa">Nova anketa</a></li> -->
-<%--    	 </c:if> --%>
+      <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
+            <li><a data-toggle="tab" href="#nova-anketa">Nova anketa</a></li>
+   	 </c:if>
     	
-<!--   </ul> -->
+  </ul>
 
   <div class="tab-content">
     <div id="javne-ankete" class="tab-pane fade in active">
