@@ -21,7 +21,7 @@
 	            <!-- Buttons -->
 	            <span class="pull-right">
 	                <button id="napravi" type="submit" name="spremi" class="btn btn-success">Spremi</button>
-	                <button id="reset" type="reset" name="reset" onclick="reset()" class="btn btn-warning col-md-offset-">Poništi</button>
+	                <button id="reset" type="reset" name="reset" class="btn btn-warning col-md-offset-">Poništi</button>
 	            </span>
             </h2>
             <hr>
@@ -29,8 +29,8 @@
         </div>
         
         <form action="" method="post">
-	        <c:forEach var="pitanje" items="${anketa.pitanja}">
-	            <div class="col-md-8 col-md-offset-1">
+	        <c:forEach var="pitanje" items="${anketa.pitanja}" varStatus="p">
+	            <div id="pitanje${p.index + 1}" class="col-md-8 col-md-offset-1">
 	                <h3><small>${pitanje.rbrPitanje}.</small>  ${pitanje.textPitanje}</h3>
 	                <hr>
 	                <c:forEach var="odgovor" items="${pitanje.odgovor}">
@@ -50,9 +50,16 @@
     </div>
     
     <script type="text/javascript">
-    function reset() {
-    	$('input[type="radio"]').attr('checked',false);
-    }
+    $("#reset").click(function reset() {
+    	$('input:radio').attr('checked', false);
+    	$('#napravi').attr('disabled', true);
+    });
+    var size = $('div[id*=pitanje]').length;
+    $('input:radio').change(function () {
+    	if (size == $('input:radio:checked').length) {
+    		$("#napravi").attr('disabled', false);
+    	}
+    });
     </script>
     
 </body>
