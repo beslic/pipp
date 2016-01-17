@@ -150,8 +150,7 @@ public class Util {
 		return greska;
 	}
 
-	public static Anketa provjeriFormuAnkete(MultivaluedMap<String, String> form, Map<String, String> greske)
-			throws ParseException {
+	public static Anketa provjeriFormuAnkete(MultivaluedMap<String, String> form, Map<String, String> greske) {
 		provjeriGreske(form, greske);
 		return dohvatiAnketu(form, greske);
 
@@ -189,8 +188,7 @@ public class Util {
 		}
 	}
 
-	private static Anketa dohvatiAnketu(MultivaluedMap<String, String> form, Map<String, String> greske)
-			throws ParseException {
+	private static Anketa dohvatiAnketu(MultivaluedMap<String, String> form, Map<String, String> greske) {
 		Anketa anketa = new Anketa();
 		anketa.setNazivAnketa(form.getFirst("nazivAnketa"));
 		anketa.setOpisAnketa(form.getFirst("opisAnketa"));
@@ -201,8 +199,16 @@ public class Util {
 		if (greske.isEmpty()) {
 			Date date = new Date();
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-			anketa.setAktivnaOd(format.parse(form.getFirst("aktivnaOd")));
-			anketa.setAktivnaDo(format.parse(form.getFirst("aktivnaDo")));
+			try {
+				anketa.setAktivnaOd(format.parse(form.getFirst("aktivnaOd")));
+			} catch (ParseException e) {
+				greske.put("aktivnaOd", "Format nije dobro zadan - dd/mm/gggg");
+			}
+			try {
+				anketa.setAktivnaDo(format.parse(form.getFirst("aktivnaDo")));
+			} catch (ParseException e) {
+				greske.put("aktivnaDo", "Format nije dobro zadan - dd/mm/gggg");
+			}
 			anketa.setAktivna(provjeraAktivnosti(anketa, date));
 			anketa.setVrijemeIzrada(date);
 		}
@@ -218,11 +224,11 @@ public class Util {
 				continue;
 			}
 			Pitanje pitanje = new Pitanje();
-			List<Odgovor> odgovori = dohvatiOdgovore(form, pitanje);
-			pitanje.setAnketa(anketa);
-			pitanje.setOdgovor(odgovori);
 			pitanje.setRbrPitanje(Integer.parseInt(p.replaceFirst("pitanje", "")));
+			List<Odgovor> odgovori = dohvatiOdgovore(form, pitanje);
+			pitanje.setOdgovor(odgovori);
 			pitanje.setTextPitanje(pit);
+			pitanje.setAnketa(anketa);
 			pitanja.add(pitanje);
 		}
 		Collections.sort(pitanja, (p1, p2) -> Integer.compare(p1.getRbrPitanje(), p2.getRbrPitanje()));

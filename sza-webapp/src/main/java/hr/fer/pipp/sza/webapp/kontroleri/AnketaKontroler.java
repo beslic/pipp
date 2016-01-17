@@ -1,16 +1,11 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -20,7 +15,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
@@ -43,28 +37,6 @@ public class AnketaKontroler {
 				"Nema dostupnih javnih anketa", "");
 	}
 
-	@POST
-	@Produces(MediaType.TEXT_HTML)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public static Response dodajAnketu(@Context HttpServletRequest req, @Context UriInfo uri,
-			MultivaluedMap<String, String> form) throws ParseException, ServletException, IOException {
-		Map<String, String> greska = new HashMap<>();
-		Korisnik k = (Korisnik) req.getSession().getAttribute("korisnik");
-		Anketa anketa = Util.provjeriFormuAnkete(form, greska);
-		if (greska.isEmpty()) {
-			anketa.setVlasnik(k);
-			DAOAnketa.getDAO().spremiAnketu(anketa);
-			return Response.seeOther(UriBuilder
-					.fromUri(uri.getBaseUri().toString() + "korisnici/" + k.getKorisnickoIme() + "/ankete/").build())
-					.build();
-		} else {
-			req.setAttribute("anketa", anketa);
-			req.setAttribute("forma", form);
-			req.setAttribute("greska", greska);
-			return KorisnikKontroler.prikaziFormuZaNovuAnketu(req);
-		}
-	}
-
 	@GET
 	@Path("/json")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -75,12 +47,13 @@ public class AnketaKontroler {
 	@GET
 	@Path("/{id-naziv}")
 	@Produces(MediaType.TEXT_HTML)
-	public static Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("id-naziv") String idNazivAnketa) {
-		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
+	public static Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("id-naziv") String idNaziv) {
+		if (idNaziv == null || idNaziv.length() == 0) {
 			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
 		}
 		Util.setAktivno(req, "aktivAnkete");
-		return ispunjavanjeAnkete(req, (Anketa) req.getAttribute("anketa"));
+		// TODO privremeno
+		return ispunjavanjeAnkete(req, DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0])));
 	}
 
 	@GET
@@ -106,6 +79,7 @@ public class AnketaKontroler {
 
 	public static Response izmijeniAnketu(HttpServletRequest req, Anketa anketa) {
 		Util.setAktivno(req, "aktivMoje");
+		req.setAttribute("akcija", "izmijeni");
 		req.setAttribute("anketa", anketa);
 		req.setAttribute("aktivnaDoForma", Util.formatDatum(anketa.getAktivnaDo()));
 		req.setAttribute("aktivnaOdForma", Util.formatDatum(anketa.getAktivnaOd()));
@@ -125,6 +99,28 @@ public class AnketaKontroler {
 	public static Response prikaziAnketuJSON(Anketa anketa) {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 		return Response.ok(gson.toJson(anketa)).build();
+	}
+
+	public static Response spremiAnketu(@Context HttpServletRequest req, MultivaluedMap<String, String> form,
+			Anketa anketa, String url) {
+		Map<String, String> greska = new HashMap<>();
+		Anketa nova = Util.provjeriFormuAnkete(form, greska);
+		if (greska.isEmpty()) {
+			if ("nova".equals(form.getFirst("spremi"))) {
+				nova.setVlasnik((Korisnik) req.getSession().getAttribute("korisnik"));
+				DAOAnketa.getDAO().spremiAnketu(nova);
+			} else if ("izmijeni".equals(form.getFirst("spremi"))) {
+				nova.setVlasnik(anketa.getVlasnik());
+				nova.setIdAnketa(anketa.getIdAnketa());
+				DAOAnketa.getDAO().spremiIzmjeneAnkete(nova);
+			}
+			return Response.seeOther(UriBuilder.fromUri(url).build()).build();
+		} else {
+			req.setAttribute("anketa", anketa);
+			req.setAttribute("forma", form);
+			req.setAttribute("greska", greska);
+			return KorisnikKontroler.prikaziFormuZaNovuAnketu(req);
+		}
 	}
 
 }

@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -24,6 +25,7 @@ import com.google.gson.GsonBuilder;
 
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 import hr.fer.pipp.sza.webapp.utils.Util;
 
@@ -134,7 +136,18 @@ public class KorisnikKontroler {
 	@Produces(MediaType.TEXT_HTML)
 	public static Response prikaziFormuZaNovuAnketu(@Context HttpServletRequest req) {
 		Util.setAktivno(req, "aktivNova");
+		req.setAttribute("akcija", "nova");
 		return AnketaKontroler.prikaziFormuAnkete(req, "Nova anketa");
+	}
+
+	@POST
+	@Path("ankete/nova")
+	@Produces(MediaType.TEXT_HTML)
+	public static Response dodajAnketu(@Context HttpServletRequest req, @PathParam("id-naziv") String idNaziv,
+			MultivaluedMap<String, String> form) {
+		String url = "/sza-webapp/korisnici/"
+				+ ((Korisnik) req.getSession().getAttribute("korisnik")).getKorisnickoIme() + "/ankete/";
+		return AnketaKontroler.spremiAnketu(req, form, null, url);
 	}
 
 	@GET
@@ -169,9 +182,20 @@ public class KorisnikKontroler {
 		if (idNazivAnketa == null || idNazivAnketa.length() == 0) {
 			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
 		}
-		Util.setAktivno(req, "aktivMoje");
 		return AnketaKontroler.izmijeniAnketu(req,
 				DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0])));
+	}
+
+	@POST
+	@Path("ankete/{id-naziv}/izmijeni")
+	@Produces(MediaType.TEXT_HTML)
+	public static Response izmijeniAnketu(@Context HttpServletRequest req, @PathParam("id-naziv") String idNaziv,
+			MultivaluedMap<String, String> form) {
+		String url = "/sza-webapp/korisnici/"
+				+ ((Korisnik) req.getSession().getAttribute("korisnik")).getKorisnickoIme() + "/ankete/" + idNaziv
+				+ "/";
+		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0]));
+		return AnketaKontroler.spremiAnketu(req, form, anketa, url);
 	}
 
 	@POST
