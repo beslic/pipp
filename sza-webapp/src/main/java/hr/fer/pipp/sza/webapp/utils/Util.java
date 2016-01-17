@@ -38,13 +38,13 @@ import hr.fer.pipp.sza.webapp.modeli.Pitanje;
 public class Util {
 
 	public final static String PRAVA_ANONIMNOG_KORISNIKA = "/prijava/|" + "/registracija/|" + "/ankete/|"
-			+ "/ankete/[0-9]+-[A-Za-z0-9\\-]+/";
+			+ "/ankete/[0-9]+-[\\p{L}+0-9\\-]+/";
 	public final static String PRAVA_REGISTRIRANOG_KORISNIKA = "/korisnici/|" + "/korisnici/[A-Za-z0-9]+/|"
-			+ "/korisnici/[A-Za-z0-9]+/postavke/|" + "/korisnici/[A-Za-z0-9]+/ankete/|"
-			+ "/korisnici/[A-Za-z0-9]+/ankete/[0-9]+-[A-Za-z0-9\\-]+/|"
-			+ "/korisnici/[A-Za-z0-9]+/ankete/[0-9]+-[A-Za-z0-9\\-]+/izmijeni/|" + "/korisnici/[A-Za-z0-9]+/ankete/nova/|"
-			+ "/android/|" + "/anketari/|" + "/ankete/|" + "/ankete/json/|" + "/ankete/[0-9]+-[A-Za-z0-9\\-]+/|"
-			+ "/ankete/[0-9]+-/[A-Za-z0-9\\-]+/json/";
+			+ "/korisnici/[\\p{L}+0-9]+/postavke/|" + "/korisnici/[\\p{L}+0-9]+/ankete/|"
+			+ "/korisnici/[\\p{L}+0-9]+/ankete/[0-9]+-[\\p{L}+0-9\\-]+/|"
+			+ "/korisnici/[\\p{L}+0-9]+/ankete/[0-9]+-\\p{L}+0-9\\-]+/izmijeni/|" + "/korisnici/\\p{L}+0-9]+/ankete/nova/|"
+			+ "/android/|" + "/anketari/|" + "/ankete/|" + "/ankete/json/|" + "/ankete/[0-9]+-[\\p{L}+0-9\\-]+/|"
+			+ "/ankete/[0-9]+-/[\\p{L}+0-9\\-]+/json/";
 
 	private static boolean validirajEmail(String email) {
 

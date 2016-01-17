@@ -50,7 +50,7 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 			if (korisnik.getRazinaPrava() == 1) { // ako nije admin
 				if (url.matches(Util.PRAVA_REGISTRIRANOG_KORISNIKA)) {
 
-					if (url.matches("/korisnici/[A-Za-z0-9]+/ankete/[0-9]+-[A-Za-z0-9\\-]+/(izmijeni/){0,1}")) {
+					if (url.matches("/korisnici/[\\p{L}+0-9]+/ankete/[0-9]+-[\\p{L}+0-9\\-]+/(izmijeni/){0,1}")) {
 						if (url.endsWith("/izmijeni/")) {
 							String idNazivAnketa = uri.getPathSegments().get(uri.getPathSegments().size() - 3)
 									.toString();
@@ -74,7 +74,7 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 							Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
 						}
 
-					} else if (url.matches("/ankete/[0-9]+-[A-Za-z0-9]+/")) {
+					} else if (url.matches("/ankete/[0-9]+-[\\p{L}+0-9]+/")) {
 						Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
 					}
 					return;
