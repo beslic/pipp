@@ -13,19 +13,18 @@
 <body>
 	<jsp:include page="header.jsp" />
 
-	<div class="container" id="korisnikDetails">
+	<div class="container"  id="korisnikDetails">
 		<h2>Izmjena podataka o korisniku</h2>
-		<hr>
+	
 		<br>
-	</div>
+	
 
-<div class="tabbable">
+	<div class="tabbable">
 		<ul class="nav nav-tabs" role="tablist" id="tab">
 			<li role="presentation" class="active"><a href="#tab1"
 				aria-controls="tab1" role="tab" data-toggle="tab">Osobni podatci</a></li>
-			<li role="presentation"><a href="#tab2"
-				aria-controls="tab2" role="tab" data-toggle="tab">Izmjena
-					lozinke</a></li>
+			<li role="presentation"><a href="#tab2" aria-controls="tab2"
+				role="tab" data-toggle="tab">Izmjena lozinke</a></li>
 
 		</ul>
 
@@ -115,7 +114,7 @@
 						<label id="staraLozinkalabel" class="col-md-4 control-label"
 							for="confirmpasswordinput">Stara lozinka</label>
 						<div
-							class="col-md-4 <c:if test="${greska.staraLozinka != null}">has-error has-feedback</c:if>">
+							class="col-md-6 <c:if test="${greska.staralozinka != null}">has-error has-feedback</c:if>">
 							<input id="staralozinka" name="staralozinka" type="password"
 								class="form-control input-md"
 								placeholder="Unesite staru lozinku">
@@ -135,7 +134,7 @@
 						<label id="passwordlabel" class="col-md-4 control-label"
 							for="passwordinput">Nova lozinka</label>
 						<div
-							class="col-md-4 <c:if test="${greska.novalozinka != null}">has-error has-feedback</c:if>">
+							class="col-md-6 <c:if test="${greska.novalozinka != null}">has-error has-feedback</c:if>">
 							<input id="passwordinput" name="novalozinka" type="password"
 								class="form-control input-md" placeholder="Unesite novu lozinku"
 								aria-describedby="errorstatus">
@@ -145,14 +144,15 @@
 								<label class="control-label" for="passwordinput">${greska.novalozinka}</label>
 								<span id="errorstatus" class="sr-only">(error)</span>
 								<script type="text/javascript">
-								$(document).ready(function(){
-							        activaTab('tab2');
-							    });
-								function activaTab(tab){
-							        $('.nav-tabs a[href="#' + tab + '"]').tab('show');
-							    };
+									$(document).ready(function() {
+										activaTab('tab2');
+									});
+									function activaTab(tab) {
+										$('.nav-tabs a[href="#' + tab + '"]')
+												.tab('show');
+									};
 								</script>
-								
+
 							</c:if>
 						</div>
 					</div>
@@ -161,7 +161,7 @@
 						<label id="confirmpasswordlabel" class="col-md-4 control-label"
 							for="confirmpasswordinput">Potvrdite lozinku</label>
 						<div
-							class="col-md-4 <c:if test="${greska.novalozinkapotvrda != null}">has-error has-feedback</c:if>">
+							class="col-md-6 <c:if test="${greska.novalozinkapotvrda != null}">has-error has-feedback</c:if>">
 							<input id="confirmpasswordinput" name="novalozinkapotvrda"
 								type="password" class="form-control input-md"
 								placeholder="Potvrdite novu lozinku">
@@ -188,35 +188,32 @@
 			</div>
 
 		</div>
-		
-		
+
+
 		<script>
-		
-		
-		
-	    $('#tab a').click(function (e) {
-	        e.preventDefault();
-	        $(this).tab('show');
-	    });
+			$('#tab a').click(function(e) {
+				e.preventDefault();
+				$(this).tab('show');
+			});
 
-	    // store the currently selected tab in the hash value
-	    $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
-	        var id = $(e.target).attr("href").substr(1);
-	        window.location.hash = id;
-	    });
+			// store the currently selected tab in the hash value
+			$("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
+				var id = $(e.target).attr("href").substr(1);
+				window.location.hash = id;
+			});
 
-	    // on load of the page: switch to the currently selected tab
-	    var hash = window.location.hash;
-	    $('#tab a[href="' + hash + '"]').tab('show');
-	</script>
-		
-		
-		
-		
-		
-		
-		
-		
+			// on load of the page: switch to the currently selected tab
+			var hash = window.location.hash;
+			$('#tab a[href="' + hash + '"]').tab('show');
+		</script>
+
+
+
+
+</div>
+
+
+
 	</div>
 
 
