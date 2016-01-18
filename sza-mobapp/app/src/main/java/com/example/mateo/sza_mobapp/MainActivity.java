@@ -25,6 +25,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -247,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Intent i2 = new Intent(this, Pocetak_ispunjavanja_ankete.class);
                 i2.putExtra("anketa", aId);
                 i2.putExtra("anketaIme", myArrayAdapter.anketa.get(position).getNazivAnketa());
+                i2.putExtra("anketaOpis", myArrayAdapter.anketa.get(position).getOpisAnketa());
                 startActivity(i2);
             }
         }catch (ParseException e){

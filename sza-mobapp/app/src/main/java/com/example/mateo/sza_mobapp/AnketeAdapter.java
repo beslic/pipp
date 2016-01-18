@@ -34,7 +34,7 @@ public class AnketeAdapter extends ArrayAdapter<Anketa> {
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new AnketaHolder();
             holder.ime=(TextView)row.findViewById(R.id.anketaIme);
-            holder.id=(TextView)row.findViewById(R.id.idAnketa);
+            //holder.id=(TextView)row.findViewById(R.id.idAnketa);
             row.setTag(holder);
         }
         else{
@@ -42,7 +42,7 @@ public class AnketeAdapter extends ArrayAdapter<Anketa> {
         }
         Anketa anketa1 = anketa.get(position);
         holder.ime.setText(anketa1.getNazivAnketa());
-        holder.id.setText(Long.toString(anketa1.getIdAnketa()));
+        //holder.id.setText(Long.toString(anketa1.getIdAnketa()));
         return row;
     }
 
@@ -53,6 +53,6 @@ public class AnketeAdapter extends ArrayAdapter<Anketa> {
 
     static class AnketaHolder{
         TextView ime;
-        TextView id;
+        //TextView id;
     }
 }

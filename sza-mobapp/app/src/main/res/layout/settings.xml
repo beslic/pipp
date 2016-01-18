@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
 
 
     <Button
-        android:layout_width="269dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Brisanje anketa"
         android:id="@+id/button2"
@@ -14,7 +14,8 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
-        android:layout_width="254dp"
+        android:layout_below="@id/button2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Brisanje ispunjavanja"
         android:id="@+id/button3"
@@ -22,6 +23,7 @@
         android:layout_gravity="center_horizontal" />
 
     <Switch
+        android:layout_below="@id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="very important setting"
@@ -29,6 +31,7 @@
         android:checked="false" />
 
     <Switch
+        android:layout_below="@id/switch1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="more settings"
@@ -42,12 +45,19 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="RATE!!!"
         android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ratingBar"
-        android:layout_gravity="center_horizontal" />
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff"
+        android:indeterminateTint="#fcb9b9"
+        android:progressBackgroundTint="#ff0000"
+        android:secondaryProgressTint="#8a8a8a" />
 
-</LinearLayout>
+</RelativeLayout>

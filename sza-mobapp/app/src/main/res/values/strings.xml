@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">sza-mobapp</string>
     <string name="action_settings">Settings</string>
-    <string name="loginText1">Login</string>
-    <string name="loginIme">korisnicko ime</string>
+    <string name="loginText1">Prijava</string>
+    <string name="loginIme">korisničko ime</string>
     <string name="loginSifra">lozinka</string>
-    <string name="loginButton">LOGIN</string>
-    <string name="title_activity_lista_pitanja2">listaPitanja2</string>
+    <string name="loginButton">Prijava</string>
+    <string name="title_activity_lista_pitanja2">Ispunjavanje ankete</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_pocetak_ispunjavanja_ankete">Pocetak_ispunjavanja_ankete</string>
+    <string name="title_activity_pocetak_ispunjavanja_ankete">Početak ispunjavanja ankete</string>
     <string name="title_activity_login_activity_test">Sign in</string>
 
     <!-- Strings related to login -->

@@ -10,7 +10,7 @@
         android:id="@+id/anketaIme"
         android:text="anketaIme"
         android:textSize="30sp" />
-    <TextView
+    <!--<TextView
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -18,5 +18,5 @@
         android:text="Id"
         android:textSize="30sp"
         android:textAlignment="textEnd"
-        android:layout_gravity="end"/>
+        android:layout_gravity="end"/>-->
 </LinearLayout>

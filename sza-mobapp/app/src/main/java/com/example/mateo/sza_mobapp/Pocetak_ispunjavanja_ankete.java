@@ -11,7 +11,9 @@ import android.widget.TextView;
 public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
     long anketaId;
     String anketaIme;
+    String anketaOpis;
     TextView tekst;
+    TextView tekstOpis;
     boolean poznataLokacija = false;
     //boolean start = false;
     double longitude=0;
@@ -26,17 +28,21 @@ public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tekst = (TextView) findViewById(R.id.pocetakText1);
+        tekstOpis = (TextView) findViewById(R.id.textOpisAnkete);
         Bundle extras = getIntent().getExtras();
         mGPS = new GPSLocator(this);
         anketaId =0;
         anketaIme="default";
+        anketaOpis="default";
         if (extras != null) {
             anketaId = extras.getLong("anketa");
             anketaIme = extras.getString("anketaIme");
+            anketaOpis = extras.getString("anketaOpis");
             //Log.d("*****pocIspunjavanja  ", "extras != null, anketa: " + anketaId);
             extras.clear();
         }
         tekst.setText(anketaIme);
+        tekstOpis.setText(anketaOpis);
         if(mGPS.canGetLocation){
             Log.d("pitanja", "u if-u");
             mGPS.getLocation();
