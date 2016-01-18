@@ -1,6 +1,8 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +29,7 @@ import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.utils.PasswordHash;
 import hr.fer.pipp.sza.webapp.utils.Util;
 
 @Path("/korisnici/{korisnickoime}")
@@ -67,14 +70,6 @@ public class KorisnikKontroler {
 			@FormParam("buttonPostavke") String button, @FormParam("staralozinka") String staraLozinka,
 			@FormParam("novalozinka") String novaLozinka, @FormParam("novalozinkapotvrda") String novaLozinkaPotvrda) {
 
-		System.out.println(ime);
-		System.out.println(prezime);
-		System.out.println(email);
-		System.out.println(button);
-		System.out.println(staraLozinka);
-		System.out.println(novaLozinka);
-		System.out.println(novaLozinkaPotvrda);
-		System.out.println();
 
 		if ("postavke".equals(button)) {
 			Map<String, String> greska = Util.provjeriFormuPostavkiKorisnika(ime, prezime, email);
@@ -87,7 +82,7 @@ public class KorisnikKontroler {
 				korisnik.setEmail(email);
 
 				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
-				return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
+				return Response.seeOther(URI.create("/sza-webapp/korisnici/"+korisnik.getKorisnickoIme()+"/")).build();
 
 			} else {
 				req.setAttribute("greska", greska);
@@ -100,10 +95,14 @@ public class KorisnikKontroler {
 
 			if (greska.isEmpty()) {
 				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
-				korisnik.setLozinka(novaLozinkaPotvrda);
+				try {
+					korisnik.setLozinka(PasswordHash.createHash(novaLozinkaPotvrda));
+				} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+					
+				}
 
 				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
-				return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
+				return Response.seeOther(URI.create("/sza-webapp/korisnici/"+korisnik.getKorisnickoIme()+"/")).build();
 
 			} else {
 				req.setAttribute("greska", greska);

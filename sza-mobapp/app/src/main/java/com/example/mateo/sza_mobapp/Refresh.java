@@ -30,6 +30,7 @@ public class Refresh {
         Gson gson = new Gson();
         String odgovor = "";
         String jsonKorisnik = gson.toJson(korisnik);
+        Log.d("korisnikJson", jsonKorisnik);
         NetworkConnection PROVJERA = new NetworkConnection(context, adresa + ":8080/sza-webapp/android/");
 
         if (PROVJERA.isConnected() == false) {
@@ -58,7 +59,8 @@ public class Refresh {
                     return false;
                 }
                 else{
-                    Toast.makeText(context, "Ažuriranje anketa neuspješno!", Toast.LENGTH_LONG).show();
+                    Log.d("else", jsonOdgovor.get("errormessage").toString());
+                    Toast.makeText(context, "greška prilikom preuzimanja: "+ jsonOdgovor.get("errormessage").toString(), Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -152,6 +154,7 @@ public class Refresh {
                 if (jsonOdgovor.get("status").toString().equals("success")) {
                     return true;
                 } else {
+                    Toast.makeText(context, "greška slanja ispunjavanja: " + jsonOdgovor.get("errormessage").toString(), Toast.LENGTH_LONG).show();
                     Log.d("*****Slanje", "FAIL");
                     return false;
                 }
