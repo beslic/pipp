@@ -58,7 +58,17 @@ public class Refresh {
                     return false;
                 }
                 else{
-                    Toast.makeText(context, "Ažuriranje anketa neuspješno!", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                    alertDialog.setTitle("Ažuriranje nije uspjelo");
+                    alertDialog.setMessage("Stisnite OK za nastavak");
+                    alertDialog.setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    alertDialog.show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

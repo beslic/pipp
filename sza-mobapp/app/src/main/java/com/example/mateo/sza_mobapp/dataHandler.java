@@ -131,7 +131,7 @@ public class dataHandler extends SQLiteOpenHelper {
         values.put(COLUMN_AKTIVNA_DO, anketa.getAktivnaDo());
         SQLiteDatabase db = this.getWritableDatabase();
         if(db.insert(TABLE_ANKETA, null, values)==-1){
-            Toast.makeText(c, "Error", Toast.LENGTH_LONG).show();
+            //Toast.makeText(c, "Error", Toast.LENGTH_LONG).show();
         }
         //Log.d("*****addAnketa  ", values.getAsString(COLUMN_ANKETA_IME));
         db.close();
@@ -144,7 +144,7 @@ public class dataHandler extends SQLiteOpenHelper {
         values.put(COLUMN_PITANJE_ID, p.getPitanje_id());
         SQLiteDatabase db = this.getWritableDatabase();
         if(db.insert(TABLE_PITANJA, null, values)==-1){
-            Toast.makeText(c, "Error", Toast.LENGTH_LONG).show();
+            //Toast.makeText(c, "Error", Toast.LENGTH_LONG).show();
         }
         //Log.d("*****addPitanje  ", values.getAsString(COLUMN_PITANJE) + "  " + values.getAsString(COLUMN_PITANJE_ID));
         db.close();
@@ -159,7 +159,7 @@ public class dataHandler extends SQLiteOpenHelper {
         //values.put(COLUMN_BR_ODGOVORA, o.getBrojOdgovora());
         SQLiteDatabase db = this.getWritableDatabase();
         if(db.insert(TABLE_ODGOVORI, null, values)==-1){
-            Toast.makeText(c, "Error", Toast.LENGTH_LONG).show();
+            //Toast.makeText(c, "Error", Toast.LENGTH_LONG).show();
         }
         //Log.d("*****addOdgovor  ", values.getAsString(COLUMN_ODGOVOR));
         db.close();
