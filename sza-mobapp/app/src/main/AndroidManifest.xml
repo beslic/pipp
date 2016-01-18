@@ -33,7 +33,7 @@
         </activity>
         <activity
             android:name=".loginAct"
-            android:label="Login"
+            android:label="Prijava"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>

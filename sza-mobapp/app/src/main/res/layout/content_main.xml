@@ -30,7 +30,7 @@
         android:layout_below="@id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log Out"
+        android:text="Odjava"
         android:textAlignment="center"
         android:onClick="logout"/>
     <!--<Button
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/buttonRefresh"
         android:layout_below="@id/mainLogOut"
-        android:text="Refresh"
+        android:text="Ažuriraj popis anketa"
         android:onClick="refresh"/>
     <TextView
         android:layout_below="@id/buttonRefresh"
