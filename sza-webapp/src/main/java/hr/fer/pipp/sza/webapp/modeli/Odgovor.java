@@ -32,7 +32,6 @@ public class Odgovor {
 	@Column(nullable = false)
 	private String textOdgovor;
 
-	@Expose
 	@ManyToMany(mappedBy = "odgovori")
 	private Collection<Ispunjavanje> ispunjavanja;
 

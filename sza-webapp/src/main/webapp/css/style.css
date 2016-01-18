@@ -7,6 +7,10 @@ body{
     height: 100%;
 }
 
+fieldset {
+	margin-top: 20px
+}
+
 #odvojiOdHeadera{
 	margin-top: 50px;
 }
@@ -24,6 +28,16 @@ body{
 #pitanja input[type="text"] {
 	margin-top: 1px;
 	margin-bottom: 1px;
+}
+
+.icon-info {
+	color: orange;
+	opacity: 0.5;
+	font-size: 0.7em;
+}
+
+.icon-info:hover {
+	opacity: 1.0;
 }
 
 .odg {

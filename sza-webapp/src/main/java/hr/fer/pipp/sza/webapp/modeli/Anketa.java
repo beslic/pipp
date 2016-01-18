@@ -63,6 +63,10 @@ public class Anketa {
 	private List<Pitanje> pitanja;
 
 	@Expose
+	@OneToMany(mappedBy = "anketa")
+	private List<Ispunjavanje> ispunjavanja;
+
+	@Expose
 	@Type(type = "yes_no")
 	private boolean aktivna;
 
@@ -154,6 +158,30 @@ public class Anketa {
 		this.pitanja = pitanja;
 	}
 
+	public int getBrojPitanja() {
+		return brojPitanja;
+	}
+
+	public void setBrojPitanja(int brojPitanja) {
+		this.brojPitanja = brojPitanja;
+	}
+
+	public boolean isAktivna() {
+		return aktivna;
+	}
+
+	public void setAktivna(boolean aktivna) {
+		this.aktivna = aktivna;
+	}
+
+	public List<Ispunjavanje> getIspunjavanja() {
+		return ispunjavanja;
+	}
+
+	public void setIspunjavanja(List<Ispunjavanje> ispunjavanja) {
+		this.ispunjavanja = ispunjavanja;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -174,22 +202,6 @@ public class Anketa {
 		if (idAnketa != other.idAnketa)
 			return false;
 		return true;
-	}
-
-	public int getBrojPitanja() {
-		return brojPitanja;
-	}
-
-	public void setBrojPitanja(int brojPitanja) {
-		this.brojPitanja = brojPitanja;
-	}
-
-	public boolean isAktivna() {
-		return aktivna;
-	}
-
-	public void setAktivna(boolean aktivna) {
-		this.aktivna = aktivna;
 	}
 
 	@Override

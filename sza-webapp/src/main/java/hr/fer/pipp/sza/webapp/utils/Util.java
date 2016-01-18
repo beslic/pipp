@@ -93,7 +93,7 @@ public class Util {
 	public static Map<String, String> provjeriFormuPrijavljivanja(String korisnickoIme, String lozinka) {
 
 		Map<String, String> greska = new HashMap<>();
-		
+
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
 			greska.put("korisnickoime", "Korisničko ime je prazno");
 			return greska;
@@ -334,17 +334,7 @@ public class Util {
 	}
 
 	public static boolean provjeraAktivnosti(Anketa anketa, Date date) {
-		if (anketa != null) {
-			if (date.after(anketa.getAktivnaOd()) && date.before(anketa.getAktivnaDo())) {
-				// mora biti aktivna
-				return true;
-			} else {
-				// mora biti neaktivna
-				return false;
-			}
-		} else {
-			return false;
-		}
+		return (anketa != null) ? date.after(anketa.getAktivnaOd()) && date.before(anketa.getAktivnaDo()) : false;
 	}
 
 	public static String formatDatum(Date datum) {

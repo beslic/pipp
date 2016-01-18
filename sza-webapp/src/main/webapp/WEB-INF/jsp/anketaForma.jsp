@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/sza-webapp/css/datepicker.css">
     <link rel="stylesheet" href="/sza-webapp/css/datepicker3.css">
     <script type='text/javascript' src='/sza-webapp/js/bootstrap-datepicker.js'></script>
-    <style type="text/css">fieldset {margin-top: 20px}</style>
   </head>
 
   <body>

@@ -143,6 +143,7 @@ public class KorisnikKontroler {
 	@POST
 	@Path("ankete/nova")
 	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public static Response dodajAnketu(@Context HttpServletRequest req, @PathParam("id-naziv") String idNaziv,
 			MultivaluedMap<String, String> form) {
 		String url = "/sza-webapp/korisnici/"

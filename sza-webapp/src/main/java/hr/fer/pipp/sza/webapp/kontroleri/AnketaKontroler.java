@@ -1,11 +1,14 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -22,8 +25,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
+import hr.fer.pipp.sza.webapp.dao.DAOIspn;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
+import hr.fer.pipp.sza.webapp.modeli.Ispunjavanje;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.modeli.Odgovor;
+import hr.fer.pipp.sza.webapp.utils.ChartData;
 import hr.fer.pipp.sza.webapp.utils.Util;
 
 @Path("/ankete/")
@@ -56,11 +63,40 @@ public class AnketaKontroler {
 		return ispunjavanjeAnkete(req, DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0])));
 	}
 
+	@POST
+	@Path("/{id-naziv}")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public static Response spremiOdgovor(@Context HttpServletRequest req, MultivaluedMap<String, String> form,
+			@PathParam("id-naziv") String idNaziv) {
+		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0]));
+		List<Odgovor> odgovori = new ArrayList<>();
+		anketa.getPitanja()
+				.forEach(p -> p.getOdgovor().stream().filter(
+						o -> form.getFirst(Long.toString(p.getIdPitanje())).equals(Long.toString(o.getIdOdgovor())))
+				.forEach(odgovori::add));
+		DAOIspn.getDAO().spremiIspunjavanje(new Ispunjavanje(null, anketa, null, odgovori));
+		return Response.seeOther(UriBuilder.fromPath("ankete/" + idNaziv + "/rezultati/").build()).build();
+	}
+
 	@GET
 	@Path("/{id-naziv}/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response prikaziAnketuKaoJSON(@Context HttpServletRequest req, @PathParam("id-naziv") String idNaziv) {
+	public static Response prikaziAnketuKaoJSON(@Context HttpServletRequest req,
+			@PathParam("id-naziv") String idNaziv) {
 		return prikaziAnketuJSON(DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0])));
+	}
+
+	@GET
+	@Path("/{id-naziv}/rezultati")
+	@Produces(MediaType.TEXT_HTML)
+	public static Response prikaziRezultateAnkete(@Context HttpServletRequest req,
+			@PathParam("id-naziv") String idNaziv) {
+		Util.setAktivno(req, "aktivAnkete");
+		Anketa a = DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0]));
+		req.setAttribute("anketa", a);
+		req.setAttribute("data", ChartData.getData(a));
+		return Response.ok(new Viewable("/rezultatiAnkete")).build();
 	}
 
 	public static Response prikaziAnkete(HttpServletRequest req, List<Anketa> ankete, String naslov, String prazno,
@@ -83,7 +119,7 @@ public class AnketaKontroler {
 		req.setAttribute("anketa", anketa);
 		req.setAttribute("aktivnaDoForma", Util.formatDatum(anketa.getAktivnaDo()));
 		req.setAttribute("aktivnaOdForma", Util.formatDatum(anketa.getAktivnaOd()));
-		return prikaziFormuAnkete(req, "Izmijeni anketu \"" + anketa.getNazivAnketa() + "\"");
+		return prikaziFormuAnkete(req, "Izmijeni anketu " + anketa.getNazivAnketa());
 	}
 
 	public static Response prikaziAnketeJSON(List<Anketa> ankete) {
@@ -121,6 +157,10 @@ public class AnketaKontroler {
 			req.setAttribute("greska", greska);
 			return KorisnikKontroler.prikaziFormuZaNovuAnketu(req);
 		}
+	}
+
+	public static Response spremiRezultate() {
+		return null;
 	}
 
 }
