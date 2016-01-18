@@ -26,6 +26,7 @@ import com.google.gson.GsonBuilder;
 
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
 import hr.fer.pipp.sza.webapp.dao.DAOIspn;
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Ispunjavanje;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
@@ -109,6 +110,10 @@ public class AnketaKontroler {
 	}
 
 	public static Response prikaziFormuAnkete(HttpServletRequest req, String naslov) {
+		List<Korisnik> anketari = DAOKorisnik.getDAO().dohvatiSveAnketare();
+		if (!anketari.isEmpty()) {
+			req.setAttribute("anketari", anketari);
+		}
 		req.setAttribute("naslov", naslov);
 		return Response.ok(new Viewable("/anketaForma")).build();
 	}
@@ -144,6 +149,8 @@ public class AnketaKontroler {
 		if (greska.isEmpty()) {
 			if ("nova".equals(form.getFirst("spremi"))) {
 				nova.setVlasnik((Korisnik) req.getSession().getAttribute("korisnik"));
+				nova.getAnketari().add(nova.getVlasnik());
+				nova.getVlasnik().getAnkete().add(nova);
 				DAOAnketa.getDAO().spremiAnketu(nova);
 			} else if ("izmijeni".equals(form.getFirst("spremi"))) {
 				nova.setVlasnik(anketa.getVlasnik());

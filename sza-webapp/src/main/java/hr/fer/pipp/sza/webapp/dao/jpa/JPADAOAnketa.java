@@ -30,6 +30,7 @@ public class JPADAOAnketa implements IDAOAnketa {
 		em.getTransaction().begin();
 		em.persist(anketa);
 		k.getAnketa().add(anketa);
+		k.getAnkete().add(anketa);
 		em.getTransaction().commit();
 		em.close();
 		return anketa;
