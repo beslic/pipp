@@ -13,6 +13,20 @@
 </head>
 <body>
     <jsp:include page="header.jsp" />
-    <h2>Ovdje ide popis korisnika koji kreiraju ankete</h2>
+    <div class="container">
+      <h2>Korisnici</h2>
+      <br>
+      
+      <h3>Čekaju aktivaciju:</h3>
+      <c:forEach var="userNeakt" items="${korisniciNeakt}">
+                <h4>${userNeakt.korisnickoIme}</h4>
+      </c:forEach>
+      
+      <h3>Aktivni:</h3>
+      <c:forEach var="userAkt" items="${korisniciAkt}">
+                <h4>${userAkt.korisnickoIme}</h4>
+      </c:forEach>
+      
+    </div>
 </body>
 </html>
