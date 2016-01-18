@@ -17,10 +17,13 @@
 		    	<c:if test="${sessionScope.korisnik != null}">
 		    	    <li ${aktivMoje}><a href="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/">Moje ankete</a></li>
 		    	</c:if>
-		    	<c:if test="${sessionScope.korisnik != null && sessionScope.korisnik.razinaPrava == 1}">
+		    	<c:if test="${sessionScope.korisnik != null && sessionScope.korisnik.razinaPrava <= 1}">
                     <li ${aktivNova}><a href="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/nova/">Nova anketa</a></li>
                     <li ${aktivAnk}><a href="/sza-webapp/anketari/">TODO: Anketari</a></li>
                 </c:if>
+                       <c:if test="${sessionScope.korisnik != null && sessionScope.korisnik.razinaPrava == 0}">
+                           <li><a href="#">Upravljanje korisnicima</a></li>
+                       </c:if>
 		    </ul>
 		      
 			<ul class="nav navbar-nav navbar-right">
