@@ -96,6 +96,7 @@ public final class GPSLocator extends Service implements LocationListener{
     }
 
     public boolean showSettingsAlert() {
+        Log.d("pitanja", "u showSettingsAlert()");
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
         alertDialog.setTitle("GPS is settings");
         alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
@@ -115,6 +116,8 @@ public final class GPSLocator extends Service implements LocationListener{
                     }
                 });
         alertDialog.show();
+
+
         return cancel;
     }
 
