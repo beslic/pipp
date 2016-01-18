@@ -342,6 +342,26 @@ public class Util {
 			requestContext.abortWith(Util.r404());
 		}
 	}
+	
+	public static void azurirajAktivnostKorisnika(MultivaluedMap<String, String> checkboxes) {
+		for (String key : checkboxes.keySet()) {
+			if (key.startsWith("nepotvrdjen-")) {
+				if (checkboxes.getFirst(key).equals("on")) {
+					String korIme = key.split("-")[1];
+					Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korIme);
+					korisnik.setAktivan(true);
+					DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
+				}
+			} else if (key.startsWith("potvrdjen-")) {
+				if (checkboxes.getFirst(key).equals("on")) {
+					String korIme = key.split("-")[1];
+					Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korIme);
+					korisnik.setAktivan(false);
+					DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
+				}
+			}
+		}
+	}
 
 	public static boolean provjeraAktivnosti(Anketa anketa, Date date) {
 		return (anketa != null) ? date.after(anketa.getAktivnaOd()) && date.before(anketa.getAktivnaDo()) : false;
