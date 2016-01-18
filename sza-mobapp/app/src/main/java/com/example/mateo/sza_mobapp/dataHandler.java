@@ -202,7 +202,7 @@ public class dataHandler extends SQLiteOpenHelper {
 
     public List<Anketa> findAnketa(){
         //Log.d("*****findAnketa ", "pocetak");
-        String query = "SELECT * FROM " + TABLE_ANKETA + " ORDER BY " + COLUMN_ANKETA_IME + " DESC";
+        String query = "SELECT * FROM " + TABLE_ANKETA + " ORDER BY " + COLUMN_ANKETA_IME + " ASC";
         List<Anketa> listaAnketa;
         listaAnketa = new ArrayList<Anketa>();
         Anketa anketa;
