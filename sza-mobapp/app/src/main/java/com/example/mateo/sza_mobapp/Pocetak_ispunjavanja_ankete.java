@@ -37,31 +37,34 @@ public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
             extras.clear();
         }
         tekst.setText(anketaIme);
-
-    }
-
-    public void pitanja(View view){
-        //Calendar c = Calendar.getInstance();
-        //long timeStamp = c.getTimeInMillis();
         if(mGPS.canGetLocation){
             mGPS.getLocation();
             longitude = mGPS.longitude;
             latitude = mGPS.latitude;
             poznataLokacija = true;
             //Log.d("PPA_GPS", "*****lokacija poznata*****");
-            start=true;
         }
-        else if(start == false){
-            start = mGPS.showSettingsAlert();
+        else{
+            mGPS.showSettingsAlert();
         }
+    }
+
+    public void pitanja(View view){
+        //Calendar c = Calendar.getInstance();
+        //long timeStamp = c.getTimeInMillis();
+
         //mGPS.stopUsingGPS();
-        if(start) {
-            Intent i3 = new Intent(this, listaPitanja2.class);
-            i3.putExtra("anketa1", anketaId);
-            i3.putExtra("lon", longitude);
-            i3.putExtra("lat", latitude);
-            i3.putExtra("poznato", poznataLokacija);
-            startActivity(i3);
+        if(mGPS.canGetLocation){
+            mGPS.getLocation();
+            longitude = mGPS.longitude;
+            latitude = mGPS.latitude;
+            poznataLokacija = true;
         }
+        Intent i3 = new Intent(this, listaPitanja2.class);
+        i3.putExtra("anketa1", anketaId);
+        i3.putExtra("lon", longitude);
+        i3.putExtra("lat", latitude);
+        i3.putExtra("poznato", poznataLokacija);
+        startActivity(i3);
     }
 }
