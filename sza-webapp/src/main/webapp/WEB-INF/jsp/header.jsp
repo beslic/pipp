@@ -22,7 +22,7 @@
                     <li ${aktivAnk}><a href="/sza-webapp/anketari/">TODO: Anketari</a></li>
                 </c:if>
                        <c:if test="${sessionScope.korisnik != null && sessionScope.korisnik.razinaPrava == 0}">
-                           <li><a href="#">Korisnici&nbsp;<span class="badge">${sessionScope.cekajuPotvrdu}</span></a></li>
+                           <li><a href="/sza-webapp/korisnici/">Korisnici&nbsp;<span class="badge">${sessionScope.cekajuPotvrdu}</span></a></li>
                        </c:if>
 		    </ul>
 		      
