@@ -1,11 +1,13 @@
 package hr.fer.pipp.sza.webapp.filteri;
 
 import java.io.IOException;
+import java.net.URI;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
@@ -40,7 +42,7 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 				}
 				return;
 			} else if (url.matches(Util.PRAVA_REGISTRIRANOG_KORISNIKA)) {
-				requestContext.abortWith(Util.r403());
+				requestContext.abortWith(Response.temporaryRedirect(URI.create("/sza-webapp/prijava/")).build());
 			} else {
 				requestContext.abortWith(Util.r404());
 			}

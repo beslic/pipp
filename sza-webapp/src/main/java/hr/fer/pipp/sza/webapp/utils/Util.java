@@ -38,13 +38,13 @@ import hr.fer.pipp.sza.webapp.modeli.Pitanje;
 public class Util {
 
 	public final static String PRAVA_ANONIMNOG_KORISNIKA = "/prijava/|" + "/registracija/|" + "/ankete/|"
-			+ "/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/";
+			+ "/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/(rezultati/){0,1}";
 	public final static String PRAVA_REGISTRIRANOG_KORISNIKA = "/korisnici/|" + "/korisnici/[\\p{L}+0-9_]+/|"
 			+ "/korisnici/[\\p{L}+0-9_]+/postavke/|" + "/korisnici/[\\p{L}+0-9_]+/ankete/|"
-			+ "/korisnici/[\\p{L}+0-9_]+/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/|"
+			+ "/korisnici/[\\p{L}+0-9_]+/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/(rezultati/){0,1}|"
 			+ "/korisnici/[\\p{L}+0-9_]+/ankete/[0-9]+-\\p{L}+0-9\\-_]+/izmijeni/|"
 			+ "/korisnici/[\\p{L}+0-9_]+/ankete/nova/|" + "/android/|" + "/anketari/|" + "/ankete/|" + "/ankete/json/|"
-			+ "/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/|" + "/ankete/[0-9]+-/[\\p{L}+0-9\\-_]+/json/";
+			+ "/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/(rezultati/){0,1}|" + "/ankete/[0-9]+-/[\\p{L}+0-9\\-_]+/json/";
 
 	private static boolean validirajEmail(String email) {
 
