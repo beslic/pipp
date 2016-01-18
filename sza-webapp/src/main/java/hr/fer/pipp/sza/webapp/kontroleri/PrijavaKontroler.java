@@ -3,6 +3,7 @@ package hr.fer.pipp.sza.webapp.kontroleri;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -44,6 +45,13 @@ public class PrijavaKontroler {
 
 		if (greska.isEmpty()) {
 			Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
+			
+			if (korisnik.getRazinaPrava() == 0) { //ako se prijavljuje admin
+				List<Korisnik> listaKorisnika = DAOKorisnik.getDAO().dohvatiSveKorisnike();
+				int cekajuPotvrdu = (int) listaKorisnika.stream().filter(k ->k.isAktivan() == false).count();
+				request.getSession().setAttribute("cekajuPotvrdu", cekajuPotvrdu);
+				request.getSession().setAttribute("listaKorisnika", listaKorisnika);
+			}
 			
 			request.getSession().setAttribute("korisnik", korisnik);
 			return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();

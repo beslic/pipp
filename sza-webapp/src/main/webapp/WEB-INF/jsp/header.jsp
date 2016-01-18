@@ -7,7 +7,7 @@
 	<div class="container-fluid">
 	    
 		<div class="navbar-header">
-	   		<a href="/sza-webapp/" class="navbar-brand"><strong>Sustav za anktetiranje</strong></a>
+	   		<a href="/sza-webapp/" class="navbar-brand"><strong>Sustav za anketiranje</strong></a>
 		</div>
 	
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -22,7 +22,7 @@
                     <li ${aktivAnk}><a href="/sza-webapp/anketari/">TODO: Anketari</a></li>
                 </c:if>
                        <c:if test="${sessionScope.korisnik != null && sessionScope.korisnik.razinaPrava == 0}">
-                           <li><a href="#">Upravljanje korisnicima</a></li>
+                           <li><a href="#">Korisnici&nbsp;<span class="badge">${sessionScope.cekajuPotvrdu}</span></a></li>
                        </c:if>
 		    </ul>
 		      

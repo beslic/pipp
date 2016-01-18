@@ -21,6 +21,7 @@ public class IndexKontroler {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziIndex(@Context HttpServletRequest req) throws ServletException, IOException {
+		
 		return Response.ok(new Viewable("/index")).build();
 	}
 
