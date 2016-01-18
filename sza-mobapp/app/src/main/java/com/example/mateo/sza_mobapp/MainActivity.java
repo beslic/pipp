@@ -185,8 +185,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if(id == R.id.network_settings){
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("Network");
-            alertDialog.setMessage("Network address?");
+            alertDialog.setTitle("Adresa servera");
+            alertDialog.setMessage("Upišite adresu servera: ");
             final EditText input = new EditText(MainActivity.this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             input.setHint(loginInfo.getString("ADRESA_SERVERA", ""));
             alertDialog.setView(input);
 
-            alertDialog.setPositiveButton("OK",
+            alertDialog.setPositiveButton("Potvrdi",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             loginInfoEditor.putString("ADRESA_SERVERA", input.getText().toString());
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         }
                     });
 
-            alertDialog.setNegativeButton("Cancel",
+            alertDialog.setNegativeButton("Odustani",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if(AktivnaDo.before(curDate) || AktivnaOd.after(curDate)){
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                 alertDialog.setTitle("Anketa nije dostupna");
-                alertDialog.setMessage("Dostupnost ankete:\n" + format.format(AktivnaOd) + " - \n" + format.format(AktivnaDo));
+                alertDialog.setMessage("Dostupnost ankete:\nOd" + format.format(AktivnaOd) + "\nDo" + format.format(AktivnaDo));
                 alertDialog.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

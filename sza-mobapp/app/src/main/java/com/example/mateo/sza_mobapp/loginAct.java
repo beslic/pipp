@@ -104,9 +104,9 @@ public class loginAct extends AppCompatActivity{
         if(PROVJERA.isConnected()==false){
 
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("Network");
-            alertDialog.setMessage("Network is not enabled. Do you want to go to settings menu?");
-            alertDialog.setPositiveButton("Settings",
+            alertDialog.setTitle("Upozorenje: ");
+            alertDialog.setMessage("Uređaj nema pristup internetu");
+            alertDialog.setPositiveButton("Postavke",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(Settings.ACTION_SETTINGS);
@@ -114,7 +114,7 @@ public class loginAct extends AppCompatActivity{
                         }
                     });
 
-            alertDialog.setNegativeButton("Cancel",
+            alertDialog.setNegativeButton("Odustani",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -258,8 +258,8 @@ public class loginAct extends AppCompatActivity{
         }
         if(id == R.id.network_settings){
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("Network");
-            alertDialog.setMessage("Network address?");
+            alertDialog.setTitle("Adresa servera");
+            alertDialog.setMessage("Upišite adresu servera: ");
             final EditText input = new EditText(loginAct.this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -268,7 +268,7 @@ public class loginAct extends AppCompatActivity{
             input.setHint(login.getString("ADRESA_SERVERA", ""));
             alertDialog.setView(input);
 
-            alertDialog.setPositiveButton("OK",
+            alertDialog.setPositiveButton("Potvrdi",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             loginEdit.putString("ADRESA_SERVERA", input.getText().toString());
@@ -277,7 +277,7 @@ public class loginAct extends AppCompatActivity{
                         }
                     });
 
-            alertDialog.setNegativeButton("Cancel",
+            alertDialog.setNegativeButton("Odustani",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
