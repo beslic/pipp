@@ -50,8 +50,7 @@ public class JPADAOKorisnik implements IDAOKorisnik {
 	public Korisnik dohvatiKorisnikaPoMailu(String email) {
 		Korisnik k = null;
 		try {
-			k = JPAEMProvider.getEntityManager()
-					.createQuery("FROM Korisnik K WHERE K.email = :email", Korisnik.class)
+			k = JPAEMProvider.getEntityManager().createQuery("FROM Korisnik K WHERE K.email = :email", Korisnik.class)
 					.setParameter("email", email).getSingleResult();
 		} catch (NoResultException ingorable) {
 		}
@@ -61,6 +60,12 @@ public class JPADAOKorisnik implements IDAOKorisnik {
 	@Override
 	public List<Korisnik> dohvatiSveKorisnike() {
 		return JPAEMProvider.getEntityManager().createQuery("FROM Korisnik", Korisnik.class).getResultList();
+	}
+
+	@Override
+	public List<Korisnik> dohvatiSveAnketare() {
+		return JPAEMProvider.getEntityManager().createQuery("FROM Korisnik K WHERE K.razinaPrava = 2", Korisnik.class)
+				.getResultList();
 	}
 
 }

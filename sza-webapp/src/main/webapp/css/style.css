@@ -30,6 +30,10 @@ fieldset {
 	margin-bottom: 1px;
 }
 
+.ank-select {
+	background-color: #f8f8f8;
+}
+
 .icon-info {
 	color: orange;
 	opacity: 0.5;

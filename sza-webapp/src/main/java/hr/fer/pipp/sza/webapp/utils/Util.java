@@ -195,7 +195,7 @@ public class Util {
 		anketa.setJePrivatna(("privatna".equals(form.getFirst("privatna"))) ? true : false);
 		anketa.setPitanja(dohvatiPitanja(form, anketa));
 		anketa.setBrojPitanja(anketa.getPitanja().size());
-		// TODO dodati anketare
+		anketa.setAnketari(dohvatiAnketare(form, anketa));
 		if (greske.isEmpty()) {
 			Date date = new Date();
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
@@ -213,6 +213,16 @@ public class Util {
 			anketa.setVrijemeIzrada(date);
 		}
 		return anketa;
+	}
+
+	private static List<Korisnik> dohvatiAnketare(MultivaluedMap<String, String> form, Anketa anketa) {
+		List<Korisnik> anketari = new ArrayList<>();
+		for (String s : form.keySet()) {
+			if (s.matches("anketar-[0-9]+")) {
+				anketari.add(DAOKorisnik.getDAO().dohvatiKorisnika(form.getFirst(s)));
+			}
+		}
+		return anketari;
 	}
 
 	private static List<Pitanje> dohvatiPitanja(MultivaluedMap<String, String> form, Anketa anketa) {
