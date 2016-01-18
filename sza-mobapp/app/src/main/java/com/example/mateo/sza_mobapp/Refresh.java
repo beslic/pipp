@@ -51,9 +51,14 @@ public class Refresh {
                     jsonKorisnikOdgovor = jsonOdgovor.getJSONObject("korisnik");
                     JSONArray poljeAnketa = jsonKorisnikOdgovor.getJSONArray("anketa");
                     dataRefresh(poljeAnketa);
-                } else {
+                } else if(jsonOdgovor.get("status").toString().equals("failed") &&
+                        (jsonOdgovor.get("errormessage").toString().equals("Lozinka je netočna") ||
+                                jsonOdgovor.get("errormessage").toString().equals("Korisničko ime nije pronađeno u bazi"))) {
                     Log.d("*****Login", "FAIL");
                     return false;
+                }
+                else{
+                    Toast.makeText(context, "Ažuriranje anketa neuspješno!", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
