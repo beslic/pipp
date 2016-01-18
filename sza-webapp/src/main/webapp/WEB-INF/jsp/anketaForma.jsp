@@ -21,7 +21,7 @@
         <c:if test="${anketa != null}">
             <c:set var="uri" value="${anketa.idAnketa}-${anketa.nazivAnketa}/"/>
         </c:if>
-        <form class="form-horizontal" action="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/$${fn:replace(uri, ' ', '-')}${akcija}/" method="post">
+        <form class="form-horizontal" action="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/ankete/${fn:replace(uri, ' ', '-')}${akcija}/" method="post">
         <!-- Form Name -->
         <div class="col-md-10">
           <h2>${naslov}
@@ -164,7 +164,22 @@
                     </div>
             </div>
             <div class="tab-pane fade" id="tab-anketari">
-                    Ovdje ide lista anketara s checkboxovima
+            	<div class="col-md-8 col-md-offset-2">
+            	<c:if test="${anketari == null}">
+            		<h3>Trenutno nema registriranih anketara</h3>
+            	</c:if>
+                <c:forEach var="anketar" items="${anketari}">
+                	<div class="checkbox ank-select">
+                	${anketar.ime} ${anketar.prezime}
+                	<span class="pull-right">
+                		<input type="checkbox" name="anketar-${anketar.id}" value="${anketar.korisnickoIme}"
+                			<c:forEach var="a" items="${anketa.anketari}">
+                			<c:if test="${a.id == anketar.id}">checked</c:if>
+                			</c:forEach>>
+                	</span>
+                	</div>
+                </c:forEach>
+                </div>
             </div>
         </div>
         </fieldset>
