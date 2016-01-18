@@ -13,6 +13,8 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
+import hr.fer.pipp.sza.webapp.utils.Util;
+
 @Path("/")
 public class IndexKontroler {
 
@@ -28,6 +30,7 @@ public class IndexKontroler {
 	public Response prikaziAnketare(@Context HttpServletRequest req) throws ServletException, IOException {
 		// TODO
 		// Dodati popis anketara iz baze
+		Util.setAktivno(req, "aktivAnk");
 		return Response.ok(new Viewable("/anketari")).build();
 	}
 
@@ -37,6 +40,7 @@ public class IndexKontroler {
 	public Response prikaziKorisnike(@Context HttpServletRequest req) throws ServletException, IOException {
 		// TODO
 		// Dodati popis narucitelja iz baze
+		Util.setAktivno(req, "aktivKor");
 		return Response.ok(new Viewable("/korisnici")).build();
 	}
 

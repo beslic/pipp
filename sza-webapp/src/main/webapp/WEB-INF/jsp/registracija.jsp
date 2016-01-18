@@ -18,13 +18,14 @@
         <fieldset>
           <!-- Form Name -->
   		  <div class="col-md-9">
-  		    <legend><h2>Registracija</h2></legend>
+  		    <h2>Registracija</h2>
+  		    <hr>
   		  </div>
           <!-- First Name input-->
           <div class="form-group">
             <label id="usernamelabel" class="col-md-4 control-label" for="firstnameinput">Ime</label>
             <div class="col-md-4 <c:if test="${greska.ime != null}">has-error has-feedback</c:if>">
-              <input id="firstnameinput" name="ime" type="text" class="form-control input-md" value="${forma.ime}" placeholder="Unesite ime" aria-describedby="errorstatus" autofocus="true">
+              <input id="firstnameinput" name="ime" type="text" class="form-control input-md" value="${forma.ime}" placeholder="Unesite ime" aria-describedby="errorstatus" autofocus>
               <c:if test="${greska.ime != null}">
                 <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 <label class="control-label" for="firstnameinput">${greska.ime}</label>

@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(r.refreshAnkete(k, getApplicationContext(), loginInfo.getString("ADRESA_SERVERA", "192.168.1.102"))== false){
             loginInfoEditor.putBoolean("PRIJAVLJEN", false);
             loginInfoEditor.commit();
-            login();
+            //login();
         };
         if(r.slanjeIspunjenih(loginInfo.getString("ADRESA_SERVERA", "192.168.1.102")) == true){
             dbH.brisanjeIspunjavanja();

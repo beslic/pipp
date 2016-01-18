@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
@@ -25,7 +26,6 @@ public class Ispunjavanje {
 	@ManyToOne
 	private Korisnik anketar;
 
-	@Expose
 	@ManyToOne
 	private Anketa anketa;
 
@@ -34,7 +34,7 @@ public class Ispunjavanje {
 	private Date vrijeme;
 
 	@Expose
-	@ManyToOne
+	@OneToOne
 	private GPSPozicija pozicija;
 
 	@Expose

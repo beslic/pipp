@@ -3,8 +3,12 @@ html{
 }
 
 body{
-	padding-top: 50px;
+	padding-top: 60px;
     height: 100%;
+}
+
+fieldset {
+	margin-top: 20px
 }
 
 #odvojiOdHeadera{
@@ -19,6 +23,29 @@ body{
 
 #odjavaRight{
 	margin-right: 5px;
+}
+
+#pitanja input[type="text"] {
+	margin-top: 1px;
+	margin-bottom: 1px;
+}
+
+.icon-info {
+	color: orange;
+	opacity: 0.5;
+	font-size: 0.7em;
+}
+
+.icon-info:hover {
+	opacity: 1.0;
+}
+
+.odg {
+	cursor: pointer;
+}
+
+.odg-line:hover {
+	background-color: #f8f8f8;
 }
 
 .carousel,

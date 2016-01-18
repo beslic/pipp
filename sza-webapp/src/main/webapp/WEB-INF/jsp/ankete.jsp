@@ -10,9 +10,11 @@
 <head>
     <title>Ankete</title>
     <c:import url="/html/head.html" />
-    <link rel="stylesheet" href="/sza-webapp/css/datepicker.css">
-    <link rel="stylesheet" href="/sza-webapp/css/datepicker3.css">
-    <script type='text/javascript' src='/sza-webapp/js/bootstrap-datepicker.js'></script>
+    <c:if test="${sessionScope.korisnik != null}">
+        <link rel="stylesheet" href="/sza-webapp/css/datepicker.css">
+        <link rel="stylesheet" href="/sza-webapp/css/datepicker3.css">
+        <script type='text/javascript' src='/sza-webapp/js/bootstrap-datepicker.js'></script>
+    </c:if>
 </head>
 
 <body>
@@ -33,29 +35,24 @@
 
   <div class="tab-content">
     <div id="javne-ankete" class="tab-pane fade in active">
-        <c:if test="${javneAnkete == null}">
-            <h3>Nema javno dostupnih anketa</h3>
-        </c:if>
-        <c:forEach var="anketa" items="${javneAnkete}">
-            <c:set var="uri" value="${anketa.idAnketa}-${anketa.nazivAnketa}"/>
-            <h3><a href="/sza-webapp/ankete/${url}${fn:replace(uri, ' ', '-')}/">${anketa.nazivAnketa}</a></h3>
-        </c:forEach>
+        <jsp:include page="prikazAnketa.jsp" />
     </div>
     <c:if test="${sessionScope.korisnik != null}">
         <div id="moje-ankete" class="tab-pane fade">
-            <c:if test="${privatneAnkete == null}">
-                <h3>Nemate još nijednu anketu</h3>
+            <div class="col-md-10">
+                <h2>Moje ankete</h2>
+                <hr>
+            </div>
+            <c:if test="${ankete == null}">
+                <h3>Nista napravili niti jednu anketu</h3>
             </c:if>
-            <c:forEach var="anketa" items="${privatneAnkete}">
-                <c:set var="uri" value="${anketa.idAnketa}-${anketa.nazivAnketa}"/>
-	            <h3><a href="/sza-webapp/ankete/${url}${fn:replace(uri, ' ', '-')}/">${anketa.nazivAnketa}</a></h3>
-            </c:forEach>
+            <jsp:include page="prikazAnketa.jsp" />
         </div>
-    </c:if>
-    <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
+        <c:if test="${sessionScope.korisnik.razinaPrava < 2}">
         <div id="nova-anketa" class="tab-pane fade">
             <jsp:include page="anketaForma.jsp" />
         </div>
+    </c:if>
     </c:if>
   </div>
 </div>

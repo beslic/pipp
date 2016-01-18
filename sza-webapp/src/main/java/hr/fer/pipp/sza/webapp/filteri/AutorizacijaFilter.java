@@ -5,65 +5,86 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.ext.Provider;
+import javax.ws.rs.core.UriInfo;
 
-@Provider
-@PreMatching
+import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
+import hr.fer.pipp.sza.webapp.modeli.Anketa;
+import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.utils.Util;
+
+//@Provider
+//@PreMatching
 public class AutorizacijaFilter implements ContainerRequestFilter {
 
 	@Context
-	private HttpServletRequest request;
+	private UriInfo uri;
+
+	@Context
+	private HttpServletRequest req;
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 
-//		String url = "/" + requestContext.getUriInfo().getPath();
-//		Korisnik korisnik = (Korisnik) request.getSession().getAttribute("korisnik");
-//
-//		if (url.equals("/")) {
-//			return;
-//		}
-//
-//		if (korisnik == null) {
-//
-//			if (url.startsWith("/korisnici")) {
-//				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
-//			} else if (url.startsWith("/anketari")) {
-//				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
-//			} else if (url.startsWith("/admin")) {
-//				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
-//			} else if (url.startsWith("/narucitelji")) {
-//				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
-//			} else if (url.equals("/odjava/")) {
-//				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
-//			} else if(url.equals("/android/")) {
-//				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
-//			} else if (url.startsWith("/ankete")) {
-//				// TODO filtrirati samo javne ankete
-//			} else if (url.equals("/prijava/") || url.equals("/registracija/")) {
-//				return;
-//			} else {
-//				requestContext.abortWith(Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build());
-//			}
-//		}
-//
-//		else {
-//			if (url.equals("/prijava/")) {
-//				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
-//			} else if (url.equals("/registracija/")) {
-//				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
-//			} else if (korisnik.getRazinaPrava() != 3 && url.startsWith("/admin")) { //ako nije admin
-//				requestContext.abortWith(Response.ok(new Viewable("/403")).status(Status.FORBIDDEN).build());
-//			} else if (url.startsWith("/korisnici") || url.startsWith("/anketari") || url.startsWith("/ankete")
-//					|| url.equals("/odjava/") || url.equals("/android/")) {
-//				return;
-//			} else {
-//				requestContext.abortWith(Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build());
-//			}
-//		}
+		Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
+		String url = "/" + uri.getPath();
+
+		if (url.equals("/")) {
+			return;
+		}
+
+		if (korisnik == null) {
+			if (url.matches(Util.PRAVA_ANONIMNOG_KORISNIKA)) {
+				if (url.matches("/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/")) {
+					Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
+				}
+				return;
+			} else if (url.matches(Util.PRAVA_REGISTRIRANOG_KORISNIKA)) {
+				requestContext.abortWith(Util.r403());
+			} else {
+				requestContext.abortWith(Util.r404());
+			}
+		} else {
+			if (korisnik.getRazinaPrava() == 1) { // ako nije admin
+				if (url.matches(Util.PRAVA_REGISTRIRANOG_KORISNIKA)) {
+
+					if (url.matches("/korisnici/[\\p{L}+0-9_]+/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/(izmijeni/){0,1}")) {
+						if (url.endsWith("/izmijeni/")) {
+							String idNazivAnketa = uri.getPathSegments().get(uri.getPathSegments().size() - 3)
+									.toString();
+							Anketa a = DAOAnketa.getDAO().dohvatiAnketu(Integer.parseInt(idNazivAnketa.split("-")[0]));
+							if (a != null) {
+								if (a.isJePrivatna()) {
+									Korisnik k = (Korisnik) req.getSession().getAttribute("korisnik");
+									if (k == null) {
+										requestContext.abortWith(Util.r404());
+									}
+									if (!k.equals(a.getVlasnik())) {
+										requestContext.abortWith(Util.r403());
+									}
+								}
+								req.setAttribute("anketa", a);
+								return;
+							} else {
+								requestContext.abortWith(Util.r404());
+							}
+						} else {
+							Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
+						}
+
+					} else if (url.matches("/ankete/[0-9]+-[\\p{L}+0-9_]+/")) {
+						Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
+					}
+					return;
+				} else if (url.matches(Util.PRAVA_ANONIMNOG_KORISNIKA)) {
+					requestContext.abortWith(Util.r403());
+				} else {
+					requestContext.abortWith(Util.r404());
+				}
+			} else { // ako je admin
+				// TODO prava admina
+			}
+		}
 
 	}
-
 }

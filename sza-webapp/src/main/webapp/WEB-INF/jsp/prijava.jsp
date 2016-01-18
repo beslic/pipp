@@ -19,7 +19,8 @@
         <fieldset>
           <!-- Form Name -->
   		  <div class="col-md-9">
-  		    <legend><h2>Prijava</h2></legend>
+  		    <h2>Prijava</h2>
+  		    <hr>
   		  </div>
           <!-- First Name input-->
                      
