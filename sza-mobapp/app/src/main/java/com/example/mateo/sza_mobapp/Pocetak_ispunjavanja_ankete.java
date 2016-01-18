@@ -13,7 +13,7 @@ public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
     String anketaIme;
     TextView tekst;
     boolean poznataLokacija = false;
-    boolean start = false;
+    //boolean start = false;
     double longitude=0;
     double latitude=0;
     GPSLocator mGPS;
@@ -37,31 +37,57 @@ public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
             extras.clear();
         }
         tekst.setText(anketaIme);
+        if(mGPS.canGetLocation){
+            Log.d("pitanja", "u if-u");
+            mGPS.getLocation();
+            longitude = mGPS.longitude;
+            latitude = mGPS.latitude;
+            poznataLokacija = true;
+            Log.d("PPA_GPS", "*****lokacija poznata*****");
 
+        }
+        else{
+            Log.d("pitanja", "u else if-u");
+            mGPS.showSettingsAlert();
+
+            Log.d("pitanja", "provjera = false");
+        }
     }
 
     public void pitanja(View view){
         //Calendar c = Calendar.getInstance();
         //long timeStamp = c.getTimeInMillis();
         if(mGPS.canGetLocation){
+            Log.d("pitanja", "u if-u");
             mGPS.getLocation();
             longitude = mGPS.longitude;
             latitude = mGPS.latitude;
             poznataLokacija = true;
-            //Log.d("PPA_GPS", "*****lokacija poznata*****");
-            start=true;
+            Log.d("PPA_GPS", "*****lokacija poznata*****");
+
         }
-        else if(start == false){
-            start = mGPS.showSettingsAlert();
+        else{
+
+            longitude = 0;
+            latitude = 0;
+            poznataLokacija = false;
         }
-        //mGPS.stopUsingGPS();
-        if(start) {
-            Intent i3 = new Intent(this, listaPitanja2.class);
-            i3.putExtra("anketa1", anketaId);
-            i3.putExtra("lon", longitude);
-            i3.putExtra("lat", latitude);
-            i3.putExtra("poznato", poznataLokacija);
-            startActivity(i3);
-        }
+
+        /*else{
+            Log.d("pitanja", "u else if-u");
+            mGPS.showSettingsAlert();
+
+            Log.d("pitanja", "provjera = false");
+        }*/
+
+        Log.d("pitanja", "u ifu");
+        Intent i3 = new Intent(this, listaPitanja2.class);
+        i3.putExtra("anketa1", anketaId);
+        i3.putExtra("lon", longitude);
+        i3.putExtra("lat", latitude);
+        i3.putExtra("poznato", poznataLokacija);
+        startActivity(i3);
+
+        Log.d("pitanja", "iza ifa");
     }
 }
