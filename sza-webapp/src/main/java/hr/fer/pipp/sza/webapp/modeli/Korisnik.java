@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -54,6 +55,9 @@ public class Korisnik {
 	@Expose
 	@OneToMany(mappedBy = "vlasnik")
 	private List<Anketa> anketa;
+
+	@ManyToMany
+	private List<Anketa> ankete;
 
 	public Korisnik() {
 	}
@@ -140,6 +144,14 @@ public class Korisnik {
 
 	public void setAnketa(List<Anketa> anketa) {
 		this.anketa = anketa;
+	}
+
+	public List<Anketa> getAnkete() {
+		return ankete;
+	}
+
+	public void setAnkete(List<Anketa> ankete) {
+		this.ankete = ankete;
 	}
 
 	@Override

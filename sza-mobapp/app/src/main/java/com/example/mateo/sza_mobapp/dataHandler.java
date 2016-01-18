@@ -202,7 +202,7 @@ public class dataHandler extends SQLiteOpenHelper {
 
     public List<Anketa> findAnketa(){
         //Log.d("*****findAnketa ", "pocetak");
-        String query = "SELECT * FROM " + TABLE_ANKETA;
+        String query = "SELECT * FROM " + TABLE_ANKETA + " ORDER BY " + COLUMN_ANKETA_IME + " DESC";
         List<Anketa> listaAnketa;
         listaAnketa = new ArrayList<Anketa>();
         Anketa anketa;
@@ -291,7 +291,8 @@ public class dataHandler extends SQLiteOpenHelper {
         list = new ArrayList<Odgovor>();
         String query = "SELECT * FROM " + TABLE_PITANJA + " JOIN "+ TABLE_ODGOVORI +
                 " ON " + COLUMN_PITANJE_ID + " = " + COLUMN_ODGOVOR_PIT_ID +
-                " WHERE " + COLUMN_PITANJE_ID + " = " + pitanjeId;
+                " WHERE " + COLUMN_PITANJE_ID + " = " + pitanjeId
+                + " ORDER BY " + COLUMN_RBR_ODGOVOR + " ASC";
         int i=1;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor;
