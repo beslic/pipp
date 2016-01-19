@@ -1,12 +1,7 @@
 package com.example.mateo.sza_mobapp;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.provider.*;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -131,7 +126,7 @@ public class Refresh {
     public boolean slanjeIspunjenih(String adresa){
 
         dataHandler dh = new dataHandler(context, null, null, 1);
-        List<NOVO_ispunjavanjeAnkete> ispunjavanja = dh.findIspunjavajne();
+        List<NOVO_ispunjavanjeAnkete> ispunjavanja = dh.findIspunjavanje();
         Gson gson = new Gson();
         String jsonIspunjavanja = gson.toJson(ispunjavanja);
         Log.d("ISPUNJENE ", jsonIspunjavanja);

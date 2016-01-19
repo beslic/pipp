@@ -71,7 +71,7 @@ public class listaPitanja2 extends AppCompatActivity {
             longitude = extras.getDouble("lon");
             latitude = extras.getDouble("lat");
             poznataLokacija = extras.getBoolean("poznato");
-            Log.d("*****listaPitanja2  ", "extras != null, anketa: " + anketaId);
+            Log.d("*****listaPitanja2  ", "extras != null, anketa: " + anketaId + " lokacija = " + poznataLokacija);
             extras.clear();
         }
         lista1 = dH.findPitanje(anketaId);
