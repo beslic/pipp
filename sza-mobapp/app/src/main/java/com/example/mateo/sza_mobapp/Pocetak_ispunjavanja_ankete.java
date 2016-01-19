@@ -53,10 +53,10 @@ public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
 
         }
         else{
-            Log.d("pitanja", "u else if-u");
+            //Log.d("pitanja", "u else if-u");
             mGPS.showSettingsAlert();
 
-            Log.d("pitanja", "provjera = false");
+            //Log.d("pitanja", "provjera = false");
         }
     }
 
@@ -69,24 +69,21 @@ public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
             longitude = mGPS.longitude;
             latitude = mGPS.latitude;
             poznataLokacija = true;
-            Log.d("PPA_GPS", "*****lokacija poznata*****");
-
         }
         else{
-
             longitude = 0;
             latitude = 0;
             poznataLokacija = false;
         }
-
+        Log.d("PPA_GPS", "lokacija poznata=" + poznataLokacija);
         /*else{
             Log.d("pitanja", "u else if-u");
             mGPS.showSettingsAlert();
 
             Log.d("pitanja", "provjera = false");
         }*/
-
-        Log.d("pitanja", "u ifu");
+        mGPS.stopUsingGPS();
+        //Log.d("pitanja", "u ifu");
         Intent i3 = new Intent(this, listaPitanja2.class);
         i3.putExtra("anketa1", anketaId);
         i3.putExtra("lon", longitude);
@@ -94,6 +91,10 @@ public class Pocetak_ispunjavanja_ankete extends AppCompatActivity {
         i3.putExtra("poznato", poznataLokacija);
         startActivity(i3);
 
-        Log.d("pitanja", "iza ifa");
+        //Log.d("pitanja", "iza ifa");
+    }
+
+    public void nazad(View view){
+        finish();
     }
 }

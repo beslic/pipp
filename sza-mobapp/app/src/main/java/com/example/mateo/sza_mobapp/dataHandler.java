@@ -55,7 +55,7 @@ public class dataHandler extends SQLiteOpenHelper {
     public static final String COLUMN_ID_ISPUNJAVANJA = "idIspunjvanja";
     public static final String COLUMN_LONGITUDE = "longitude";
     public static final String COLUMN_LATITUDE = "latitude";
-
+    public static final String COLUMN_LOKACIJA_POZNATA = "poznataLok";
     public dataHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
@@ -92,7 +92,8 @@ public class dataHandler extends SQLiteOpenHelper {
                 +COLUMN_ID_ISPUNJAVANJA+" INTEGER PRIMARY KEY, "
                 +COLUMN_VRIJEME_IZRADE + " DATETIME, "
                 +COLUMN_LONGITUDE + " DOUBLE, "
-                +COLUMN_LATITUDE + " DOUBLE) ";
+                +COLUMN_LATITUDE + " DOUBLE, "
+                +COLUMN_LOKACIJA_POZNATA + " INTEGER)";
 
         String CREATE_TABLE6 = "CREATE TABLE IF NOT EXISTS " + TABLE_ODABRANI_ODGOVORI + " ("
                 +COLUMN_ID_ISPUNJAVANJA+ " TEXT, "
@@ -172,10 +173,9 @@ public class dataHandler extends SQLiteOpenHelper {
         values.put(COLUMN_KORISNICKO_IME, korisnik);
         values.put(COLUMN_ID_ISPUNJAVANJA, brojIspunjavanja);
         values.put(COLUMN_VRIJEME_IZRADE, timestamp);
-        if(poznataLokacija){
-            values.put(COLUMN_LONGITUDE, longitude);
-            values.put(COLUMN_LATITUDE, latitude);
-        }
+        values.put(COLUMN_LONGITUDE, longitude);
+        values.put(COLUMN_LATITUDE, latitude);
+        values.put(COLUMN_LOKACIJA_POZNATA, poznataLokacija);
         SQLiteDatabase db = this.getWritableDatabase();
         if(db.insert(TABLE_ISPUNJAVANJE_ANKETE, null, values)==-1){
             Log.d("*****addIspunjavanje  ", "error");
@@ -326,7 +326,7 @@ public class dataHandler extends SQLiteOpenHelper {
         return list;
     }
 
-    public List<NOVO_ispunjavanjeAnkete> findIspunjavajne(){
+    public List<NOVO_ispunjavanjeAnkete> findIspunjavanje(){
         List<NOVO_ispunjavanjeAnkete> list;
         list = new ArrayList<NOVO_ispunjavanjeAnkete>();
         String query = "SELECT * FROM " + TABLE_ISPUNJAVANJE_ANKETE;
@@ -343,6 +343,12 @@ public class dataHandler extends SQLiteOpenHelper {
             ispunjavanje.setDateTime(cursor.getString(3));
             ispunjavanje.setLongitude(cursor.getDouble(4));
             ispunjavanje.setLatitude(cursor.getDouble(5));
+            if(cursor.getInt(6) == 1) {
+                ispunjavanje.setPoznataLokacija(true);
+            }
+            else{
+                ispunjavanje.setPoznataLokacija(false);
+            }
             ispunjavanje.setOdabraniOdgovori(this.findOdabrani(cursor.getLong(2)));
             list.add(ispunjavanje);
             //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
@@ -354,6 +360,12 @@ public class dataHandler extends SQLiteOpenHelper {
                 ispunjavanje.setDateTime(cursor.getString(3));
                 ispunjavanje.setLongitude(cursor.getDouble(4));
                 ispunjavanje.setLatitude(cursor.getDouble(5));
+                if(cursor.getInt(6) == 1) {
+                    ispunjavanje.setPoznataLokacija(true);
+                }
+                else{
+                    ispunjavanje.setPoznataLokacija(false);
+                }
                 ispunjavanje.setOdabraniOdgovori(this.findOdabrani(cursor.getLong(2)));
                 list.add(ispunjavanje);
                 //Log.d("*****findOdgovor ", "dodano na listu: " + cursor.getString(4));
@@ -464,12 +476,13 @@ public class dataHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
             Log.d("*****ISPIS ", "korisnik:"+ cursor.getString(0)
                     +" "+cursor.getString(2)+" "+cursor.getString(3)+"    @"+cursor.getString(4)
-                    +" "+cursor.getString(5)+"    "+cursor.getString(9)+" "+cursor.getString(14));
+                    +" "+cursor.getString(5)+ " " +cursor.getString(6)+"    "+cursor.getString(10)+" "+cursor.getString(15));
             while(cursor.moveToNext()){
                 Log.d("*****ISPIS ", "korisnik:"+cursor.getString(0)
                         +" "+cursor.getString(2)+" "+cursor.getString(3)
                         +"    @"+cursor.getString(4)+" "+cursor.getString(5)
-                        +"    "+cursor.getString(9)+" "+cursor.getString(14));
+                        + " " +cursor.getString(6)
+                        +"    "+cursor.getString(10)+" "+cursor.getString(15));
             }
             cursor.close();
             Log.d("*****ISPIS ", "KRAJ");

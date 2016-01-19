@@ -16,7 +16,16 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="75dp" />
+            android:layout_marginTop="75dp"
+            />
+        <TextView
+            android:layout_below="@id/pocetakText1"
+            android:layout_width="match_parent"
+            android:layout_height="5sp"
+            android:text=" "
+            android:id="@+id/divider"
+            android:textSize="5sp"
+            android:background="@color/divider" />
         <TextView
             android:id="@+id/pocetakText2"
             android:layout_width="match_parent"
@@ -45,8 +54,7 @@
         android:text="Ovdje se nalazi opis ankete"
         android:textSize="20sp"
         android:id="@+id/textOpisAnkete"
-        android:layout_below="@+id/textView2"
-
+        android:layout_below="@+id/divider2"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="10dp" />
@@ -62,4 +70,25 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="5sp"
+        android:text=" "
+        android:id="@+id/divider2"
+        android:textSize="5sp"
+        android:layout_below="@id/textView2"
+        android:background="@color/divider"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Natrag"
+        android:onClick="nazad"
+        android:id="@+id/buttonNazad"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
