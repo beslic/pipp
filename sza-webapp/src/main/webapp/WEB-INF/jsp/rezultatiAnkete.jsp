@@ -21,7 +21,7 @@
     <div class="container">
         
         <div class="col-md-10">
-            <h3>Rezultati ankete ${anketa.nazivAnketa}
+            <h2>Rezultati ankete ${anketa.nazivAnketa}
                 <c:if test="${!anketa.aktivna}">
                    <span class="glyphicon glyphicon-info-sign icon-info" 
                    data-toggle="popover" data-trigger="hover" title="Anketa nije aktivna!" 
@@ -30,9 +30,9 @@
                 <span class="pull-right">
                     <button id="rezultati" type="button" name="razultati" onclick="location.href='/sza-webapp/${url}/'" class="btn btn-info">Anketa</button>
                 </span>
-            </h3>
+            </h2>
             <hr>
-            <h3><small>${anketa.opisAnketa}</small>
+            <h2><small>${anketa.opisAnketa}</small>
                 <span class="pull-right">
 <!--                     <select class="form-control" onChange="grafikon(this.value)"> -->
 <!-- 					    <option value="pie" selected="selected">Tortni grafikon</option> -->
@@ -50,7 +50,7 @@
                         </ul>
                    </div>
                 </span>
-            </h3>
+            </h2>
         </div>
         
         <c:forEach var="pitanje" items="${anketa.pitanja}" varStatus="p">
