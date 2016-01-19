@@ -1,7 +1,5 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
@@ -12,12 +10,13 @@ import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import hr.fer.pipp.sza.webapp.dao.DAOIspn;
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
-import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.utils.Json;
 import hr.fer.pipp.sza.webapp.utils.Util;
 
 @Path("/android")
@@ -27,46 +26,39 @@ public class AndroidKontroler {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String provjeriKorisnika(String json) {
-
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
-		System.out.println("Android: " + json);
-
 		if (json == null || json.length() < 2) {
-			return "{\"status\":\"failed\"}";
+			return gson.toJson(Json.setStatus("failed"));
 		}
-
-		JsonElement je = new JsonParser().parse(json);
-		JsonObject jo = je.getAsJsonObject();
-
-		Map<String, String> greska = null;
-		try {
-			greska = Util.provjeriFormuPrijavljivanjaAnketara(jo.get("ime").getAsString(),
-					jo.get("lozinka").getAsString());
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-			e.printStackTrace();
-		}
-
-		JsonObject jsonObj = new JsonObject();
-
+		Map<String, String> greska = Util.provjeriPrijavu(Json.prijava("ime", json), Json.prijava("lozinka", json));
+		JsonObject jsonObj;
 		if (greska.isEmpty()) {
-			jsonObj.addProperty("status", "success");
-			// dohvati korisnika iz baze
-			Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(jo.get("ime").getAsString());
-			// pretvori ga u JSON objekt
-			JsonObject innerJson = new JsonParser().parse(gson.toJson(korisnik)).getAsJsonObject();
-			// spremi ga kako property vanjskog JSON-a
-			jsonObj.add("korisnik", innerJson);
+			jsonObj = Json.setStatus("success");
+			jsonObj.add("korisnik",
+					new JsonParser()
+							.parse(gson.toJson(DAOKorisnik.getDAO().dohvatiKorisnika(Json.prijava("ime", json))))
+							.getAsJsonObject());
 		} else {
-			jsonObj.addProperty("status", "failed");
+			jsonObj = Json.setStatus("failed");
 			if (greska.containsKey("ime")) {
 				jsonObj.addProperty("errormessage", greska.get("ime"));
 			} else if (greska.containsKey("lozinka")) {
 				jsonObj.addProperty("errormessage", greska.get("lozinka"));
 			}
 		}
+		return gson.toJson(jsonObj);
+	}
 
-		return jsonObj.toString();
+	@POST
+	@Path("/result")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public static String spremiRezultate(String json) {
+		JsonParser parser = new JsonParser();
+		JsonArray root = parser.parse(json).getAsJsonArray();
+		DAOIspn.getDAO().spremiIspunjavanja(Json.jsonToIspn(root));
+		Gson gson = new Gson();
+		return gson.toJson(Json.setStatus("success"));
 	}
 
 }

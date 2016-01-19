@@ -33,26 +33,22 @@ public class PrijavaKontroler {
 		req.setAttribute("url", 1);
 		return Response.ok(new Viewable("/prijava")).build();
 	}
-	
+
 	@POST
 	@Produces(MediaType.TEXT_HTML)
 	public Response noviKorisnik(@Context HttpServletRequest request, @Context UriInfo uri,
-			@FormParam("korisnickoime") String korisnickoIme,
-			@FormParam("lozinka") String lozinka)
-			 {
+			@FormParam("korisnickoime") String korisnickoIme, @FormParam("lozinka") String lozinka) {
 
-		Map<String, String> greska = Util.provjeriFormuPrijavljivanja(korisnickoIme, lozinka);
+		Map<String, String> greska = Util.provjeriPrijavu(korisnickoIme, lozinka);
 
 		if (greska.isEmpty()) {
 			Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
-			
-			if (korisnik.getRazinaPrava() == 0) { //ako se prijavljuje admin
+			if (korisnik.getRazinaPrava() == 0) { // ako se prijavljuje admin
 				List<Korisnik> listaKorisnika = DAOKorisnik.getDAO().dohvatiSveKorisnike();
-				int cekajuPotvrdu = (int) listaKorisnika.stream().filter(k ->k.isAktivan() == false).count();
+				int cekajuPotvrdu = (int) listaKorisnika.stream().filter(k -> k.isAktivan() == false).count();
 				request.getSession().setAttribute("cekajuPotvrdu", cekajuPotvrdu);
 				request.getSession().setAttribute("listaKorisnika", listaKorisnika);
 			}
-			
 			request.getSession().setAttribute("korisnik", korisnik);
 			return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
 		} else {
