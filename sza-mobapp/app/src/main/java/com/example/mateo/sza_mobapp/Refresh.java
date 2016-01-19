@@ -127,11 +127,15 @@ public class Refresh {
 
         dataHandler dh = new dataHandler(context, null, null, 1);
         List<NOVO_ispunjavanjeAnkete> ispunjavanja = dh.findIspunjavanje();
+        if(ispunjavanja.size() == 0){
+            Toast.makeText(context, "Nema novih ispunjavanja", Toast.LENGTH_LONG).show();
+            return false;
+        }
         Gson gson = new Gson();
         String jsonIspunjavanja = gson.toJson(ispunjavanja);
         Log.d("ISPUNJENE ", jsonIspunjavanja);
         String odgovor = "";
-        NetworkConnection PROVJERA = new NetworkConnection(context, adresa + ":8080/sza-webapp/****/");
+        NetworkConnection PROVJERA = new NetworkConnection(context, adresa + ":8080/sza-webapp/android/result/");
         if (PROVJERA.isConnected() == false) {
             Toast.makeText(context, "Nema internetske veze", Toast.LENGTH_LONG).show();
         } else {

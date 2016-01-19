@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             login();
         };
         if(r.slanjeIspunjenih(loginInfo.getString("ADRESA_SERVERA", "192.168.1.102")) == true){
+            Toast.makeText(getApplicationContext(), "Slanje ispunjenih anketa uspješno provedeno", Toast.LENGTH_LONG).show();
             dbH.brisanjeIspunjavanja();
         }
         refreshTablica();
