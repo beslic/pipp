@@ -1,7 +1,7 @@
 package hr.fer.pipp.sza.webapp.modeli;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,13 +39,13 @@ public class Ispunjavanje {
 
 	@Expose
 	@ManyToMany
-	private Collection<Odgovor> odgovori;
+	private Map<Pitanje, Odgovor> odgovori;
 
 	public Ispunjavanje() {
 
 	}
 
-	public Ispunjavanje(Korisnik anketar, Anketa anketa, GPSPozicija pozicija, Collection<Odgovor> odgovori) {
+	public Ispunjavanje(Korisnik anketar, Anketa anketa, GPSPozicija pozicija, Map<Pitanje, Odgovor> odgovori) {
 		super();
 		this.anketar = anketar;
 		this.anketa = anketa;
@@ -94,11 +94,11 @@ public class Ispunjavanje {
 		this.pozicija = pozicija;
 	}
 
-	public Collection<Odgovor> getOdgovori() {
+	public Map<Pitanje, Odgovor> getOdgovori() {
 		return odgovori;
 	}
 
-	public void setOdgovori(Collection<Odgovor> odgovori) {
+	public void setOdgovori(Map<Pitanje, Odgovor> odgovori) {
 		this.odgovori = odgovori;
 	}
 

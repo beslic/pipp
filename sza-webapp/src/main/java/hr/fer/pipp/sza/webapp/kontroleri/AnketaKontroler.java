@@ -1,7 +1,7 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +31,7 @@ import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Ispunjavanje;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 import hr.fer.pipp.sza.webapp.modeli.Odgovor;
+import hr.fer.pipp.sza.webapp.modeli.Pitanje;
 import hr.fer.pipp.sza.webapp.utils.ChartData;
 import hr.fer.pipp.sza.webapp.utils.Util;
 
@@ -68,14 +69,14 @@ public class AnketaKontroler {
 	@Path("/{id-naziv}")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public static Response spremiOdgovor(@Context HttpServletRequest req, MultivaluedMap<String, String> form,
+	public static Response spremiIspunjavanje(@Context HttpServletRequest req, MultivaluedMap<String, String> form,
 			@PathParam("id-naziv") String idNaziv) {
 		Anketa anketa = DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0]));
-		List<Odgovor> odgovori = new ArrayList<>();
-		anketa.getPitanja()
-				.forEach(p -> p.getOdgovor().stream().filter(
-						o -> form.getFirst(Long.toString(p.getIdPitanje())).equals(Long.toString(o.getIdOdgovor())))
-				.forEach(odgovori::add));
+		Map<Pitanje, Odgovor> odgovori = new LinkedHashMap<>();
+		anketa.getPitanja().forEach(p -> odgovori.put(p,
+				p.getOdgovor().stream().filter(o -> Long
+						.compare(Long.parseLong(form.getFirst(Long.toString(p.getIdPitanje()))), o.getIdOdgovor()) == 0)
+				.findFirst().get()));
 		DAOIspn.getDAO().spremiIspunjavanje(new Ispunjavanje(null, anketa, null, odgovori));
 		return Response.seeOther(UriBuilder.fromPath("ankete/" + idNaziv + "/rezultati/").build()).build();
 	}

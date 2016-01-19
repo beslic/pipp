@@ -19,7 +19,7 @@ public class Odgovor {
 	@Id
 	@GeneratedValue
 	@Expose
-	private int idOdgovor;
+	private long idOdgovor;
 
 	@ManyToOne
 	private Pitanje pitanje;
@@ -44,11 +44,11 @@ public class Odgovor {
 		this.rbrOdgovor = rbrOdgovor;
 	}
 
-	public int getIdOdgovor() {
+	public long getIdOdgovor() {
 		return idOdgovor;
 	}
 
-	public void setIdOdgovor(int idOdgovor) {
+	public void setIdOdgovor(long idOdgovor) {
 		this.idOdgovor = idOdgovor;
 	}
 
@@ -88,7 +88,7 @@ public class Odgovor {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + idOdgovor;
+		result = prime * result + (int) (idOdgovor ^ (idOdgovor >>> 32));
 		return result;
 	}
 
