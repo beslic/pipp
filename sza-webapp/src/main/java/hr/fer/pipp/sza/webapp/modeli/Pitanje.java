@@ -21,7 +21,7 @@ public class Pitanje {
 	@Id
 	@GeneratedValue
 	@Expose
-	private int idPitanje;
+	private long idPitanje;
 
 	@ManyToOne
 	private Anketa anketa;
@@ -33,7 +33,7 @@ public class Pitanje {
 	@Expose
 	@Column(nullable = false)
 	private String textPitanje;
-	
+
 	@Expose
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pitanje", orphanRemoval = true)
 	private List<Odgovor> odgovor;
@@ -56,11 +56,11 @@ public class Pitanje {
 		this.odgovor = odgovor;
 	}
 
-	public int getIdPitanje() {
+	public long getIdPitanje() {
 		return idPitanje;
 	}
 
-	public void setIdPitanje(int idPitanje) {
+	public void setIdPitanje(long idPitanje) {
 		this.idPitanje = idPitanje;
 	}
 
@@ -92,7 +92,7 @@ public class Pitanje {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + idPitanje;
+		result = prime * result + (int) (idPitanje ^ (idPitanje >>> 32));
 		return result;
 	}
 

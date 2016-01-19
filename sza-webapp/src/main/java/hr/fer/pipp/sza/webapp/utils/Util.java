@@ -59,9 +59,7 @@ public class Util {
 
 	public static Map<String, String> provjeriRegistracijskuFormu(String korisnickoIme, String ime, String prezime,
 			String lozinka, String lozinkaPotvrda, String email, String razinaPrava) {
-
 		Map<String, String> greska = new HashMap<>();
-
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
 			greska.put("korisnickoime", "Korisničko ime je prazno");
 		} else if (DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme) != null) {
@@ -86,67 +84,28 @@ public class Util {
 		} else if (!lozinka.equals(lozinkaPotvrda)) {
 			greska.put("lozinkapotvrda", "Lozinke se ne podudaraju");
 		}
-
 		return greska;
 	}
 
-	public static Map<String, String> provjeriFormuPrijavljivanja(String korisnickoIme, String lozinka) {
-
+	public static Map<String, String> provjeriPrijavu(String korisnickoIme, String lozinka) {
 		Map<String, String> greska = new HashMap<>();
-
-		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
-			greska.put("korisnickoime", "Korisničko ime je prazno");
-			return greska;
-		}
-
-		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
-
-		if (korisnik == null) {
-			greska.put("korisnickoime", "Korisničko ime nije pronađeno u bazi");
-			return greska;
-		}
-
-		if (lozinka == null || lozinka.length() < 8) {
-			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
-			return greska;
-		}
-		try {
-			if (!PasswordHash.validatePassword(lozinka, korisnik.getLozinka())) {
-				greska.put("lozinka", "Lozinka je netočna");
-				return greska;
-			}
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {
-
-		}
-
-		return greska;
-	}
-
-	public static Map<String, String> provjeriFormuPrijavljivanjaAnketara(String korisnickoIme, String lozinka)
-			throws NoSuchAlgorithmException, InvalidKeySpecException {
-
-		Map<String, String> greska = new HashMap<>();
-
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
 			greska.put("ime", "Korisničko ime je prazno");
 			return greska;
 		}
-
 		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
-
 		if (korisnik == null) {
 			greska.put("ime", "Korisničko ime nije pronađeno u bazi");
-			return greska;
-		}
-
-		if (lozinka == null || lozinka.length() < 8) {
+		} else if (lozinka == null || lozinka.length() < 8) {
 			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
-			return greska;
-		} else if (!PasswordHash.validatePassword(lozinka, korisnik.getLozinka())) {
-			greska.put("lozinka", "Lozinka je netočna");
-			return greska;
+		} else {
+			try {
+				if (!PasswordHash.validatePassword(lozinka, korisnik.getLozinka())) {
+					greska.put("lozinka", "Lozinka je netočna");
+				}
+			} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {
+			}
 		}
-
 		return greska;
 	}
 
@@ -217,11 +176,8 @@ public class Util {
 
 	private static List<Korisnik> dohvatiAnketare(MultivaluedMap<String, String> form, Anketa anketa) {
 		List<Korisnik> anketari = new ArrayList<>();
-		for (String s : form.keySet()) {
-			if (s.matches("anketar-[0-9]+")) {
-				anketari.add(DAOKorisnik.getDAO().dohvatiKorisnika(form.getFirst(s)));
-			}
-		}
+		form.keySet().stream().filter(s -> s.matches("anketar-[0-9]"))
+				.forEach(s -> anketari.add(DAOKorisnik.getDAO().dohvatiKorisnika(form.getFirst(s))));
 		return anketari;
 	}
 
@@ -342,7 +298,7 @@ public class Util {
 			requestContext.abortWith(Util.r404());
 		}
 	}
-	
+
 	public static void azurirajAktivnostKorisnika(MultivaluedMap<String, String> checkboxes) {
 		for (String key : checkboxes.keySet()) {
 			if (key.startsWith("nepotvrdjen-")) {

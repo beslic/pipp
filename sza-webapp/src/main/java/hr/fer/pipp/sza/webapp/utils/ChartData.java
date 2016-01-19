@@ -1,5 +1,7 @@
 package hr.fer.pipp.sza.webapp.utils;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,10 +39,12 @@ public class ChartData {
 	private static JsonArray getDataPoints(Map<Odgovor, Long> brojOdgovora, Pitanje p) {
 		JsonArray dataPoints = new JsonArray();
 		suma = brojOdgovora.values().stream().mapToLong(Long::longValue).sum();
+		DecimalFormat df = new DecimalFormat("#.##%");
+		df.setRoundingMode(RoundingMode.HALF_EVEN);
 		for (Odgovor odg : p.getOdgovor()) {
 			JsonObject jo = new JsonObject();
 			jo.addProperty("y", brojOdgovora.getOrDefault(odg, (long) 0));
-			jo.addProperty("p", String.format("%.2f", brojOdgovora.get(odg) / ((double) suma)));
+			jo.addProperty("p", df.format(brojOdgovora.get(odg) / ((double) suma)));
 			jo.addProperty("label", odg.getTextOdgovor());
 			jo.addProperty("exploded", true);
 			dataPoints.add(jo);
