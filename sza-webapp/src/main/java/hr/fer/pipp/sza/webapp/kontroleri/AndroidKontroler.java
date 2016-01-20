@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import hr.fer.pipp.sza.webapp.dao.DAOIspn;
@@ -54,11 +55,17 @@ public class AndroidKontroler {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public static String spremiRezultate(String json) {
-		JsonParser parser = new JsonParser();
-		JsonArray root = parser.parse(json).getAsJsonArray();
-		DAOIspn.getDAO().spremiIspunjavanja(Json.jsonToIspn(root));
-		Gson gson = new Gson();
-		return gson.toJson(Json.setStatus("success"));
+		JsonObject obj = null;
+		try {
+			JsonArray root = new JsonParser().parse(json).getAsJsonArray();
+			int vel = DAOIspn.getDAO().spremiIspunjavanja(Json.jsonToIspn(root)).size();
+			obj = Json.setStatus("success");
+			obj.addProperty("spremljeno", vel);
+		} catch (JsonParseException ex) {
+			obj = Json.setStatus("failed");
+			obj.addProperty("error", ex.getMessage());
+		}
+		return new Gson().toJson(obj);
 	}
 
 }

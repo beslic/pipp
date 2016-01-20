@@ -37,8 +37,6 @@ public class Json {
 		}
 		ispn.setPozicija((jo.get("poznataLokacija").getAsBoolean())
 				? new GPSPozicija(jo.get("latitude").getAsDouble(), jo.get("longitude").getAsDouble()) : null);
-		// TODO maknuti ovo ispod
-		ispn.setPozicija(new GPSPozicija(Math.random(), Math.random()));
 		ispn.setOdgovori(dohvatiOdgovore(jo.get("odabraniOdgovori").getAsJsonArray(), ispn.getAnketa()));
 		return ispn;
 	}

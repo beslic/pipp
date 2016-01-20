@@ -3,6 +3,7 @@ package hr.fer.pipp.sza.webapp.modeli;
 import java.util.Date;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class Ispunjavanje {
 	private Date vrijeme;
 
 	@Expose
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private GPSPozicija pozicija;
 
 	@Expose

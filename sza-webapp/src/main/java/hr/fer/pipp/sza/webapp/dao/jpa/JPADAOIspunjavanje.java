@@ -28,8 +28,10 @@ public class JPADAOIspunjavanje implements IDAOIspunjavanje {
 		EntityManager em = JPAEMProvider.getEntityManager().getEntityManagerFactory().createEntityManager();
 		Anketa a = em.find(Anketa.class, ispns.iterator().next().getAnketa().getIdAnketa());
 		em.getTransaction().begin();
-		ispns.forEach(ispn -> em.persist(ispn));
-		a.getIspunjavanja().addAll(ispns);
+		ispns.forEach(ispn -> {
+			em.persist(ispn);
+			a.getIspunjavanja().add(ispn);
+		});
 		em.getTransaction().commit();
 		em.close();
 		return ispns;

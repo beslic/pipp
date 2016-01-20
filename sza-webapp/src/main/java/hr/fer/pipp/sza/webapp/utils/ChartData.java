@@ -57,7 +57,7 @@ public class ChartData {
 		dataSeries.addProperty("name", name);
 		dataSeries.addProperty("type", "pie");
 		dataSeries.addProperty("startAngle", -90);
-		dataSeries.addProperty("indexLabelFontFamily", "Sans");
+		dataSeries.addProperty("indexLabelFontFamily", "Sans,Arial,Helvetica");
 		dataSeries.addProperty("indexLabelFontSize", 15);
 		dataSeries.addProperty("indexLabel", "{label}: {p}");
 		dataSeries.addProperty("toolTipDataContent", "{label}: {y}");
@@ -78,7 +78,7 @@ public class ChartData {
 		JsonObject legend = new JsonObject();
 		legend.addProperty("horizontalAlign", "left");
 		legend.addProperty("verticalAlign", "center");
-		legend.addProperty("fontFamily", "Sans");
+		legend.addProperty("fontFamily", "Sans,Arial,Helvetica");
 		legend.addProperty("fontWeight", "lighter");
 		legend.addProperty("fontColor", "black");
 		legend.addProperty("fontSize", 20);
