@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'war'
 
 group = 'hr.fer.pipp.sza.webapp'
 version = '0.0.1-SNAPSHOT'
@@ -9,13 +10,13 @@ description = """sza-webapp"""
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-
+war.archiveName = 'sza-webapp.war'
 
 repositories {
-        
-     maven { url "http://repo.maven.apache.org/maven2" }
+     mavenCentral()
 }
 dependencies {
+    compile group: 'org.apache.tomcat.maven', name: 'tomcat7-maven-plugin', version: '2.2'
     compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet-core', version:'2.22.1'
     compile group: 'org.glassfish.jersey.ext', name: 'jersey-mvc-jsp', version:'2.22.1'
     compile group: 'junit', name: 'junit', version:'4.12'

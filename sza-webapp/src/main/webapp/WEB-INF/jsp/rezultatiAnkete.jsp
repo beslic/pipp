@@ -33,33 +33,25 @@
             </h2>
             <hr>
             <h2><small>${anketa.opisAnketa}</small>
-                <span class="pull-right">
-<!--                     <select class="form-control" onChange="grafikon(this.value)"> -->
-<!-- 					    <option value="pie" selected="selected">Tortni grafikon</option> -->
-<!-- 					    <option value="doughnut">Prstenasti grafikon</option> -->
-<!-- 					    <option value="bar">Stupičasti grafikon</option> -->
-<!--                     </select> -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Izgled grafikona  <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-						    <li><a onclick="grafikon('pie')">Tortni grafikon</a></li>
-						    <li><a onclick="grafikon('doughnut')">Prstenasti grafikon</a></li>
-						    <li><a onclick="grafikon('bar')">Stupičasti grafikon</a></li>
-                        </ul>
-                   </div>
-                </span>
-            </h2>
+            <span class="button-group pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Izgled grafikona  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a onclick="grafikon('pie')">Tortni grafikon</a></li>
+                    <li><a onclick="grafikon('doughnut')">Prstenasti grafikon</a></li>
+                    <li><a onclick="grafikon('bar')">Stupičasti grafikon</a></li>
+                </ul>
+                </span
+            ></h2>
         </div>
-        
         <c:forEach var="pitanje" items="${anketa.pitanja}" varStatus="p">
 	       <div id="pitanje${p.index + 1}" class="col-md-8 col-md-offset-1">
 	           <h3><small>${pitanje.rbrPitanje}.</small>  ${pitanje.textPitanje}</h3>
 	           <hr>
-	           <c:forEach var="k" items="${data}" varStatus="i">
-                <div id="chartContainer${i.index + 1}" style="height:400px" class="chartContainer"></div>
-               </c:forEach>
+	       </div>
+	       <div class="col-md-8 col-md-offset-1">
+	           <div id="chartContainer${p.index + 1}" style="height:400px" class="chartContainer"></div>
 	       </div>
         </c:forEach>
         <div class="col-md-10">
@@ -87,17 +79,16 @@
     </c:forEach>
     
     function grafikon(tip) {
-    	var chart = $(".chartContainer").CanvasJSChart();
-    	if (tip === 'bar') {
-    		chart.options.data[0].showInLegend = false;
-    		chart.options.zoomEnabled = true;
-    		chart.options.zoomType = 'y';
-    	} else {
-    		chart.options.data[0].showInLegend = true;
-    		chart.options.zoomEnabled = false;
-    	}
-    	chart.options.data[0].type = tip;
-    	chart.render();
+    	$(".chartContainer").each(function() {
+    		var chart = $(this).CanvasJSChart();
+    		if (tip === 'bar') {
+    			chart.options.data[0].showInLegend = false;
+            } else {
+            	chart.options.data[0].showInLegend = true;
+            }
+    		chart.options.data[0].type = tip;
+    		chart.render();
+    	});
     }
     
     </script>

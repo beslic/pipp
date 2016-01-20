@@ -44,7 +44,7 @@ public class ChartData {
 		for (Odgovor odg : p.getOdgovor()) {
 			JsonObject jo = new JsonObject();
 			jo.addProperty("y", brojOdgovora.getOrDefault(odg, (long) 0));
-			jo.addProperty("p", df.format(brojOdgovora.get(odg) / ((double) suma)));
+			jo.addProperty("p", df.format(brojOdgovora.getOrDefault(odg, (long) 0) / ((double) suma)));
 			jo.addProperty("label", odg.getTextOdgovor());
 			jo.addProperty("exploded", true);
 			dataPoints.add(jo);
@@ -59,7 +59,7 @@ public class ChartData {
 		dataSeries.addProperty("startAngle", -90);
 		dataSeries.addProperty("indexLabelFontFamily", "Sans");
 		dataSeries.addProperty("indexLabelFontSize", 15);
-		dataSeries.addProperty("indexLabel", "{label}: {p}%");
+		dataSeries.addProperty("indexLabel", "{label}: {p}");
 		dataSeries.addProperty("toolTipDataContent", "{label}: {y}");
 		dataSeries.addProperty("showInLegend", true);
 		dataSeries.addProperty("legendText", "{label}");
