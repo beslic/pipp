@@ -1,10 +1,13 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -99,6 +102,34 @@ public class AnketaKontroler {
 		req.setAttribute("anketa", a);
 		req.setAttribute("data", ChartData.getData(a));
 		return Response.ok(new Viewable("/rezultatiAnkete")).build();
+	}
+
+	@GET
+	@Path("/{id-naziv}/dozvole")
+	@Produces(MediaType.TEXT_HTML)
+	public static Response prikaziDozvoleAnkete(@Context HttpServletRequest req,
+			@PathParam("id-naziv") String idNaziv) {
+		Util.setAktivno(req, "aktivAnkete");
+
+		Anketa a = DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0]));
+		req.setAttribute("anketa", a);
+
+		List<Korisnik> listaAnketara = DAOKorisnik.getDAO().dohvatiSveKorisnike();
+		req.setAttribute("anketari", listaAnketara.stream()
+				.filter(kr -> kr.isAktivan() == true && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
+
+		// iz baze dohvati trenutne dozvole
+
+		return Response.ok(new Viewable("/dozvoleAnkete")).build();
+	}
+
+	@POST
+	@Path("/{id-naziv}/dozvole")
+	@Produces(MediaType.TEXT_HTML)
+	public Response izmjeniDozvoleAnkete(@Context HttpServletRequest req, @PathParam("id-naziv") String idNaziv,
+			MultivaluedMap<String, String> checkboxes) throws ServletException, IOException {
+		// Util.azurirajDozvoleAnkete(checkboxes);
+		return prikaziDozvoleAnkete(req, idNaziv);
 	}
 
 	public static Response prikaziAnkete(HttpServletRequest req, List<Anketa> ankete, String naslov, String prazno,
