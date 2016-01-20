@@ -59,7 +59,7 @@
 	                </c:forEach>
 	            </div>
 	        </c:forEach>
-		    <div class="col-md-10">
+		    <div class="col-md-10" style="margin-bottom:70px">
 		        <hr>
 		        <c:if test="${anketa.aktivna}">
 	               <span class="pull-right">
