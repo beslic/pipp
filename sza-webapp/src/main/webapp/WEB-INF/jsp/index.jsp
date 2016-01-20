@@ -13,47 +13,104 @@
 <body>
 <jsp:include page="header.jsp" />
 
-<header id="myCarousel" class="carousel slide">
+<div class="container" id="odvojiJumbotronOdHeadera">
+	<div class="jumbotron">
+		  <h1><span class="glyphicon glyphicon-list-alt"></span> Sustav za anketiranje</h1>
+		  <p>Sustav za provođenje anketiranja putem web aplikacije i mobilne aplikacije</p>
+  		  <p><b>Mobilna aplikacija </b><span class="glyphicon glyphicon-chevron-right"></span> kreiranje anketa</p> 
+		  <p><b>Web aplikacija </b><span class="glyphicon glyphicon-chevron-right"></span> provođenje anketa</p> 
+		  <p><a class="btn btn-primary btn-lg" href="#" role="button">Mobilna aplikacija</a></p>
+	</div>
+</div>
+<hr>
 
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>
+<div class="container">
 
-        <div class="carousel-inner">
-            <div class="item active">
-                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Prva anketa');"></div>
-                <div class="carousel-caption">
-                    <h2>Naslov prve ankete</h2>
-                </div>
-            </div>
-            <div class="item">
-                <!-- Set the second background image using inline CSS below. -->
-                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Druga anketa');"></div>
-                <div class="carousel-caption">
-                    <h2>Naslov druge ankete</h2>
-                </div>
-            </div>
-            <div class="item">
-                <!-- Set the third background image using inline CSS below. -->
-                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Treca anketa');"></div>
-                <div class="carousel-caption">
-                    <h2>Ilko Brnetic</h2>
-                </div>
-            </div>
-        </div>
+<div class="panel panel-primary">
+  <div class="panel-heading"><b>Anketiranje</b></div>
+  <div class="panel-body">
+  	Anketiranje je posebna metoda prikupljanja podataka uz čiju 
+	pomoć dolazimo do podataka o stavovima i mišljenjima anketiranih 
+	ispitanika. Anketiranje se provodi postavljanjem točno određenih 
+	pitanja određenoj grupi ljudi na koje oni odgovaraju jednim ili
+	 više odgovora. Anketiranje koriste osobe ili tvrtke koje žele
+	  provjeriti zadovoljstvo stranaka proizvodima, uslugama, otkriti
+	   želje i potrebe klijenata, javno mišljenje stranaka o određenim
+	    temama, itd. Razvojem novih tehnologija, prvenstveno telefona 
+	    i interneta, dolazi do olakšanja provođenja anketiranja.
+  </div>
+</div>
+</div>
+<div class="container" id="positionCenter" style="width: 60%">
 
-        <!-- Controls -->
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-            <span class="icon-prev"></span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next">
-            <span class="icon-next"></span>
-        </a>
+ <h2 class="topmargin">Članovi tima</h2>
+ <hr>
+ <br>    
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th><b>Ime i prezime</b></th>
+        <th><b>E-mail adresa</b></th>
+        <th><b>GSM broj</b></th>
+        
+      </tr>
+    </thead>   
+			<tr>      
+			<td>Petar Bešlić</td>
+			<td>petar.beslic2@fer.hr</td>
+			<td></td>
+			</tr>
+			<tr>
+			<td>Andrea Kurek</td>
+			<td>andrea.kurek@fer.hr</td>
+			<td>0917311832</td>
+			</tr>
+			<tr>
+			<td>Martin Mašić</td>
+			<td>martin.masic@fer.hr</td>
+			<td>0989560022</td>
+			</tr>
+			<tr>
+			<td>Marko Plantić</td>
+			<td>marko.plantic@fer.hr</td>
+			<td>0912091208</td>
+			</tr>
+			<tr>
+			<td>Marin Smoljanić</td>
+			<td>marin.smoljanic@fer.hr</td>
+			<td>0996902742</td>
+			</tr>
+			<tr>
+			<td>Vedran Biđin</td>
+			<td>vedran.bidin@fer.hr</td>
+			<td>0919508901</td>
+			</tr>
+			<tr>
+			<td>Mateo Glavičić</td>
+			<td>mateo.glavicic@fer.hr</td>
+			<td>0915179465</td>
+			</tr>
+			<tr>
+			<td>Alen Hrga</td>
+			<td>alen.hrga@fer.hr</td>
+			<td>0919885554</td>
+			</tr>
+			<tr>
+			<td>Pavao Križić</td>
+			<td>pavao.krizic@fer.hr</td>
+			<td>0919256321</td>
+			</tr>  
+      	</tbody>
+	</table>
+	<br>
+	<hr>
+</div>
+    
+<div id="footer">
+	<h2><span class="glyphicon glyphicon-option-horizontal"></span></h2>	
+	<p><span class="glyphicon glyphicon-copyright-mark"></span> Projekt iz programske potpore</>
 
-    </header>
+</div>
     
     <script>
    		$('.datepicker').datepicker()
