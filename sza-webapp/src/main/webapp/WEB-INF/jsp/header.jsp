@@ -4,8 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <nav id="headershadow"class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container-fluid">
-	    
+	<div class="col-md-10 col-md-offset-1 container-fluid">
+
 		<div class="navbar-header">
 	   		<a id="logoUrlLook" href="/sza-webapp/" class="navbar-brand"><span id="homeLogo" class="glyphicon glyphicon-home" aria-hidden="true"></span><strong> Sustav za anketiranje</strong></a>
 		</div>
@@ -46,8 +46,8 @@
    			        			<li><a href="/sza-webapp/registracija/">Registracija</a></li>
 				            </c:when>
           			        <c:otherwise>
-          			        	<li><a href="/sza-webapp/prijava/">Prijava</a></li>
-   			        			<li><a href="/sza-webapp/registracija/">Registracija</a></li>
+          			            <li><a href="/sza-webapp/prijava/"><span class="glyphicon glyphicon-log-in"></span> Prijava</a></li>
+   			        			<li><a href="/sza-webapp/registracija/"><span class="glyphicon glyphicon-user"></span> Registracija</a></li>
           			        </c:otherwise>
 				        </c:choose>
 			        </c:otherwise>
