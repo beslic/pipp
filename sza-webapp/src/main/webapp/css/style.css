@@ -17,6 +17,9 @@ fieldset {
 
 #footer{
 	text-align: center;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
 }
 
 #logoUrlLook{
@@ -27,8 +30,7 @@ fieldset {
 	color: gray;
 }
 #homeLogo{
-		color: #3e7cf0;
-	
+	color: #3e7cf0;
 }
 #odvojiJumbotronOdHeadera{
 	margin-top: 30px;
@@ -41,7 +43,6 @@ fieldset {
 #korisnikDetails{
 	margin-top: 50px;
 	width: 50%;
-
 }
 
 #odjavaRight{

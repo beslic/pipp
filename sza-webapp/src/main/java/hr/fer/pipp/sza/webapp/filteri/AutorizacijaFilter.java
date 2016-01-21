@@ -1,22 +1,23 @@
 package hr.fer.pipp.sza.webapp.filteri;
 
-import java.io.IOException;
-import java.net.URI;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 import hr.fer.pipp.sza.webapp.utils.Util;
 
-//@Provider
-//@PreMatching
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.PreMatching;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.ext.Provider;
+import java.io.IOException;
+import java.net.URI;
+
+@Provider
+@PreMatching
 public class AutorizacijaFilter implements ContainerRequestFilter {
 
 	@Context
@@ -31,7 +32,7 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 		Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
 		String url = "/" + uri.getPath();
 
-		if (url.equals("/")) {
+		if (url.equals("/") || url.equals("/tim/")) {
 			return;
 		}
 
@@ -40,7 +41,6 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 				if (url.matches("/ankete/[0-9]+-[\\p{L}+0-9\\-_]+/")) {
 					Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
 				}
-				return;
 			} else if (url.matches(Util.PRAVA_REGISTRIRANOG_KORISNIKA)) {
 				requestContext.abortWith(Response.temporaryRedirect(URI.create("/sza-webapp/prijava/")).build());
 			} else {
@@ -60,13 +60,11 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 									Korisnik k = (Korisnik) req.getSession().getAttribute("korisnik");
 									if (k == null) {
 										requestContext.abortWith(Util.r404());
-									}
-									if (!k.equals(a.getVlasnik())) {
+									} else if (!k.equals(a.getVlasnik())) {
 										requestContext.abortWith(Util.r403());
 									}
 								}
 								req.setAttribute("anketa", a);
-								return;
 							} else {
 								requestContext.abortWith(Util.r404());
 							}
@@ -77,7 +75,6 @@ public class AutorizacijaFilter implements ContainerRequestFilter {
 					} else if (url.matches("/ankete/[0-9]+-[\\p{L}+0-9_]+/")) {
 						Util.provjeraPrivatnostiAnkete(requestContext, req, uri);
 					}
-					return;
 				} else if (url.matches(Util.PRAVA_ANONIMNOG_KORISNIKA)) {
 					requestContext.abortWith(Util.r403());
 				} else {

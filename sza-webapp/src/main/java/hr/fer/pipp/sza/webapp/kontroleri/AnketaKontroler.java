@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -44,12 +43,8 @@ public class AnketaKontroler {
 	@Path("/{id-naziv}")
 	@Produces(MediaType.TEXT_HTML)
 	public static Response prikaziAnketu(@Context HttpServletRequest req, @PathParam("id-naziv") String idNaziv) {
-		if (idNaziv == null || idNaziv.length() == 0) {
-			return Response.ok(new Viewable("/404")).status(Status.NOT_FOUND).build();
-		}
-		Util.setAktivno(req, "aktivAnkete");
-		// TODO privremeno
-		return ispunjavanjeAnkete(req, DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0])));
+        Util.setAktivno(req, "aktivAnkete");
+		return ispunjavanjeAnkete(req, (Anketa) req.getAttribute("anketa"));
 	}
 
 	@POST
