@@ -19,6 +19,8 @@
 		<div class="row">
 
 			<h3>Čekaju aktivaciju:</h3>
+			<p><button class="btn btn-primary btn-xs" onclick="checkItems()">Select All</button></p>
+			
 
 			<form method="post">
 
@@ -62,5 +64,18 @@
 		</form>
 
 	</div>
+	
+<script type="text/javascript">
+        function checkItems() {
+
+        var test = document.querySelectorAll('input[name][type="checkbox"]:not([name^="potvrdjen-"])');
+
+	for (var i = 0; i < test.length; i++) {
+	    test[i].checked = true
+	}
+	  
+	}
+</script>
+	
 </body>
 </html>
