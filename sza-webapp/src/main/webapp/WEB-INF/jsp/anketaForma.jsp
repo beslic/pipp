@@ -200,20 +200,21 @@
          });
 
         $('#dateRangePickerTo')
-            .datepicker({
-                format: 'dd/mm/yyyy',
-                startDate: '01/01/2010',
-                endDate: '31/12/2020'
-            })
-            .on('changeDate', function(e) {
-                // Revalidate the date field
-                $('#dateRangeForm').formValidation('revalidateField', 'date');
-         });
-    });
+                .datepicker({
+                    format: 'dd/mm/yyyy',
+                    startDate: '01/01/2010',
+                    endDate: '31/12/2020'
+                })
+                .on('changeDate', function(e) {
+                    // Revalidate the date field
+                    $('#dateRangeForm').formValidation('revalidateField', 'date');
+             });
+        });
 
+        var brojPitanja = $("#pitanja").children().length + 1;
         function dodajPitanje() {
             var divPitanja = $("#pitanja");
-            var brojPitanja = divPitanja.children().length + 1;
+            brojPitanja++;
             divPitanja.append(
                 '<div id="pitanje' + brojPitanja + '"><div class="col-md-8 col-md-offset-2"><hr></div>' +
                     '<div class="form-group div-odgovor">' +

@@ -40,14 +40,22 @@
 			        <c:otherwise>
 			        	<c:choose>
 			        	    <c:when test="${url == 2}">			
-				        		<li><a href="/sza-webapp/prijava/">Prijava</a></li>
+				        		<li><div class="btn-toolbar">
+									<button class="btn btn-primary navbar-btn" onclick="location.href='/sza-webapp/prijava/'"><span class="glyphicon glyphicon-log-in"></span> Prijava</button>
+								</div></li>
 				            </c:when>
 				            <c:when test="${url == 1}">			
-   			        			<li><a href="/sza-webapp/registracija/">Registracija</a></li>
+   			        			<li><div class="btn-toolbar">
+									<button class="btn btn-primary navbar-btn" onclick="location.href='/sza-webapp/registracija/'"><span class="glyphicon glyphicon-user"></span> Registracija</button>
+								</div></li>
 				            </c:when>
           			        <c:otherwise>
-          			            <li><a href="/sza-webapp/prijava/"><span class="glyphicon glyphicon-log-in"></span> Prijava</a></li>
-   			        			<li><a href="/sza-webapp/registracija/"><span class="glyphicon glyphicon-user"></span> Registracija</a></li>
+          			            <li>
+          			                <div class="btn-toolbar">
+          			                    <button class="btn btn-primary navbar-btn" onclick="location.href='/sza-webapp/prijava/'"><span class="glyphicon glyphicon-log-in"></span> Prijava</button>
+   			        			        <button class="btn btn-primary navbar-btn" onclick="location.href='/sza-webapp/registracija/'"><span class="glyphicon glyphicon-user"></span> Registracija</button>
+   			        			    </div>
+   			        			</li>
           			        </c:otherwise>
 				        </c:choose>
 			        </c:otherwise>

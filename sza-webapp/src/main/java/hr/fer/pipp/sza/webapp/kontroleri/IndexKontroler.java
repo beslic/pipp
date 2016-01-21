@@ -1,8 +1,9 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.utils.Util;
+import org.glassfish.jersey.server.mvc.Viewable;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,12 +15,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-import org.glassfish.jersey.server.mvc.Viewable;
-
-import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
-import hr.fer.pipp.sza.webapp.modeli.Korisnik;
-import hr.fer.pipp.sza.webapp.utils.Util;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/")
 public class IndexKontroler {
@@ -50,11 +48,18 @@ public class IndexKontroler {
 		List<Korisnik> listaKorisnika = DAOKorisnik.getDAO().dohvatiSveKorisnike();
 
 		req.setAttribute("korisniciNeakt", listaKorisnika.stream()
-				.filter(kr -> kr.isAktivan() == false && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
+				.filter(kr -> !kr.isAktivan() && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
 		req.setAttribute("korisniciAkt", listaKorisnika.stream()
-				.filter(kr -> kr.isAktivan() == true && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
+				.filter(kr -> !kr.isAktivan() && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
 		Util.setAktivno(req, "aktivKor");
 		return Response.ok(new Viewable("/korisnici")).build();
+	}
+
+	@GET
+	@Path("tim")
+	@Produces(MediaType.TEXT_HTML)
+	public Response prikaziTim() {
+		return Response.ok(new Viewable("/tim")).build();
 	}
 
 	@POST
@@ -63,7 +68,7 @@ public class IndexKontroler {
 	public Response izmjeniAktivnostKorisnika(@Context HttpServletRequest req, MultivaluedMap<String, String> checkboxes)
 			throws ServletException, IOException {
 		Util.azurirajAktivnostKorisnika(checkboxes);
-		req.getSession().setAttribute("cekajuPotvrdu", DAOKorisnik.getDAO().dohvatiSveKorisnike().stream().filter(k -> k.isAktivan() == false).count());
+		req.getSession().setAttribute("cekajuPotvrdu", DAOKorisnik.getDAO().dohvatiSveKorisnike().stream().filter(k -> !k.isAktivan()).count());
 		return prikaziKorisnike(req);
 	}
 
