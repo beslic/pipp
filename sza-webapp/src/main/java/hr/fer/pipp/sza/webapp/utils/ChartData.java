@@ -1,21 +1,17 @@
 package hr.fer.pipp.sza.webapp.utils;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Ispunjavanje;
 import hr.fer.pipp.sza.webapp.modeli.Odgovor;
 import hr.fer.pipp.sza.webapp.modeli.Pitanje;
+
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.*;
 
 public class ChartData {
 
@@ -28,10 +24,12 @@ public class ChartData {
 	}
 
 	private static String createData(Pitanje p, List<Ispunjavanje> ispunjavanja) {
-		Map<Odgovor, Long> brojOdg = new HashMap<>();
-		ispunjavanja.forEach(i -> brojOdg.compute(i.getOdgovori().get(p), (key, val) -> (val == null) ? 1 : val + 1));
+		Map<Odgovor, Long> temp = new HashMap<>();
+		Map<Odgovor, Long> broj = new LinkedHashMap<>();
+		ispunjavanja.forEach(i -> temp.compute(i.getOdgovori().get(p), (key, val) -> (val == null) ? 1 : val + 1));
+		temp.entrySet().stream().sorted(Comparator.comparing(e -> e.getValue())).forEachOrdered(e -> broj.put(e.getKey(), e.getValue()));
 		JsonArray data = new JsonArray();
-		data.add(getDataSeries(getDataPoints(brojOdg, p), p.getTextPitanje()));
+		data.add(getDataSeries(getDataPoints(broj, p), p.getTextPitanje()));
 		Gson gson = new Gson();
 		return gson.toJson(getSettings(getLegend(), getTooltip(), data));
 	}

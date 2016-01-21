@@ -1,36 +1,23 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
-import java.net.URI;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriInfo;
-
-import org.glassfish.jersey.server.mvc.Viewable;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 import hr.fer.pipp.sza.webapp.utils.PasswordHash;
 import hr.fer.pipp.sza.webapp.utils.Util;
+import org.glassfish.jersey.server.mvc.Viewable;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import javax.ws.rs.core.Response.Status;
+import java.net.URI;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Map;
 
 @Path("/korisnici/{korisnickoime}")
 public class KorisnikKontroler {
@@ -70,7 +57,6 @@ public class KorisnikKontroler {
 			@FormParam("buttonPostavke") String button, @FormParam("staralozinka") String staraLozinka,
 			@FormParam("novalozinka") String novaLozinka, @FormParam("novalozinkapotvrda") String novaLozinkaPotvrda) {
 
-
 		if ("postavke".equals(button)) {
 			Map<String, String> greska = Util.provjeriFormuPostavkiKorisnika(ime, prezime, email);
 
@@ -82,7 +68,8 @@ public class KorisnikKontroler {
 				korisnik.setEmail(email);
 
 				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
-				return Response.seeOther(URI.create("/sza-webapp/korisnici/"+korisnik.getKorisnickoIme()+"/")).build();
+				return Response.seeOther(URI.create("/sza-webapp/korisnici/" + korisnik.getKorisnickoIme() + "/"))
+						.build();
 
 			} else {
 				req.setAttribute("greska", greska);
@@ -98,11 +85,12 @@ public class KorisnikKontroler {
 				try {
 					korisnik.setLozinka(PasswordHash.createHash(novaLozinkaPotvrda));
 				} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-					
+					// ignore
 				}
 
 				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
-				return Response.seeOther(URI.create("/sza-webapp/korisnici/"+korisnik.getKorisnickoIme()+"/")).build();
+				return Response.seeOther(URI.create("/sza-webapp/korisnici/" + korisnik.getKorisnickoIme() + "/"))
+						.build();
 
 			} else {
 				req.setAttribute("greska", greska);

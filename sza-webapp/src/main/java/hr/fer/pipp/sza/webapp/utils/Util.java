@@ -1,23 +1,12 @@
 package hr.fer.pipp.sza.webapp.utils;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.Anketa;
+import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.modeli.Odgovor;
+import hr.fer.pipp.sza.webapp.modeli.Pitanje;
+import org.glassfish.jersey.server.mvc.Viewable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -25,15 +14,17 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
-
-import org.glassfish.jersey.server.mvc.Viewable;
-
-import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
-import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
-import hr.fer.pipp.sza.webapp.modeli.Anketa;
-import hr.fer.pipp.sza.webapp.modeli.Korisnik;
-import hr.fer.pipp.sza.webapp.modeli.Odgovor;
-import hr.fer.pipp.sza.webapp.modeli.Pitanje;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Util {
 
@@ -104,6 +95,7 @@ public class Util {
 					greska.put("lozinka", "Lozinka je netočna");
 				}
 			} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {
+                // ignore
 			}
 		}
 		return greska;
@@ -125,17 +117,19 @@ public class Util {
 		}
 		if (aktivnaOd == null || aktivnaOd.isEmpty()) {
 			greske.put("aktivnaOd", "Nije zadan datum početka ankete");
+            return;
 		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
 			greske.put("aktivnaOd", "Format nije dobro zadan - dd/mm/gggg");
 			greske.put("aktivnaOdForma", aktivnaOd);
 		}
 		if (aktivnaDo == null || aktivnaDo.isEmpty()) {
 			greske.put("aktivnaDo", "Nije zadan datum završetka ankete");
-		} else if (!aktivnaOd.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
+            return;
+		} else if (!aktivnaDo.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}")) {
 			greske.put("aktivnaDo", "Format nije dobro zadan - dd/mm/gggg");
 			greske.put("aktivnaDoForma", aktivnaDo);
 		}
-		if (!(greske.containsKey("aktivnaDo") || greske.containsKey("aktivnaOd"))) {
+		if (greske.isEmpty() && (!(greske.containsKey("aktivnaDo") || greske.containsKey("aktivnaOd")))) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
 			LocalDate datumOd = LocalDate.parse(aktivnaOd, formatter);
 			LocalDate datumDo = LocalDate.parse(aktivnaDo, formatter);
@@ -151,10 +145,10 @@ public class Util {
 		Anketa anketa = new Anketa();
 		anketa.setNazivAnketa(form.getFirst("nazivAnketa"));
 		anketa.setOpisAnketa(form.getFirst("opisAnketa"));
-		anketa.setJePrivatna(("privatna".equals(form.getFirst("privatna"))) ? true : false);
+		anketa.setJePrivatna(("privatna".equals(form.getFirst("privatna"))));
 		anketa.setPitanja(dohvatiPitanja(form, anketa));
 		anketa.setBrojPitanja(anketa.getPitanja().size());
-		anketa.setAnketari(dohvatiAnketare(form, anketa));
+		anketa.setAnketari(dohvatiAnketare(form));
 		if (greske.isEmpty()) {
 			Date date = new Date();
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
@@ -174,7 +168,7 @@ public class Util {
 		return anketa;
 	}
 
-	private static List<Korisnik> dohvatiAnketare(MultivaluedMap<String, String> form, Anketa anketa) {
+	private static List<Korisnik> dohvatiAnketare(MultivaluedMap<String, String> form) {
 		List<Korisnik> anketari = new ArrayList<>();
 		form.keySet().stream().filter(s -> s.matches("anketar-[0-9]"))
 				.forEach(s -> anketari.add(DAOKorisnik.getDAO().dohvatiKorisnika(form.getFirst(s))));
@@ -184,13 +178,14 @@ public class Util {
 	private static List<Pitanje> dohvatiPitanja(MultivaluedMap<String, String> form, Anketa anketa) {
 		Set<String> pitanjaId = dohvatiId(form, "pitanje[0-9]+");
 		List<Pitanje> pitanja = new ArrayList<>();
+		int rbr = 0;
 		for (String p : pitanjaId) {
 			String pit = form.getFirst(p);
 			if (pit == null || pit.length() == 0) {
 				continue;
 			}
 			Pitanje pitanje = new Pitanje();
-			pitanje.setRbrPitanje(Integer.parseInt(p.replaceFirst("pitanje", "")));
+			pitanje.setRbrPitanje(++rbr);
 			List<Odgovor> odgovori = dohvatiOdgovore(form, pitanje);
 			pitanje.setOdgovor(odgovori);
 			pitanje.setTextPitanje(pit);
@@ -204,13 +199,14 @@ public class Util {
 	private static List<Odgovor> dohvatiOdgovore(MultivaluedMap<String, String> form, Pitanje pitanje) {
 		Set<String> odgovoriId = dohvatiId(form, "pitanje" + pitanje.getRbrPitanje() + "-odgovor[0-9]+");
 		List<Odgovor> odgovori = new ArrayList<>();
+		int rbr = 0;
 		for (String o : odgovoriId) {
 			String odg = form.getFirst(o);
 			if (odg == null || odg.length() == 0) {
 				continue;
 			}
 			Odgovor odgovor = new Odgovor();
-			odgovor.setRbrOdgovor(Integer.parseInt(o.split("-")[1].replaceFirst("odgovor", "")));
+			odgovor.setRbrOdgovor(++rbr);
 			odgovor.setTextOdgovor(odg);
 			odgovor.setPitanje(pitanje);
 			odgovori.add(odgovor);
@@ -226,6 +222,7 @@ public class Util {
 				id.add(key);
 			}
 		}
+        id = form.keySet().stream().filter(e -> e.matches(regex)).collect(Collectors.toSet());
 		return id;
 	}
 
@@ -287,13 +284,11 @@ public class Util {
 				Korisnik k = (Korisnik) req.getSession().getAttribute("korisnik");
 				if (k == null) {
 					requestContext.abortWith(Util.r404());
-				}
-				if (!k.equals(a.getVlasnik())) {
+				} else if (!k.equals(a.getVlasnik())) {
 					requestContext.abortWith(Util.r403());
 				}
 			}
 			req.setAttribute("anketa", a);
-			return;
 		} else {
 			requestContext.abortWith(Util.r404());
 		}
@@ -320,7 +315,7 @@ public class Util {
 	}
 
 	public static boolean provjeraAktivnosti(Anketa anketa, Date date) {
-		return (anketa != null) ? date.after(anketa.getAktivnaOd()) && date.before(anketa.getAktivnaDo()) : false;
+		return (anketa != null)  && (date.after(anketa.getAktivnaOd()) && date.before(anketa.getAktivnaDo()));
 	}
 
 	public static String formatDatum(Date datum) {

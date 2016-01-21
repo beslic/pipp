@@ -33,7 +33,7 @@
             </h2>
             <hr>
             <h2><small>${anketa.opisAnketa}</small>
-            <span class="button-group pull-right">
+            <span class="pull-right">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Izgled grafikona  <span class="caret"></span>
                 </button>
@@ -42,15 +42,15 @@
                     <li><a onclick="grafikon('doughnut')">Prstenasti grafikon</a></li>
                     <li><a onclick="grafikon('bar')">Stupičasti grafikon</a></li>
                 </ul>
-                </span
-            ></h2>
+                </span>
+            </h2>
         </div>
         <c:forEach var="pitanje" items="${anketa.pitanja}" varStatus="p">
 	       <div id="pitanje${p.index + 1}" class="col-md-8 col-md-offset-1">
 	           <h3><small>${pitanje.rbrPitanje}.</small>  ${pitanje.textPitanje}</h3>
 	           <hr>
 	       </div>
-	       <div class="col-md-8 col-md-offset-1">
+	       <div class="col-md-7 col-md-offset-2">
                <div id="chartContainer${p.index + 1}" style="height:400px" class="chartContainer"></div>
            </div>
         </c:forEach>

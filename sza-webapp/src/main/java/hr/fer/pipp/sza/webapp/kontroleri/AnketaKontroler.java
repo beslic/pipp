@@ -1,42 +1,26 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
+import hr.fer.pipp.sza.webapp.dao.DAOIspn;
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.*;
+import hr.fer.pipp.sza.webapp.utils.ChartData;
+import hr.fer.pipp.sza.webapp.utils.Util;
+import org.glassfish.jersey.server.mvc.Viewable;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
-
-import org.glassfish.jersey.server.mvc.Viewable;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
-import hr.fer.pipp.sza.webapp.dao.DAOIspn;
-import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
-import hr.fer.pipp.sza.webapp.modeli.Anketa;
-import hr.fer.pipp.sza.webapp.modeli.Ispunjavanje;
-import hr.fer.pipp.sza.webapp.modeli.Korisnik;
-import hr.fer.pipp.sza.webapp.modeli.Odgovor;
-import hr.fer.pipp.sza.webapp.modeli.Pitanje;
-import hr.fer.pipp.sza.webapp.utils.ChartData;
-import hr.fer.pipp.sza.webapp.utils.Util;
 
 @Path("/ankete/")
 public class AnketaKontroler {
@@ -93,7 +77,7 @@ public class AnketaKontroler {
 	}
 
 	@GET
-	@Path("/{id-naziv}/rezultati")
+	@Path("/{id-naziv}/rezultati/")
 	@Produces(MediaType.TEXT_HTML)
 	public static Response prikaziRezultateAnkete(@Context HttpServletRequest req,
 			@PathParam("id-naziv") String idNaziv) {
@@ -104,6 +88,18 @@ public class AnketaKontroler {
 		return Response.ok(new Viewable("/rezultatiAnkete")).build();
 	}
 
+	@GET
+	@Path("/{id-naziv}/rezultati/json/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static String prikaziRezultateAnketeKaoJSON(@Context HttpServletRequest req,
+												  @PathParam("id-naziv") String idNaziv) {
+		Util.setAktivno(req, "aktivAnkete");
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+        return gson.toJson(DAOAnketa.getDAO().dohvatiAnketu(Long.parseLong(idNaziv.split("-")[0])).getIspunjavanja());
+	}
+
+
+    // Sta radi ovaj dio koda?
 	@GET
 	@Path("/{id-naziv}/dozvole")
 	@Produces(MediaType.TEXT_HTML)
@@ -116,7 +112,7 @@ public class AnketaKontroler {
 
 		List<Korisnik> listaAnketara = DAOKorisnik.getDAO().dohvatiSveKorisnike();
 		req.setAttribute("anketari", listaAnketara.stream()
-				.filter(kr -> kr.isAktivan() == true && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
+				.filter(kr -> kr.isAktivan() && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
 
 		// iz baze dohvati trenutne dozvole
 
@@ -196,10 +192,6 @@ public class AnketaKontroler {
 			req.setAttribute("greska", greska);
 			return KorisnikKontroler.prikaziFormuZaNovuAnketu(req);
 		}
-	}
-
-	public static Response spremiRezultate() {
-		return null;
 	}
 
 }
