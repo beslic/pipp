@@ -14,10 +14,12 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 //import android.widget.ShareActionProvider;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Log.d("*****Main  ", "pocetak");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        view1 = (TextView)findViewById(R.id.text1);
+        //view1 = (TextView)findViewById(R.id.text1);
         view2 = (TextView)findViewById(R.id.text2);
 
         loginInfo = getSharedPreferences("LOGIN",Context.MODE_PRIVATE);
@@ -68,6 +70,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         myArrayAdapter = new AnketeAdapter(this, R.layout.anketa, ankete);
         Ankete.setAdapter(myArrayAdapter);
         dbH = new dataHandler(this, null, null, 1);
+
+        Button button = (Button) findViewById(R.id.buttonRefresh);
+        int broj = dbH.brojIspunjavanja();
+        if(broj > 0) {
+            button.setText("Ažuriraj\n(prikupljena ispunjavanja: " + broj + " )");
+        }
+        else{
+            button.setText("Ažuriraj");
+        }
+
+
 
         login();
     }
@@ -159,6 +172,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             //Log.d("*****MainActivity", i+" dodana: " + imeA.get(i).getNazivAnketa());
         }
         myArrayAdapter.notifyDataSetChanged();
+        Button button = (Button) findViewById(R.id.buttonRefresh);
+        int broj = dbH.brojIspunjavanja();
+        if(broj > 0) {
+            button.setText("Ažuriraj\n(prikupljena ispunjavanja: " + broj + " )");
+        }
+        else{
+            button.setText("Ažuriraj");
+        }
     }
 
     @Override
@@ -180,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, Settings.class);
-            startActivity(intent);
+            startActivityForResult(intent, 3);
             return true;
         }
 
@@ -193,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
             input.setLayoutParams(lp);
-            input.setHint(loginInfo.getString("ADRESA_SERVERA", ""));
+            input.setText(loginInfo.getString("ADRESA_SERVERA", ""));
             alertDialog.setView(input);
 
             alertDialog.setPositiveButton("Potvrdi",
@@ -251,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 i2.putExtra("anketa", aId);
                 i2.putExtra("anketaIme", myArrayAdapter.anketa.get(position).getNazivAnketa());
                 i2.putExtra("anketaOpis", myArrayAdapter.anketa.get(position).getOpisAnketa());
-                startActivity(i2);
+                startActivityForResult(i2, 2);
             }
         }catch (ParseException e){
             e.printStackTrace();
@@ -273,6 +294,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 // Do something with the contact here (bigger example below)
             }
+        }
+        Button button = (Button) findViewById(R.id.buttonRefresh);
+        int broj = dbH.brojIspunjavanja();
+        if(broj > 0) {
+            button.setText("Ažuriraj\n(prikupljena ispunjavanja: " + broj + " )");
+        }
+        else{
+            button.setText("Ažuriraj");
         }
     }
 }

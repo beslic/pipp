@@ -1,6 +1,7 @@
 package com.example.mateo.sza_mobapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -8,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.preference.PreferenceActivity;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -59,12 +61,16 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
     }
     // onPostExecute displays the results of the AsyncTask.
 
+    @Override
+    protected void onPreExecute(){
 
+    }
 
     @Override
     protected void onPostExecute(String result) {
         //Log.d("ODGOVOR"," nesto");
         //return result;
+
     }
 
 
@@ -85,12 +91,14 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setConnectTimeout(5000);
-
+            conn.setReadTimeout(10000);
             //String input = "{\"ime\":\"korisnik123\",\"lozinka\":\"lozinka123\"}";
 
             OutputStream os = conn.getOutputStream();
             os.write(podaci.getBytes());
             os.flush();
+
+
 
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 int i = conn.getResponseCode();
