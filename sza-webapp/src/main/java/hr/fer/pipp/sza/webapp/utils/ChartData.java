@@ -95,7 +95,7 @@ public class ChartData {
         settings.addProperty("exportFileName",
                 data.getAsJsonArray().get(0).getAsJsonObject().get("name").getAsString());
         settings.addProperty("theme", "theme1");
-        settings.addProperty("height", 400);
+        settings.addProperty("height", 300);
         settings.add("subtitles", subtitles);
         settings.add("legend", legend);
         settings.add("toolTip", tooltip);

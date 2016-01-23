@@ -51,7 +51,7 @@
 	           <hr>
 	       </div>
 	       <div class="col-md-7 col-md-offset-2">
-               <div id="chartContainer${p.index + 1}" style="height:400px" class="chartContainer"></div>
+               <div id="chartContainer${p.index + 1}" style="height:350px" class="chartContainer"></div>
            </div>
         </c:forEach>
         <div class="col-md-10">
