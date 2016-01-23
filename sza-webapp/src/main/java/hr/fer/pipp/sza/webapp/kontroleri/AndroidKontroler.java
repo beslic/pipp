@@ -31,13 +31,13 @@ public class AndroidKontroler {
 		if (json == null || json.length() < 2) {
 			return gson.toJson(Json.setStatus("failed"));
 		}
-		Map<String, String> greska = Util.provjeriPrijavu(Json.prijava("ime", json), Json.prijava("lozinka", json));
+		Map<String, String> greska = Util.provjeriPrijavu(Json.prijava(json, "ime"), Json.prijava(json, "lozinka"));
 		JsonObject jsonObj;
 		if (greska.isEmpty()) {
 			jsonObj = Json.setStatus("success");
 			jsonObj.add("korisnik",
 					new JsonParser()
-							.parse(gson.toJson(DAOKorisnik.getDAO().dohvatiKorisnika(Json.prijava("ime", json))))
+							.parse(gson.toJson(DAOKorisnik.getDAO().dohvatiKorisnika(Json.prijava(json, "ime"))))
 							.getAsJsonObject());
 		} else {
 			jsonObj = Json.setStatus("failed");

@@ -1,9 +1,8 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
-import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
-import hr.fer.pipp.sza.webapp.modeli.Korisnik;
-import hr.fer.pipp.sza.webapp.utils.Util;
-import org.glassfish.jersey.server.mvc.Viewable;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +14,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import org.glassfish.jersey.server.mvc.Viewable;
+
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.utils.Util;
 
 @Path("/")
 public class IndexKontroler {
@@ -50,7 +52,7 @@ public class IndexKontroler {
 		req.setAttribute("korisniciNeakt", listaKorisnika.stream()
 				.filter(kr -> !kr.isAktivan() && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
 		req.setAttribute("korisniciAkt", listaKorisnika.stream()
-				.filter(kr -> !kr.isAktivan() && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
+				.filter(kr -> kr.isAktivan() && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
 		Util.setAktivno(req, "aktivKor");
 		return Response.ok(new Viewable("/korisnici")).build();
 	}

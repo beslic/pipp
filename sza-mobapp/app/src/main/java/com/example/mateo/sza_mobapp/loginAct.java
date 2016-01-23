@@ -159,7 +159,7 @@ public class loginAct extends AppCompatActivity{
                     finish();
                 } else {
                     Log.d("*****Login", "FAIL");
-
+                    passE.setText("");
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                     alertDialog.setTitle("Prijava");
                     alertDialog.setMessage("Status prijave: " + jsonOdgovor.get("status").toString() + ": "+jsonOdgovor.get("errormessage").toString());
@@ -265,7 +265,7 @@ public class loginAct extends AppCompatActivity{
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
             input.setLayoutParams(lp);
-            input.setHint(login.getString("ADRESA_SERVERA", ""));
+            input.setText(login.getString("ADRESA_SERVERA", ""));
             alertDialog.setView(input);
 
             alertDialog.setPositiveButton("Potvrdi",

@@ -4,12 +4,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <TextView
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_weight="4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/anketaIme"
         android:text="anketaIme"
-        android:textSize="30sp" />
+        android:textSize="28sp" />
     <!--<TextView
         android:layout_weight="1"
         android:layout_width="0dp"

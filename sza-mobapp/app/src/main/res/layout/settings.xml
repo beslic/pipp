@@ -12,7 +12,9 @@
         android:text="Brisanje anketa"
         android:id="@+id/button2"
         android:onClick="brisanjeBaze"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_selector"
+        android:textColor="@drawable/text_color"/>
 
     <Button
         android:layout_below="@id/button2"
@@ -21,7 +23,9 @@
         android:text="Brisanje ispunjavanja"
         android:id="@+id/button3"
         android:onClick="brisanjeIspunjavanja"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_selector"
+        android:textColor="@drawable/text_color"/>
 
     <!--<Switch
         android:layout_below="@id/button3"

@@ -8,7 +8,8 @@
         android:layout_height="wrap_content"
         android:text="default"
         android:id="@+id/odgovor"
-        android:textColorHighlight="#6474db"
+        android:textColorHighlight="@color/buttonColor"
         android:textIsSelectable="true"
+        android:background="@drawable/listitem_background"
         android:textSize="30sp" />
 </LinearLayout>

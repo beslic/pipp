@@ -68,7 +68,9 @@ public class Settings extends AppCompatActivity {
     public void brisanjeIspunjavanja(View view){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Brisanje ispunjavanja");
-        alertDialog.setMessage("Jeste li sigurni?");
+        dataHandler dH = new dataHandler(getApplicationContext(), null, null, 1);
+        int broj = dH.brojIspunjavanja();
+        alertDialog.setMessage("Jeste li sigurni?\nObrisati će se "+ broj + " ispunjavanja!");
 
         alertDialog.setPositiveButton("Da",
                 new DialogInterface.OnClickListener() {

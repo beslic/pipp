@@ -493,4 +493,16 @@ public class dataHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    public int brojIspunjavanja(){
+        int i = 0;
+        String query="SELECT count(*) FROM " + TABLE_ISPUNJAVANJE_ANKETE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor;
+        cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()) {
+            i = cursor.getInt(0);
+        }
+        return i;
+    }
 }
