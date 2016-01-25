@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Button button = (Button) findViewById(R.id.buttonRefresh);
         int broj = dbH.brojIspunjavanja();
         if(broj > 0) {
-            button.setText("Ažuriraj\n(prikupljena ispunjavanja: " + broj + " )");
+            button.setText("Ažuriraj\n(prikupljeno ispunjavanja: " + broj + " )");
         }
         else{
             button.setText("Ažuriraj");
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Button button = (Button) findViewById(R.id.buttonRefresh);
         int broj = dbH.brojIspunjavanja();
         if(broj > 0) {
-            button.setText("Ažuriraj\n(prikupljena ispunjavanja: " + broj + " )");
+            button.setText("Ažuriraj\n(prikupljeno ispunjavanja: " + broj + " )");
         }
         else{
             button.setText("Ažuriraj");
@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Button button = (Button) findViewById(R.id.buttonRefresh);
         int broj = dbH.brojIspunjavanja();
         if(broj > 0) {
-            button.setText("Ažuriraj\n(prikupljena ispunjavanja: " + broj + " )");
+            button.setText("Ažuriraj\n(prikupljeno ispunjavanja: " + broj + " )");
         }
         else{
             button.setText("Ažuriraj");
