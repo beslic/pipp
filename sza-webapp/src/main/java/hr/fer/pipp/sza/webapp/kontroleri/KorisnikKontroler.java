@@ -75,7 +75,7 @@ public class KorisnikKontroler {
 
 			if (greska.isEmpty()) {
 				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
-
+				System.out.println("ispis" + korisnik.getKorisnickoIme());
 				korisnik.setIme(ime);
 				korisnik.setPrezime(prezime);
 				korisnik.setEmail(email);
@@ -114,7 +114,12 @@ public class KorisnikKontroler {
 			korisnik.setTrazenaRazinaPrava(1);
 			DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
 			return Response.seeOther(URI.create("/sza-webapp/korisnici/" + korisnik.getKorisnickoIme() + "/")).build();
-		} else {
+		} else if ("odustani".equals(button)) {
+			Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
+			System.out.println("ispis" + korisnik.getKorisnickoIme());
+			return Response.seeOther(URI.create("/sza-webapp/korisnici/" + korisnik.getKorisnickoIme() + "/"))
+					.build();
+			} else {
 			return prikaziPostavkeKorisnika(req);
 		}
 	}

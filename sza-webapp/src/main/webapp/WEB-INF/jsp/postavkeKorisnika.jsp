@@ -97,6 +97,11 @@
 							<button id="postavke" name="buttonPostavke" value="postavke"
 								class="btn btn-success">Spremi</button>
 						</div>
+						<div class="col-md-4">
+
+							<button id="odustani" name="buttonPostavke"
+								value="odustani" class="btn btn-btn-warning">Odustani</button>
+						</div>
 					</form>
 
 
@@ -182,6 +187,11 @@
 							<button id="postavkelozinka" name="buttonPostavke"
 								value="postavkelozinka" class="btn btn-success">Spremi
 								lozinku</button>
+						</div>
+						<div class="col-md-4">
+
+							<button id="odustani" name="buttonPostavke"
+								value="odustani" class="btn btn-btn-warning">Odustani</button>
 						</div>
 					</form>
 
