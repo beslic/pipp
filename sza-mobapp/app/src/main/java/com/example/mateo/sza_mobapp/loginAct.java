@@ -98,7 +98,7 @@ public class loginAct extends AppCompatActivity{
 
         //Korisnik k = gson.fromJson(jsonKorisnik, Korisnik.class);
         //Log.d("*****KORISNIK", jsonKorisnik);
-        NetworkConnection PROVJERA = new NetworkConnection(getApplicationContext(), login.getString("ADRESA_SERVERA", "192.168.1.102")+":8080/sza-webapp/android/");
+        NetworkConnection PROVJERA = new NetworkConnection(getApplicationContext(), login.getString("ADRESA_SERVERA", "192.168.1.102")+":8080/sza-webapp/android/", login.getInt("CONN_TIMEOUT", 5000));
 
 
         if(PROVJERA.isConnected()==false){
@@ -257,34 +257,7 @@ public class loginAct extends AppCompatActivity{
             return true;
         }
         if(id == R.id.network_settings){
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("Adresa servera");
-            alertDialog.setMessage("Upišite adresu servera: ");
-            final EditText input = new EditText(loginAct.this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            input.setLayoutParams(lp);
-            input.setText(login.getString("ADRESA_SERVERA", ""));
-            alertDialog.setView(input);
-
-            alertDialog.setPositiveButton("Potvrdi",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            loginEdit.putString("ADRESA_SERVERA", input.getText().toString());
-                            loginEdit.commit();
-                            Log.d("Network Changed", input.getText().toString());
-                        }
-                    });
-
-            alertDialog.setNegativeButton("Odustani",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            //cancel = true;
-                        }
-                    });
-
+            AlertDialog.Builder alertDialog = NetworkAlertDialog.create(this, login, loginEdit);
             alertDialog.show();
         }
         return super.onOptionsItemSelected(item);

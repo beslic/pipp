@@ -19,14 +19,14 @@ import java.util.concurrent.ExecutionException;
 public class Refresh {
     Context context;
 
-    public boolean refreshAnkete(Korisnik korisnik, Context context, String adresa) {
+    public boolean refreshAnkete(Korisnik korisnik, Context context, String adresa, int timeout) {
         //Log.d("*****Login  ", "POCETAK");
         this.context = context;
         Gson gson = new Gson();
         String odgovor = "";
         String jsonKorisnik = gson.toJson(korisnik);
         Log.d("korisnikJson", jsonKorisnik);
-        NetworkConnection PROVJERA = new NetworkConnection(context, adresa + ":8080/sza-webapp/android/");
+        NetworkConnection PROVJERA = new NetworkConnection(context, adresa + ":8080/sza-webapp/android/", timeout);
 
         if (PROVJERA.isConnected() == false) {
             Toast.makeText(context, "Nema internetske veze", Toast.LENGTH_LONG).show();
@@ -123,7 +123,7 @@ public class Refresh {
     }
 
 
-    public boolean slanjeIspunjenih(String adresa){
+    public boolean slanjeIspunjenih(String adresa, int timeout){
 
         dataHandler dh = new dataHandler(context, null, null, 1);
         List<NOVO_ispunjavanjeAnkete> ispunjavanja = dh.findIspunjavanje();
@@ -135,7 +135,7 @@ public class Refresh {
         String jsonIspunjavanja = gson.toJson(ispunjavanja);
         Log.d("ISPUNJENE ", jsonIspunjavanja);
         String odgovor = "";
-        NetworkConnection PROVJERA = new NetworkConnection(context, adresa + ":8080/sza-webapp/android/result/");
+        NetworkConnection PROVJERA = new NetworkConnection(context, adresa + ":8080/sza-webapp/android/result/", timeout);
         if (PROVJERA.isConnected() == false) {
             Toast.makeText(context, "Nema internetske veze", Toast.LENGTH_LONG).show();
         } else {
