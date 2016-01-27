@@ -53,6 +53,7 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
     //String URL="http://gurujsonrpc.appspot.com/guru";
      Context context;
     String adresa;
+    int connTimeout;
 
     @Override
     protected String doInBackground(String... urls) {
@@ -74,9 +75,10 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
     }
 
 
-    public NetworkConnection(Context context, String adresa){
+    public NetworkConnection(Context context, String adresa, int timeout){
         this.context = context;
         this.adresa = adresa;
+        this.connTimeout = timeout;
     }
 
 
@@ -90,8 +92,8 @@ public class NetworkConnection extends AsyncTask<String, Void, String> {
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(connTimeout);
+            conn.setReadTimeout(connTimeout);
             //String input = "{\"ime\":\"korisnik123\",\"lozinka\":\"lozinka123\"}";
 
             OutputStream os = conn.getOutputStream();

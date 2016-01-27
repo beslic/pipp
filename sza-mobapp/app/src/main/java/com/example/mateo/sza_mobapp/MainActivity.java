@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 //import android.widget.ShareActionProvider;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +64,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             loginInfoEditor.putString("ADRESA_SERVERA", "192.168.1.102");
             loginInfoEditor.commit();
         }
-
+        if(loginInfo.getInt("CONN_TIMEOUT", 0) == 0){
+            loginInfoEditor.putInt("CONN_TIMEOUT", 5000);
+            loginInfoEditor.commit();
+        }
         Ankete = (ListView)findViewById(R.id.lista);
         Ankete.setOnItemClickListener(this);
         ///Ankete.setAdapter(mJSONAdapter);
@@ -148,12 +152,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void refresh(View view){
         Korisnik k = new Korisnik(loginInfo.getString("USERNAME", ""), loginInfo.getString("PASSWORD", ""));
         Refresh r = new Refresh();
-        if(r.refreshAnkete(k, getApplicationContext(), loginInfo.getString("ADRESA_SERVERA", "192.168.1.102"))== false){
+        if(r.refreshAnkete(k, getApplicationContext(), loginInfo.getString("ADRESA_SERVERA", "192.168.1.102"), loginInfo.getInt("CONN_TIMEOUT", 5000))== false){
             loginInfoEditor.putBoolean("PRIJAVLJEN", false);
             loginInfoEditor.commit();
             login();
         };
-        if(r.slanjeIspunjenih(loginInfo.getString("ADRESA_SERVERA", "192.168.1.102")) == true){
+        if(r.slanjeIspunjenih(loginInfo.getString("ADRESA_SERVERA", "192.168.1.102"), loginInfo.getInt("CONN_TIMEOUT", 5000)) == true){
             Toast.makeText(getApplicationContext(), "Slanje ispunjenih anketa uspješno provedeno", Toast.LENGTH_LONG).show();
             dbH.brisanjeIspunjavanja();
         }
@@ -206,37 +210,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         if(id == R.id.network_settings){
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("Adresa servera");
-            alertDialog.setMessage("Upišite adresu servera: ");
-            final EditText input = new EditText(MainActivity.this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            input.setLayoutParams(lp);
-            input.setText(loginInfo.getString("ADRESA_SERVERA", ""));
-            alertDialog.setView(input);
-
-            alertDialog.setPositiveButton("Potvrdi",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            loginInfoEditor.putString("ADRESA_SERVERA", input.getText().toString());
-                            Log.d("Network Changed", input.getText().toString());
-                        }
-                    });
-
-            alertDialog.setNegativeButton("Odustani",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            //cancel = true;
-                        }
-                    });
-
+            AlertDialog.Builder alertDialog = NetworkAlertDialog.create(this, loginInfo, loginInfoEditor);
             alertDialog.show();
-
         }
-
         return super.onOptionsItemSelected(item);
     }
 
