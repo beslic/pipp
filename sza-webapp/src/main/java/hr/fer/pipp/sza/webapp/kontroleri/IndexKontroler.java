@@ -35,12 +35,11 @@ public class IndexKontroler {
 	@Path("anketari")
 	@Produces(MediaType.TEXT_HTML)
 	public Response prikaziAnketare(@Context HttpServletRequest req) throws ServletException, IOException {
-		// TODO
-		// Dodati popis anketara iz baze
+		req.setAttribute("anketari", DAOKorisnik.getDAO().dohvatiSveAnketare());
 		Util.setAktivno(req, "aktivAnk");
 		return Response.ok(new Viewable("/anketari")).build();
 	}
-	
+
 	@GET
 	@Path("tim")
 	@Produces(MediaType.TEXT_HTML)
@@ -68,11 +67,12 @@ public class IndexKontroler {
 	@POST
 	@Path("korisnici")
 	@Produces(MediaType.TEXT_HTML)
-	public Response izmjeniAktivnostKorisnika(@Context HttpServletRequest req, MultivaluedMap<String, String> checkboxes)
-			throws ServletException, IOException {
+	public Response izmjeniAktivnostKorisnika(@Context HttpServletRequest req,
+			MultivaluedMap<String, String> checkboxes) throws ServletException, IOException {
 		Util.azurirajAktivnostKorisnika(checkboxes);
 		req.getSession().setAttribute("cekajuPrava", DAOKorisnik.getDAO().dohvatiKojiCekajuPovecanjePrava());
-		req.getSession().setAttribute("cekajuPotvrdu", DAOKorisnik.getDAO().dohvatiSveKorisnike().stream().filter(k -> !k.isAktivan()).count());
+		req.getSession().setAttribute("cekajuPotvrdu",
+				DAOKorisnik.getDAO().dohvatiSveKorisnike().stream().filter(k -> !k.isAktivan()).count());
 		return prikaziKorisnike(req);
 	}
 

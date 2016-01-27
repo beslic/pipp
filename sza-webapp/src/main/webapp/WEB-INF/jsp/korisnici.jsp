@@ -30,11 +30,11 @@
 						<h4 style="display: inline;">
 							<a href="#">${userNeakt.korisnickoIme}</a>
 						</h4>
+						
 						<span class="pull-right"> <input class="pull-right"
 							name="nepotvrdjen-${userNeakt.korisnickoIme}" class="input-md"
 							type="checkbox">&nbsp;Aktiviraj
 						</span>
-						<br>
 					</c:forEach>
 					<br>
 					<h3>Aktivni:</h3>
@@ -43,9 +43,10 @@
                                           <h4 style="display: inline;">
                                                 <a href="#">${userAkt.korisnickoIme}</a>
                                           </h4>
-                                          <span class="pull-right"></span>
-                                          <input name="potvrdjen-${userAkt.korisnickoIme}" class="input-md"
+                                          <span class="pull-right">
+                                          <input name="potvrdjen-${userAkt.korisnickoIme}" class="pull-right"
                                                   type="checkbox">&nbsp;Deaktiviraj</span>
+                                          <br>
                                         </c:forEach>
 
 				</div>

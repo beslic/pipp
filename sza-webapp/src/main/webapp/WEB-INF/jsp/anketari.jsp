@@ -14,6 +14,21 @@
 
 <body>
     <jsp:include page="header.jsp" />
-    <h2>Ovdje ide popis anketara</h2>
+    <div class="container">
+    <br>
+      <div class="container">
+          <div class="row">
+            <div class="col-md-2"></div>
+              <div class="col-md-6">
+                <h2>Anketari</h2>
+                <hr></hr>
+	          <c:forEach var="anketar" items="${anketari}">
+	            <p class="lead" style="display: inline; color: #337AB7;">${anketar.korisnickoIme}</p>
+	            <p>${anketar.ime}&nbsp;${anketar.prezime}</p>
+	          </c:forEach>
+              </div>
+            </div>
+      </div>
+    </div>
 </body>
 </html>
