@@ -64,7 +64,10 @@ public class RegistracijaKontroler {
 
 			DAOKorisnik.getDAO().spremiNovogKorisnika(korisnik);
 
-			request.getSession().setAttribute("korisnik", korisnik);
+			// ako je korisnik narucitelj, ne stavljaj ga u session
+			if (korisnik.getRazinaPrava() != 1) {
+				request.getSession().setAttribute("korisnik", korisnik);
+			}
 			return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
 		} else {
 			Map<String, String> forma = new HashMap<>();

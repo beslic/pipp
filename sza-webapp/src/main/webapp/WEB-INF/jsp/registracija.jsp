@@ -14,7 +14,7 @@
 <jsp:include page="header.jsp" />
 
 <div class="container">
-	    <form class="form-horizontal" method="post">
+	    <form class="form-horizontal" method="post" action="/sza-webapp/registracija/">
         <fieldset>
           <!-- Form Name -->
   		  <div class="col-md-9">
@@ -62,7 +62,7 @@
             <label id="pravalabel" class="col-md-4 control-label" for="pravainput">Želim</label>
             <div class="col-md-4 <c:if test="${greska.prava != null}">has-error has-feedback</c:if>">
 		<div class="input-group">
-	      	    <input name="prava" class="input-md" type="radio" value="1" <c:if test="${forma.prava eq '1'}">checked</c:if> >&nbsp;Sastavljati ankete
+	      	    <input id="narucAnkete" name="prava" class="input-md" type="radio" value="1" <c:if test="${forma.prava eq '1'}">checked</c:if> >&nbsp;Sastavljati ankete
 	      	    <br>
 	      	    <input name="prava" class="input-md" type="radio" value="2" <c:if test="${forma.prava eq '2'}">checked</c:if> >&nbsp;Samo anketirati
  		</div>
@@ -114,12 +114,21 @@
  			<div class="form-group">
  			  <label class="col-md-4 control-label" for="signup"></label>
  			  <div class="col-md-4">
- 			    <button id="register" type="submit" name="register" onclick="location.href='/sza-webapp/registracija/'" class="btn btn-success">Registrirajte se</button>
+<!--  			    <button id="register" type="submit" name="register" onclick="location.href='/sza-webapp/registracija/'" class="btn btn-success">Registrirajte se</button> -->
+ 			    <button id="register" type="submit" name="register" onclick="showAlert()" class="btn btn-success">Registrirajte se</button>
  			    <button id="reset" type="reset" name="reset" class="btn btn-warning">Poništi</button>
  			  </div>
  			</div>
 		  </fieldset>
 		</form>
 	  </div>
+	  
+<script type="text/javascript">
+function showAlert() {
+	if ($('input[id=narucAnkete]:checked').length > 0) {
+	    alert("Nakon registracije morate pričekati da Vam administrator aktivira račun.");
+	}
+}
+</script>
 </body>
 </html>
