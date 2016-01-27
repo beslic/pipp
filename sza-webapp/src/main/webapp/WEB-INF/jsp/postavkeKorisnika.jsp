@@ -17,8 +17,7 @@
 		<h2>Izmjena podataka o korisniku</h2>
 
 		<br>
-
-
+                
 		<div class="tabbable">
 			<ul class="nav nav-tabs" role="tablist" id="tab">
 				<li role="presentation" class="active"><a href="#tab1"
@@ -191,6 +190,12 @@
 				</div>
 
 			</div>
+			<br>
+			<c:if test="${sessionScope.korisnik.razinaPrava eq '2'}">
+                                    <button id="rp" name="vecaRazina" class="btn btn-info" data-toggle="modal" data-target="#razinaModal">
+                                      Veća razina prava
+                                    </button>
+                         </c:if>
 
 
 			<script>
@@ -220,7 +225,25 @@
 	</div>
 
 
-
+<div class="modal fade" id="razinaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Povećavavanje razine prava</h4>
+      </div>
+      <div class="modal-body">
+        Želite li razinu prava naručitelja anketa?
+      </div>
+      <div class="modal-footer">
+        <form method="post" action="/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/postavke/">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Odustani</button>
+          <button type="submit" name="buttonPostavke" value="vecarazinaprava" class="btn btn-primary">Povećaj prava</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

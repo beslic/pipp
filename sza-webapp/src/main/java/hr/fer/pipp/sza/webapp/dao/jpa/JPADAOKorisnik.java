@@ -20,6 +20,7 @@ public class JPADAOKorisnik implements IDAOKorisnik {
 		k.setEmail(korisnik.getEmail());
 		k.setLozinka(korisnik.getLozinka());
 		k.setAktivan(korisnik.isAktivan());
+		k.setTrazenaRazinaPrava(korisnik.getTrazenaRazinaPrava());
 		em.getTransaction().commit();
 		em.close();
 		return korisnik;

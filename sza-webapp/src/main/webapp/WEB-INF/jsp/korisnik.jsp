@@ -23,6 +23,7 @@
 				<button id="postavke" name="postavke"
 					onclick="location.href='/sza-webapp/korisnici/${sessionScope.korisnik.korisnickoIme}/postavke/'"
 					class="btn btn-info">Izmjeni podatke</button>
+			        <br>
 			</span>
 			</h2>
 		</div>
@@ -78,7 +79,6 @@
 		</table>
 
 	</div>
-
 
 
 </body>

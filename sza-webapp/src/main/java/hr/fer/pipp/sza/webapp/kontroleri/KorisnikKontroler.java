@@ -1,23 +1,36 @@
 package hr.fer.pipp.sza.webapp.kontroleri;
 
+import java.net.URI;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
+
+import org.glassfish.jersey.server.mvc.Viewable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
 import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
 import hr.fer.pipp.sza.webapp.modeli.Anketa;
 import hr.fer.pipp.sza.webapp.modeli.Korisnik;
 import hr.fer.pipp.sza.webapp.utils.PasswordHash;
 import hr.fer.pipp.sza.webapp.utils.Util;
-import org.glassfish.jersey.server.mvc.Viewable;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import javax.ws.rs.core.Response.Status;
-import java.net.URI;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Map;
 
 @Path("/korisnici/{korisnickoime}")
 public class KorisnikKontroler {
@@ -96,6 +109,12 @@ public class KorisnikKontroler {
 				req.setAttribute("greska", greska);
 				return prikaziPostavkeKorisnika(req);
 			}
+		} else if ("vecarazinaprava".equals(button)) {
+			Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
+			korisnik.setTrazenaRazinaPrava(1);
+			DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
+			req.getSession().removeAttribute("korisnik");
+			return Response.seeOther(URI.create("/sza-webapp/")).build();
 		} else {
 			return prikaziPostavkeKorisnika(req);
 		}
