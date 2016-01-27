@@ -36,30 +36,38 @@
 						</span>
 						<br>
 					</c:forEach>
+					<br>
+					<h3>Aktivni:</h3>
+					<c:forEach var="userAkt" items="${korisniciAkt}">
+
+                                          <h4 style="display: inline;">
+                                                <a href="#">${userAkt.korisnickoIme}</a>
+                                          </h4>
+                                          <span class="pull-right"></span>
+                                          <input name="potvrdjen-${userAkt.korisnickoIme}" class="input-md"
+                                                  type="checkbox">&nbsp;Deaktiviraj</span>
+                                        </c:forEach>
 
 				</div>
 
-				<div class="col-md-6">
+				<div class="col-md-3">
 					<button id="activate" type="submit" name="activate"
 						value="activate" class="btn btn-primary">Spremi promjene</button>
 				</div>
+				<div class="col-md-6">
+				  <h3>Žele povećanje prava:</h3>
+				  <c:forEach var="userPov" items="${cekajuPrava}">
+
+                                          <h4 style="display: inline;">
+                                                <a href="#">${userPov.korisnickoIme}</a>
+                                          </h4>
+                                          <span class="pull-right"></span>
+                                          <input name="prava-${userPov.korisnickoIme}" class="input-md"
+                                                  type="checkbox">&nbsp;Povećaj</span>
+                                  </c:forEach>
+				</div>
 		</div>
 
-		<div class="row">
-			<h3>Aktivni:</h3>
-			<div class="col-md-3">
-				<c:forEach var="userAkt" items="${korisniciAkt}">
-
-					<h4 style="display: inline;">
-						<a href="#">${userAkt.korisnickoIme}</a>
-					</h4>
-					<span class="pull-right"></span>
-					<input name="potvrdjen-${userAkt.korisnickoIme}" class="input-md"
-						type="checkbox">&nbsp;Deaktiviraj</span>
-				</c:forEach>
-
-			</div>
-		</div>
 
 		</form>
 

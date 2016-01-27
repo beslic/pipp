@@ -322,6 +322,13 @@ public class Util {
 					korisnik.setAktivan(false);
 					DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
 				}
+			} else if (key.startsWith("prava-")) {
+				if (checkboxes.getFirst(key).equals("on")) {
+					String korIme = key.split("-")[1];
+					Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korIme);
+					korisnik.setRazinaPrava(korisnik.getTrazenaRazinaPrava());
+					DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
+				}
 			}
 		}
 	}

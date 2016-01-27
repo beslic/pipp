@@ -40,6 +40,13 @@ public class IndexKontroler {
 		Util.setAktivno(req, "aktivAnk");
 		return Response.ok(new Viewable("/anketari")).build();
 	}
+	
+	@GET
+	@Path("tim")
+	@Produces(MediaType.TEXT_HTML)
+	public Response prikaziTim() {
+		return Response.ok(new Viewable("/tim")).build();
+	}
 
 	@GET
 	@Path("korisnici")
@@ -53,15 +60,9 @@ public class IndexKontroler {
 				.filter(kr -> !kr.isAktivan() && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
 		req.setAttribute("korisniciAkt", listaKorisnika.stream()
 				.filter(kr -> kr.isAktivan() && kr.getRazinaPrava() == 1).collect(Collectors.toList()));
+		req.setAttribute("cekajuPrava", DAOKorisnik.getDAO().dohvatiKojiCekajuPovecanjePrava());
 		Util.setAktivno(req, "aktivKor");
 		return Response.ok(new Viewable("/korisnici")).build();
-	}
-
-	@GET
-	@Path("tim")
-	@Produces(MediaType.TEXT_HTML)
-	public Response prikaziTim() {
-		return Response.ok(new Viewable("/tim")).build();
 	}
 
 	@POST
@@ -70,6 +71,7 @@ public class IndexKontroler {
 	public Response izmjeniAktivnostKorisnika(@Context HttpServletRequest req, MultivaluedMap<String, String> checkboxes)
 			throws ServletException, IOException {
 		Util.azurirajAktivnostKorisnika(checkboxes);
+		req.getSession().setAttribute("cekajuPrava", DAOKorisnik.getDAO().dohvatiKojiCekajuPovecanjePrava());
 		req.getSession().setAttribute("cekajuPotvrdu", DAOKorisnik.getDAO().dohvatiSveKorisnike().stream().filter(k -> !k.isAktivan()).count());
 		return prikaziKorisnike(req);
 	}

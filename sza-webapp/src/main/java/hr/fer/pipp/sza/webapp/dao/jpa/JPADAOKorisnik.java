@@ -20,7 +20,7 @@ public class JPADAOKorisnik implements IDAOKorisnik {
 		k.setEmail(korisnik.getEmail());
 		k.setLozinka(korisnik.getLozinka());
 		k.setAktivan(korisnik.isAktivan());
-		k.setTrazenaRazinaPrava(korisnik.getTrazenaRazinaPrava());
+		k.setRazinaPrava(korisnik.getTrazenaRazinaPrava());
 		em.getTransaction().commit();
 		em.close();
 		return korisnik;
@@ -67,6 +67,13 @@ public class JPADAOKorisnik implements IDAOKorisnik {
 	@Override
 	public List<Korisnik> dohvatiSveAnketare() {
 		return JPAEMProvider.getEntityManager().createQuery("FROM Korisnik K WHERE K.razinaPrava = 2", Korisnik.class)
+				.getResultList();
+	}
+
+	@Override
+	public List<Korisnik> dohvatiKojiCekajuPovecanjePrava() {
+		return JPAEMProvider.getEntityManager()
+				.createQuery("FROM Korisnik K WHERE K.razinaPrava != K.trazenaRazinaPrava", Korisnik.class)
 				.getResultList();
 	}
 

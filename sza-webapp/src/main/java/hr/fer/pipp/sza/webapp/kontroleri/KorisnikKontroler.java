@@ -113,8 +113,7 @@ public class KorisnikKontroler {
 			Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
 			korisnik.setTrazenaRazinaPrava(1);
 			DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
-			req.getSession().removeAttribute("korisnik");
-			return Response.seeOther(URI.create("/sza-webapp/")).build();
+			return Response.seeOther(URI.create("/sza-webapp/korisnici/" + korisnik.getKorisnickoIme() + "/")).build();
 		} else {
 			return prikaziPostavkeKorisnika(req);
 		}

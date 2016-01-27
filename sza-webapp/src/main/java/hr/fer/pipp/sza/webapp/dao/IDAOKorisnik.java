@@ -17,4 +17,6 @@ public interface IDAOKorisnik {
 	public Korisnik dohvatiKorisnikaPoMailu(String email);
 
 	public List<Korisnik> dohvatiSveAnketare();
+	
+	public List<Korisnik> dohvatiKojiCekajuPovecanjePrava();
 }
