@@ -1,19 +1,5 @@
 package hr.fer.pipp.sza.webapp.utils;
 
-import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
-import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
-import hr.fer.pipp.sza.webapp.modeli.Anketa;
-import hr.fer.pipp.sza.webapp.modeli.Korisnik;
-import hr.fer.pipp.sza.webapp.modeli.Odgovor;
-import hr.fer.pipp.sza.webapp.modeli.Pitanje;
-import org.glassfish.jersey.server.mvc.Viewable;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriInfo;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.DateFormat;
@@ -21,10 +7,34 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
+
+import org.glassfish.jersey.server.mvc.Viewable;
+
+import hr.fer.pipp.sza.webapp.dao.DAOAnketa;
+import hr.fer.pipp.sza.webapp.dao.DAOKorisnik;
+import hr.fer.pipp.sza.webapp.modeli.Anketa;
+import hr.fer.pipp.sza.webapp.modeli.Korisnik;
+import hr.fer.pipp.sza.webapp.modeli.Odgovor;
+import hr.fer.pipp.sza.webapp.modeli.Pitanje;
 
 public class Util {
 
@@ -81,18 +91,20 @@ public class Util {
 	public static Map<String, String> provjeriPrijavu(String korisnickoIme, String lozinka) {
 		Map<String, String> greska = new HashMap<>();
 		if (korisnickoIme == null || korisnickoIme.isEmpty()) {
-			greska.put("ime", "Korisničko ime je prazno");
+			greska.put("korisnickoime", "Korisničko ime je prazno");
 			return greska;
 		}
 		Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
 		if (korisnik == null) {
-			greska.put("ime", "Korisničko ime nije pronađeno u bazi");
+			greska.put("korisnickoime", "Korisničko ime nije pronađeno u bazi");
 		} else if (lozinka == null || lozinka.length() < 8) {
 			greska.put("lozinka", "Lozinka mora imati barem 8 znakova");
 		} else {
 			try {
 				if (!PasswordHash.validatePassword(lozinka, korisnik.getLozinka())) {
 					greska.put("lozinka", "Lozinka je netočna");
+				} else if (!korisnik.isAktivan()) {
+					greska.put("korisnickoime", "Administrator još nije aktivirao Vaš račun");
 				}
 			} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {
                 // ignore

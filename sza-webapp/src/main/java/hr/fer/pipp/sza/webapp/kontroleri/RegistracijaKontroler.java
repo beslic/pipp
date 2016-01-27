@@ -54,15 +54,16 @@ public class RegistracijaKontroler {
 			korisnik.setPrezime(prezime);
 			korisnik.setEmail(email);
 			korisnik.setRazinaPrava(("1".equals(razinaPrava)) ? 1 : 2);
-			korisnik.setAktivan(true);
-			// TODO administrator treba potvrditi aktivnost
+			korisnik.setTrazenaRazinaPrava(korisnik.getRazinaPrava());
+			korisnik.setAktivan("1".equals(razinaPrava) ? false : true);
+			// ako je narucitelj, admin ga treba aktivirati
 			try {
 				korisnik.setLozinka(PasswordHash.createHash(lozinka));
 			} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {
 			}
-			
+
 			DAOKorisnik.getDAO().spremiNovogKorisnika(korisnik);
-			
+
 			request.getSession().setAttribute("korisnik", korisnik);
 			return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
 		} else {

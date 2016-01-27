@@ -46,6 +46,9 @@ public class Korisnik {
 	@Expose
 	@Column(nullable = false)
 	private int razinaPrava;
+	
+	@Column
+	private int trazenaRazinaPrava;
 
 	@Expose
 	@Column
@@ -128,6 +131,14 @@ public class Korisnik {
 
 	public void setRazinaPrava(int razinaPrava) {
 		this.razinaPrava = razinaPrava;
+	}
+	
+	public int getTrazenaRazinaPrava() {
+		return this.trazenaRazinaPrava;
+	}
+	
+	public void setTrazenaRazinaPrava(int trazenaRazinaPrava) {
+		this.trazenaRazinaPrava = trazenaRazinaPrava;
 	}
 
 	public boolean isAktivan() {
