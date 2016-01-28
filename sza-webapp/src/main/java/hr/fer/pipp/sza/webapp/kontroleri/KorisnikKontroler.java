@@ -3,6 +3,7 @@ package hr.fer.pipp.sza.webapp.kontroleri;
 import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,18 +74,28 @@ public class KorisnikKontroler {
 		if ("postavke".equals(button)) {
 			Map<String, String> greska = Util.provjeriFormuPostavkiKorisnika(ime, prezime, email);
 
+			Map<String, String> forma = new HashMap<>();
+			forma.put("ime", ime);
+			forma.put("prezime", prezime);
+			forma.put("email", email);
+			req.setAttribute("forma", forma);
+			
 			if (greska.isEmpty()) {
 				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
 				korisnik.setIme(ime);
 				korisnik.setPrezime(prezime);
 				korisnik.setEmail(email);
+				
 
 				DAOKorisnik.getDAO().spremiIzmjeneKorisnika(korisnik);
 				return Response.seeOther(URI.create("/sza-webapp/korisnici/" + korisnik.getKorisnickoIme() + "/"))
 						.build();
 
 			} else {
+				
+				
 				req.setAttribute("greska", greska);
+				
 				return prikaziPostavkeKorisnika(req);
 			}
 
@@ -94,6 +105,8 @@ public class KorisnikKontroler {
 
 			if (greska.isEmpty()) {
 				Korisnik korisnik = (Korisnik) req.getSession().getAttribute("korisnik");
+			
+				
 				try {
 					korisnik.setLozinka(PasswordHash.createHash(novaLozinkaPotvrda));
 				} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {

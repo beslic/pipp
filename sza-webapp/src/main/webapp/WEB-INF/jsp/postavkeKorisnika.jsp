@@ -45,6 +45,8 @@
 								class="col-md-5 <c:if test="${greska.ime != null}">has-error has-feedback</c:if>">
 								<input id="firstnameinput" name="ime" type="text"
 									class="form-control input-md"
+									
+									<c:if test="${greska != null && !forma.ime.equals("") && forma.ime != null}">value="${forma.ime}"</c:if>
 									value="${sessionScope.korisnik.ime}"
 									aria-describedby="errorstatus" autofocus>
 								<c:if test="${greska.ime != null}">
@@ -63,6 +65,8 @@
 								class="col-md-5 <c:if test="${greska.prezime != null}">has-error has-feedback</c:if>">
 								<input id="lastnameinput" name="prezime" type="text"
 									class="form-control input-md"
+									
+									<c:if test="${greska != null && !forma.prezime.equals("") && forma.prezime != null}">value="${forma.prezime}"</c:if>
 									value="${sessionScope.korisnik.prezime}"
 									aria-describedby="errorstatus">
 								<c:if test="${greska.prezime != null}">
@@ -81,6 +85,7 @@
 								class="col-md-5 <c:if test="${greska.email != null}">has-error has-feedback</c:if>">
 								<input id="emailinput" name="email" type="text"
 									class="form-control input-md"
+									<c:if test="${greska != null && !forma.email.equals("") && forma.email != null}">value="${forma.email}"</c:if>
 									value="${sessionScope.korisnik.email}"
 									aria-describedby="errorstatus">
 								<c:if test="${greska.email != null}">
@@ -129,6 +134,16 @@
 										aria-hidden="true"></span>
 									<label class="control-label" for="confirmpasswordinput">${greska.staralozinka}</label>
 									<span id="errorstatus" class="sr-only">(error)</span>
+								<script type="text/javascript">
+										$(document).ready(function() {
+											activaTab('tab2');
+										});
+										function activaTab(tab) {
+											$(
+													'.nav-tabs a[href="#' + tab
+															+ '"]').tab('show');
+										};
+									</script>
 								</c:if>
 							</div>
 						</div>
@@ -143,6 +158,7 @@
 								class="col-md-5 <c:if test="${greska.novalozinka != null}">has-error has-feedback</c:if>">
 								<input id="passwordinput" name="novalozinka" type="password"
 									class="form-control input-md"
+			
 									placeholder="Unesite novu lozinku"
 									aria-describedby="errorstatus">
 								<c:if test="${greska.novalozinka != null}">
@@ -178,6 +194,16 @@
 										aria-hidden="true"></span>
 									<label class="control-label" for="confirmpasswordinput">${greska.novalozinkapotvrda}</label>
 									<span id="errorstatus" class="sr-only">(error)</span>
+								<script type="text/javascript">
+										$(document).ready(function() {
+											activaTab('tab2');
+										});
+										function activaTab(tab) {
+											$(
+													'.nav-tabs a[href="#' + tab
+															+ '"]').tab('show');
+										};
+									</script>
 								</c:if>
 							</div>
 						</div>
