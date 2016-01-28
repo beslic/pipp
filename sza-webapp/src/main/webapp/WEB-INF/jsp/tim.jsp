@@ -31,6 +31,10 @@
 <td>petar.beslic2@fer.hr</td>
 </tr>
 <tr>
+<td>Karlo Pavlović</td>
+<td>karlo.pavlovic@fer.hr</td>
+</tr>
+<tr>
 <td>Andrea Kurek</td>
 <td>andrea.kurek@fer.hr</td>
 </tr>

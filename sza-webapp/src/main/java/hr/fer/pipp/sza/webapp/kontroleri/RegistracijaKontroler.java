@@ -41,47 +41,55 @@ public class RegistracijaKontroler {
 	public Response noviKorisnik(@Context HttpServletRequest request, @Context UriInfo uri,
 			@FormParam("korisnickoime") String korisnickoIme, @FormParam("ime") String ime,
 			@FormParam("prezime") String prezime, @FormParam("lozinka") String lozinka,
-			@FormParam("lozinkapotvrda") String lozinkaPotvrda, @FormParam("email") String email,
-			@FormParam("prava") String razinaPrava) {
+			@FormParam("lozinkapotvrda") String lozinkaPotvrda, @FormParam("register") String button,
+			@FormParam("email") String email, @FormParam("prava") String razinaPrava) {
 
 		Map<String, String> greska = Util.provjeriRegistracijskuFormu(korisnickoIme, ime, prezime, lozinka,
 				lozinkaPotvrda, email, razinaPrava);
 
-		if (greska.isEmpty()) {
-			Korisnik korisnik = new Korisnik();
-			korisnik.setKorisnickoIme(korisnickoIme);
-			korisnik.setIme(ime);
-			korisnik.setPrezime(prezime);
-			korisnik.setEmail(email);
-			korisnik.setRazinaPrava(("1".equals(razinaPrava)) ? 1 : 2);
-			korisnik.setTrazenaRazinaPrava(korisnik.getRazinaPrava());
-			korisnik.setAktivan("1".equals(razinaPrava) ? false : true);
-			// ako je narucitelj, admin ga treba aktivirati
-			try {
-				korisnik.setLozinka(PasswordHash.createHash(lozinka));
-			} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {
+		if ("register".equals(button)) {
+
+			if (greska.isEmpty()) {
+				Korisnik korisnik = new Korisnik();
+				korisnik.setKorisnickoIme(korisnickoIme);
+				korisnik.setIme(ime);
+				korisnik.setPrezime(prezime);
+				korisnik.setEmail(email);
+				korisnik.setRazinaPrava(("1".equals(razinaPrava)) ? 1 : 2);
+				korisnik.setTrazenaRazinaPrava(korisnik.getRazinaPrava());
+				korisnik.setAktivan("1".equals(razinaPrava) ? false : true);
+				// ako je narucitelj, admin ga treba aktivirati
+				try {
+					korisnik.setLozinka(PasswordHash.createHash(lozinka));
+				} catch (NoSuchAlgorithmException | InvalidKeySpecException ignorable) {
+				}
+
+				DAOKorisnik.getDAO().spremiNovogKorisnika(korisnik);
+
+				// ako je korisnik narucitelj, ne stavljaj ga u session
+				if (korisnik.getRazinaPrava() != 1) {
+					request.getSession().setAttribute("korisnik", korisnik);
+				}
+				return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
+			} else {
+				Map<String, String> forma = new HashMap<>();
+				forma.put("korisnickoime", korisnickoIme);
+				forma.put("ime", ime);
+				forma.put("prezime", prezime);
+				forma.put("korisnickoime", korisnickoIme);
+				forma.put("email", email);
+				forma.put("prava", razinaPrava);
+				forma.put("lozinka", lozinka);
+				forma.put("lozinkapotvrda", lozinkaPotvrda);
+				request.setAttribute("forma", forma);
+				request.setAttribute("greska", greska);
+				return Response.ok(new Viewable("/registracija")).build();
 			}
 
-			DAOKorisnik.getDAO().spremiNovogKorisnika(korisnik);
-
-			// ako je korisnik narucitelj, ne stavljaj ga u session
-			if (korisnik.getRazinaPrava() != 1) {
-				request.getSession().setAttribute("korisnik", korisnik);
-			}
-			return Response.seeOther(URI.create(uri.getBaseUri().toString())).build();
 		} else {
-			Map<String, String> forma = new HashMap<>();
-			forma.put("korisnickoime", korisnickoIme);
-			forma.put("ime", ime);
-			forma.put("prezime", prezime);
-			forma.put("korisnickoime", korisnickoIme);
-			forma.put("email", email);
-			forma.put("prava", razinaPrava);
-			forma.put("lozinka", lozinka);
-			forma.put("lozinkapotvrda", lozinkaPotvrda);
-			request.setAttribute("forma", forma);
-			request.setAttribute("greska", greska);
-			return Response.ok(new Viewable("/registracija")).build();
+			System.out.println("");
+			return Response.seeOther(uri.getBaseUri()).build();
+
 		}
 	}
 

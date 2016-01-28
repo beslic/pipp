@@ -115,8 +115,9 @@
  			  <label class="col-md-4 control-label" for="signup"></label>
  			  <div class="col-md-4">
 <!--  			    <button id="register" type="submit" name="register" onclick="location.href='/sza-webapp/registracija/'" class="btn btn-success">Registrirajte se</button> -->
- 			    <button id="register" type="submit" name="register" onclick="showAlert()" class="btn btn-success">Registrirajte se</button>
+ 			    <button id="register" type="submit" name="register" value="register" onclick="showAlert()" class="btn btn-success">Registrirajte se</button>
  			    <button id="reset" type="reset" name="reset" class="btn btn-warning">Poništi</button>
+ 			    <button id="odustani" name="register" value="odustani" class="btn ">Odustani</button>
  			  </div>
  			</div>
 		  </fieldset>
