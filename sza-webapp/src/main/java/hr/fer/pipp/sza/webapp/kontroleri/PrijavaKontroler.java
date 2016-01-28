@@ -37,10 +37,10 @@ public class PrijavaKontroler {
 	@POST
 	@Produces(MediaType.TEXT_HTML)
 	public Response noviKorisnik(@Context HttpServletRequest request, @Context UriInfo uri,
-			@FormParam("korisnickoime") String korisnickoIme, @FormParam("lozinka") String lozinka) {
+			@FormParam("korisnickoime") String korisnickoIme,@FormParam("register") String button, @FormParam("lozinka") String lozinka) {
 
 		Map<String, String> greska = Util.provjeriPrijavu(korisnickoIme, lozinka);
-
+		if ("register".equals(button)) {
 		if (greska.isEmpty()) {
 			Korisnik korisnik = DAOKorisnik.getDAO().dohvatiKorisnika(korisnickoIme);
 			if (korisnik.getRazinaPrava() == 0) { // ako se prijavljuje admin
@@ -57,6 +57,12 @@ public class PrijavaKontroler {
 			request.setAttribute("forma", forma);
 			request.setAttribute("greska", greska);
 			return Response.ok(new Viewable("/prijava")).build();
+		}
+		}
+		else{
+			System.out.println("");
+			return Response.seeOther(uri.getBaseUri()).build();
+			
 		}
 	}
 

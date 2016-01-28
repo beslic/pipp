@@ -20,7 +20,9 @@
 				<p><b>Web aplikacija </b><span class="glyphicon glyphicon-chevron-right"></span> kreiranje anketa i ispunjavanje anketa online</p>
 				<p><b>Mobilna aplikacija </b><span class="glyphicon glyphicon-chevron-right"></span> ispunjavanje anketa</p>
 				<br>
+				<c:if test="${sessionScope.korisnik != null}">
 				<p><a class="btn btn-primary btn-lg" href="#" role="button">Preuzmite mobilnu aplikaciju</a></p>
+				</c:if>
 			</div>
 		</div>
 
